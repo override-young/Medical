@@ -12,7 +12,10 @@
 	    android:layout_height="?attr/actionBarSize"
 	    android:background="?attr/colorPrimary"
 	    android:minHeight="?attr/actionBarSize"
-	    app:titleTextColor="@android:color/white"
+	    app:titleTextColor="@color/frame_default_title_text_color"
 	    app:titleTextAppearance="@style/Toolbar.TitleText"
+		app:navigationIcon="@drawable/ic_back_selector"
+		android:layout_marginBottom="@dimen/frame_two_distance"
+		android:elevation="1dp"
 	    />
 </LinearLayout>

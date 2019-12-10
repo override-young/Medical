@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -61,6 +63,30 @@ public class ActivityHelper {
 	public SharedPreferences getSharedPreferences(){
 		return shared;
 	}
+
+	/**
+	 * 设置Toolbar标题居中
+	 * @param toolbar
+	 * @param title
+	 */
+	public void setToolbarTitleCenter(Toolbar toolbar,String title) {
+		final CharSequence originalTitle = toolbar.getTitle();
+		toolbar.setTitle(title);
+		for (int i = 0; i < toolbar.getChildCount(); i++) {
+			View view = toolbar.getChildAt(i);
+			if (view instanceof TextView) {
+				TextView textView = (TextView) view;
+				if (title.equals(textView.getText())) {
+					textView.setGravity(Gravity.CENTER);
+					Toolbar.LayoutParams params = new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.MATCH_PARENT);
+					params.gravity = Gravity.CENTER;
+					textView.setLayoutParams(params);
+				}
+			}
+			toolbar.setTitle(originalTitle);
+		}
+	}
+
 	/**
 	 * 界面加载处理
 	 * @param code 0初始化 1加载完成 -1加载失败

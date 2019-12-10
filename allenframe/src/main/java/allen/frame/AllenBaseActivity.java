@@ -3,6 +3,7 @@ package allen.frame;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -23,12 +24,19 @@ public abstract class AllenBaseActivity extends AppCompatActivity {
 		actHelper = new ActivityHelper(this);
 		AllenManager.getInstance().addActivity(this);
 		super.onCreate(savedInstanceState);
+		if(isStatusBarColorWhite()){
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+			}
+		}
 		setContentView(getLayoutResID());
 		initBar();
 		initUI(savedInstanceState);
 		addEvent();
 	}
-	
+
+	protected abstract boolean isStatusBarColorWhite();
+
 	protected abstract int getLayoutResID();
 	
 	protected abstract void initBar();

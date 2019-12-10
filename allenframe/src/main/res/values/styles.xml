@@ -6,7 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!--colorPrimary对应ActionBar的颜色-->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="android:windowBackground">@color/background_material_light</item>
+        <item name="android:windowBackground">@color/white</item>
         <!--colorAccent 对应EditText编辑时、RadioButton选中、CheckBox等选中时的颜色-->
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@android:color/white</item>
