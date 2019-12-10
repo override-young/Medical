@@ -28,8 +28,8 @@
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lineSpacingMultiplier="1.6"
-        android:textSize="@dimen/frame_text_big_size"
+        android:lineSpacingMultiplier="1.2"
+        android:textSize="@dimen/frame_photo_small_icon_size"
         android:textColor="@color/text_black_color"
         android:text="您好,\n欢迎登录"
         android:gravity="start"
@@ -37,6 +37,7 @@
         android:layout_marginStart="@dimen/frame_edge_distance"
         android:padding="@dimen/frame_edge_distance"/>
     <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/zh_login_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/frame_edge_distance"
@@ -56,27 +57,166 @@
             android:paddingEnd="@dimen/frame_four_distance"
             android:textColor="@color/text_black_color"
             android:textColorHint="@color/text_gray_color"
-            android:textSize="@dimen/frame_text_normal_size" />
+            android:textSize="@dimen/frame_text_normal_size"
+            android:singleLine="true"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/text_gray_color"/>
+            android:background="@color/light_gray"/>
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/login_psw"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="@string/login_psw_hint"
+                android:paddingTop="@dimen/frame_edge_distance"
+                android:paddingBottom="@dimen/frame_edge_distance"
+                android:paddingStart="@dimen/frame_four_distance"
+                android:paddingEnd="@dimen/frame_four_distance"
+                android:textColor="@color/text_black_color"
+                android:textColorHint="@color/text_gray_color"
+                android:textSize="@dimen/frame_text_normal_size"
+                android:inputType="textPassword"
+                android:singleLine="true"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/login_forget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:padding="@dimen/frame_edge_distance"
+                android:text="@string/login_forget_psw"
+                android:textColor="@color/text_gray_color"
+                android:textColorHint="@color/text_gray_color"
+                android:textSize="@dimen/frame_text_normal_size" />
+        </android.support.v7.widget.LinearLayoutCompat>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray"/>
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/login_get_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/frame_text_normal_size"
+            android:layout_gravity="start"
+            android:paddingTop="@dimen/frame_edge_distance"
+            android:paddingBottom="@dimen/frame_edge_distance"
+            android:text="@string/login_get_psw"
+            android:textColor="@color/text_gray_color"/>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/yzm_login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/frame_edge_distance"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/frame_edge_distance"
+        android:layout_marginEnd="@dimen/frame_edge_distance"
+        android:visibility="gone">
+
         <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/login_psw"
+            android:id="@+id/login_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:hint="@string/login_psw_hint"
+            android:hint="@string/login_phone_hint"
             android:paddingTop="@dimen/frame_edge_distance"
             android:paddingBottom="@dimen/frame_edge_distance"
             android:paddingStart="@dimen/frame_four_distance"
             android:paddingEnd="@dimen/frame_four_distance"
             android:textColor="@color/text_black_color"
             android:textColorHint="@color/text_gray_color"
-            android:textSize="@dimen/frame_text_normal_size" />
+            android:textSize="@dimen/frame_text_normal_size"
+            android:inputType="phone"
+            android:singleLine="true"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/text_gray_color"/>
+            android:background="@color/light_gray"/>
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/login_yzm"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="@string/login_yzm_hint"
+                android:paddingTop="@dimen/frame_edge_distance"
+                android:paddingBottom="@dimen/frame_edge_distance"
+                android:paddingStart="@dimen/frame_four_distance"
+                android:paddingEnd="@dimen/frame_four_distance"
+                android:textColor="@color/text_black_color"
+                android:textColorHint="@color/text_gray_color"
+                android:textSize="@dimen/frame_text_normal_size"
+                android:inputType="text"
+                android:singleLine="true"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/login_get_yzm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_select"
+                android:padding="@dimen/frame_four_distance"
+                android:text="@string/login_get_yzm"
+                android:textColor="@color/text_white_color"
+                android:textColorHint="@color/text_gray_color"
+                android:textSize="@dimen/frame_text_normal_size"/>
+        </android.support.v7.widget.LinearLayoutCompat>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/frame_text_normal_size"
+            android:layout_gravity="start"
+            android:paddingTop="@dimen/frame_edge_distance"
+            android:paddingBottom="@dimen/frame_edge_distance"
+            android:text=""
+            android:textColor="@color/text_gray_color"/>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/login_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_selector"
+        android:gravity="center"
+        android:padding="@dimen/frame_eight_distance"
+        android:text="@string/login_bt_name"
+        android:textColor="@color/white"
+        android:textSize="@dimen/frame_text_middle_size"
+        android:layout_marginStart="@dimen/frame_32_distance"
+        android:layout_marginEnd="@dimen/frame_32_distance"
+        android:layout_marginBottom="@dimen/frame_edge_distance"/>
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/frame_32_distance">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/login_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/ic_phone"
+            android:drawablePadding="@dimen/frame_eight_distance"
+            android:padding="@dimen/frame_edge_distance"
+            android:text="@string/login_phone_type"
+            android:textColor="@color/btn_normal_color"
+            android:textSize="@dimen/frame_text_normal_size" />
     </android.support.v7.widget.LinearLayoutCompat>
 </android.support.v7.widget.LinearLayoutCompat>

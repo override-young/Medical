@@ -1,16 +1,49 @@
 package cn.allen.medical;
 
-import android.graphics.Color;
-import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.text.Html;
 import android.view.View;
 
 import allen.frame.AllenBaseActivity;
-import allen.frame.tools.StatusBarUtil;
+import allen.frame.tools.TimeMeter;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LoginActivity extends AllenBaseActivity {
+
+    @BindView(R.id.login_accout)
+    AppCompatEditText loginAccout;
+    @BindView(R.id.login_psw)
+    AppCompatEditText loginPsw;
+    @BindView(R.id.login_forget)
+    AppCompatTextView loginForget;
+    @BindView(R.id.login_get_box)
+    AppCompatCheckBox loginGetBox;
+    @BindView(R.id.zh_login_layout)
+    LinearLayoutCompat zhLoginLayout;
+    @BindView(R.id.login_phone)
+    AppCompatEditText loginPhone;
+    @BindView(R.id.login_yzm)
+    AppCompatEditText loginYzm;
+    @BindView(R.id.login_get_yzm)
+    AppCompatTextView loginGetYzm;
+    @BindView(R.id.yzm_login_layout)
+    LinearLayoutCompat yzmLoginLayout;
+    @BindView(R.id.login_bt)
+    AppCompatButton loginBt;
+    @BindView(R.id.login_change)
+    AppCompatTextView loginChange;
+
+    private boolean isPhoneLogin = false;
+    private TimeMeter meter;
 
     @Override
     protected boolean isStatusBarColorWhite() {
@@ -24,6 +57,8 @@ public class LoginActivity extends AllenBaseActivity {
 
     @Override
     protected void initBar() {
+        ButterKnife.bind(this);
+        meter = TimeMeter.getInstance().setMaxTime(60);
     }
 
     @Override
@@ -33,6 +68,49 @@ public class LoginActivity extends AllenBaseActivity {
 
     @Override
     protected void addEvent() {
+        meter.setTimerLisener(new TimeMeter.OnTimerLisener() {
+            @Override
+            public void onStart() {
+                loginGetYzm.setText(Html.fromHtml("<font color=\"red\">60</font>"+getString(R.string.login_ing_yzm)));
+            }
 
+            @Override
+            public void onInTime(long inTime) {
+                loginGetYzm.setText(Html.fromHtml("<font color=\"red\">"+inTime+"</font>"+getString(R.string.login_ing_yzm)));
+            }
+
+            @Override
+            public void onEnd() {
+                loginGetYzm.setText(getString(R.string.login_again_yzm));
+            }
+        });
+    }
+
+    @OnClick({R.id.login_forget, R.id.login_get_yzm, R.id.login_bt, R.id.login_change})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.login_forget:
+                startActivityForResult(new Intent(context,ChangePswActivity.class),11);
+                break;
+            case R.id.login_get_yzm:
+                meter.start();
+                break;
+            case R.id.login_bt:
+                break;
+            case R.id.login_change:
+                isPhoneLogin = !isPhoneLogin;
+                if(isPhoneLogin){
+                    zhLoginLayout.setVisibility(View.GONE);
+                    yzmLoginLayout.setVisibility(View.VISIBLE);
+                    loginChange.setText(getText(R.string.login_account_type));
+                    loginChange.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.ic_account,0,0,0);
+                }else{
+                    zhLoginLayout.setVisibility(View.VISIBLE);
+                    yzmLoginLayout.setVisibility(View.GONE);
+                    loginChange.setText(getText(R.string.login_phone_type));
+                    loginChange.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.ic_phone,0,0,0);
+                }
+                break;
+        }
     }
 }
