@@ -96,6 +96,7 @@ public class LoginActivity extends AllenBaseActivity {
                 meter.start();
                 break;
             case R.id.login_bt:
+                startActivity(new Intent(context,MainActivity.class));
                 break;
             case R.id.login_change:
                 isPhoneLogin = !isPhoneLogin;
