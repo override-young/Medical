@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Medical</string>
+    <string name="app_name">医用物资管理</string>
+    <string name="login_account_hint">请输入账号</string>
+    <string name="login_psw_hint">请输入密码</string>
 </resources>
