@@ -7,7 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
 import allen.frame.tools.StringUtils;
 import allen.frame.widget.MaterialRefreshLayout;
@@ -70,6 +75,20 @@ public class ActivityHelper {
 	 * @param title
 	 */
 	public void setToolbarTitleCenter(Toolbar toolbar,String title) {
+		toolbar.setTitle("");
+		TextView titleText = new TextView(context);
+		titleText.setTextColor(ContextCompat.getColor(context, R.color.frame_default_title_text_color));
+		titleText.setText(title);
+		titleText.setTextSize(TypedValue.COMPLEX_UNIT_PX,context.getResources().getDimension(R.dimen.frame_text_big_size));
+		titleText.setGravity(Gravity.CENTER);
+		titleText.setSingleLine(true);
+		titleText.setEllipsize(TextUtils.TruncateAt.END);
+		Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT);
+		layoutParams.gravity = Gravity.CENTER;
+		titleText.setLayoutParams(layoutParams);
+		toolbar.addView(titleText);
+	}
+	/*public void setToolbarTitleCenter(Toolbar toolbar,String title) {
 		final CharSequence originalTitle = toolbar.getTitle();
 		toolbar.setTitle(title);
 		for (int i = 0; i < toolbar.getChildCount(); i++) {
@@ -85,7 +104,7 @@ public class ActivityHelper {
 			}
 			toolbar.setTitle(originalTitle);
 		}
-	}
+	}*/
 
 	/**
 	 * 界面加载处理
