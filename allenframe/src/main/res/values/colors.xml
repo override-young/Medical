@@ -32,6 +32,7 @@
     <color name="material_yellow">#ffFFEB3B</color>
 
     <color name="text_normal_color">#2b2b2b</color>
+    <color name="text_normal_tint_color">#5b5b5b</color>
     <color name="text_normal_grey_color">#666666</color>
 
     <color name="frame_btn_selected_color">#4876FF</color>

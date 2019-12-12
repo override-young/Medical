@@ -7,9 +7,11 @@
     <dimen name="frame_text_smallst_size">10sp</dimen>
 
     <!-- 杈硅窛 -->
+    <dimen name="frame_one_distance">1dp</dimen>
     <dimen name="frame_two_distance">2dp</dimen>
     <dimen name="frame_four_distance">4dp</dimen>
     <dimen name="frame_eight_distance">8dp</dimen>
+    <dimen name="frame_ten_distance">10dp</dimen>
     <dimen name="frame_edge_distance">16dp</dimen>
     <dimen name="frame_32_distance">32dp</dimen>
 
