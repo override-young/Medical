@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">@color/white</color>
     <color name="colorAccent">#D81B60</color>
     <color name="frame_default_title_text_color">@color/text_black_color</color>
+
+    <color name="brown">#FF9A7C</color>
+    <color name="light_green">#50C9C3</color>
 </resources>

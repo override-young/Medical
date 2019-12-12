@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ContractDetailsActivity">
+
+    <include layout="@layout/alen_toolbar_layout" />
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/frame_eight_distance">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/frame_edge_distance"
+                android:paddingTop="@dimen/frame_eight_distance"
+                android:text="合同单号"
+                android:textColor="@color/text_normal_grey_color"
+                android:textSize="@dimen/frame_text_small_size"
+
+                />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_contract_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/frame_edge_distance"
+                android:paddingTop="@dimen/frame_eight_distance"
+                android:text="2019101506"
+                android:textColor="@color/light_green"
+                android:textSize="@dimen/frame_text_normal_size" />
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/frame_edge_distance"
+                android:paddingTop="@dimen/frame_eight_distance"
+                android:text="供应单位"
+                android:textColor="@color/text_normal_grey_color"
+                android:textSize="@dimen/frame_text_small_size"
+
+                />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/frame_edge_distance"
+                android:paddingTop="@dimen/frame_eight_distance"
+                android:text="xx单位"
+                android:textColor="@color/light_green"
+                android:textSize="@dimen/frame_text_normal_size" />
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="@dimen/frame_eight_distance">
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/frame_edge_distance"
+                android:paddingTop="@dimen/frame_eight_distance"
+                android:text="待审核"
+                android:textColor="@color/brown"
+                android:textSize="@dimen/frame_text_normal_size" />
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/frame_edge_distance">
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/frame_edge_distance"
+                    android:paddingTop="@dimen/frame_eight_distance"
+                    android:text="创建人"
+                    android:textColor="@color/text_normal_grey_color"
+                    android:textSize="@dimen/frame_text_small_size" />
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_cjr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/frame_edge_distance"
+                    android:paddingTop="@dimen/frame_eight_distance"
+                    android:text="张三"
+                    android:textColor="@color/text_normal_grey_color"
+                    android:textSize="@dimen/frame_text_small_size" />
+            </android.support.v7.widget.LinearLayoutCompat>
+        </android.support.v7.widget.LinearLayoutCompat>
+
+
+
+        <allen.frame.widget.MaterialRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </allen.frame.widget.MaterialRefreshLayout>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/frame_edge_distance"
+        android:background="@drawable/btn_selector1"
+        android:text="通过审核"
+        android:textColor="@color/white"
+        android:textSize="@dimen/frame_text_normal_size" />
+
+</android.support.v7.widget.LinearLayoutCompat>
