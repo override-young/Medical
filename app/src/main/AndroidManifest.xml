@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="cn.allen.medical">
 
-    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"
-        tools:ignore="ProtectedPermissions"></uses-permission>
+    <uses-permission
+        android:name="android.permission.WRITE_APN_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:allowBackup="true"
@@ -29,22 +30,32 @@
             android:name=".ChangePswActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PriceDetailsActivity"
+            android:name=".todo.PriceDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CompanyWarningActivity"
+            android:name=".warning.CompanyWarningActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SysltjActivity"
+            android:name=".count.SysltjActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".AboutUsActivity"
+        <activity
+            android:name=".AboutUsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".SelectSumChartActivity"
+        <activity
+            android:name=".count.SelectSumChartActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ContractWarnintActivity"
+        <activity
+            android:name=".warning.ContractWarningActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ContractDetailsActivity"
+        <activity
+            android:name=".todo.ContractDetailsActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".todo.DoDifferenceActivity" />
+        <activity android:name=".count.KucunCountActivity" />
+        <activity android:name=".todo.ToDoContractActivity" />
+        <activity android:name=".todo.ToDoBillActivity" />
+        <activity android:name=".todo.ToDoPriceActivity" />
+        <activity android:name=".todo.BillDetailsActivity"></activity>
     </application>
 
 </manifest>

@@ -5,9 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".warning.CompanyWarningActivity">
+    tools:context=".todo.ToDoContractActivity">
     <include layout="@layout/alen_toolbar_layout"/>
-
     <allen.frame.widget.MaterialRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
@@ -18,5 +17,6 @@
             android:layout_height="match_parent">
         </android.support.v7.widget.RecyclerView>
     </allen.frame.widget.MaterialRefreshLayout>
+
 
 </android.support.v7.widget.LinearLayoutCompat>

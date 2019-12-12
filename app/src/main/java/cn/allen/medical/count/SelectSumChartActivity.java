@@ -1,4 +1,4 @@
-package cn.allen.medical;
+package cn.allen.medical.count;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +25,8 @@ import allen.frame.AllenBaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.allen.medical.R;
+import cn.allen.medical.warning.ContractWarningActivity;
 
 public class SelectSumChartActivity extends AllenBaseActivity implements OnChartValueSelectedListener {
 
@@ -139,7 +141,7 @@ public class SelectSumChartActivity extends AllenBaseActivity implements OnChart
 
     @OnClick(R.id.tv_year)
     public void onViewClicked() {
-       startActivity(new Intent(this,ContractWarnintActivity.class));
+       startActivity(new Intent(this,ContractWarningActivity.class));
     }
 
     @Override

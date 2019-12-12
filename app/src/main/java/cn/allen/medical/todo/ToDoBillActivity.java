@@ -1,7 +1,8 @@
-package cn.allen.medical;
+package cn.allen.medical.todo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,12 +19,13 @@ import allen.frame.AllenBaseActivity;
 import allen.frame.widget.MaterialRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.allen.medical.entry.CompanyWarningEntity;
-import cn.allen.medical.entry.PriceDetailsEntity;
+import cn.allen.medical.R;
+import cn.allen.medical.entry.ToDoContractEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
 
-public class CompanyWarningActivity extends AllenBaseActivity {
+public class ToDoBillActivity extends AllenBaseActivity {
+
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -33,8 +35,8 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     MaterialRefreshLayout refreshLayout;
 
     private Context mContext=this;
-    private CommonAdapter<CompanyWarningEntity> adapter;
-    private List<CompanyWarningEntity> list=new ArrayList<>();
+    private CommonAdapter<ToDoContractEntity> adapter;
+    private List<ToDoContractEntity> list=new ArrayList<>();
     @SuppressLint("HandlerLeak")
     private Handler handler=new Handler(){
         @Override
@@ -47,8 +49,6 @@ public class CompanyWarningActivity extends AllenBaseActivity {
         }
     };
 
-
-
     @Override
     protected boolean isStatusBarColorWhite() {
         return true;
@@ -56,22 +56,21 @@ public class CompanyWarningActivity extends AllenBaseActivity {
 
     @Override
     protected int getLayoutResID() {
-        return R.layout.activity_company_warning;
+        return R.layout.activity_to_do_bill;
     }
 
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        toolbar.setTitle("企业资质警告");
+        actHelper.setToolbarTitleCenter(toolbar,"待确认账单");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-
         for (int i = 0; i < 3; i++) {
-            list.add(new CompanyWarningEntity());
+            list.add(new ToDoContractEntity());
         }
         initAdapter();
     }
@@ -79,9 +78,9 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter=new CommonAdapter<CompanyWarningEntity>(mContext,R.layout.company_warning_item_layout) {
+        adapter=new CommonAdapter<ToDoContractEntity>(mContext,R.layout.to_do_bill_item_layout) {
             @Override
-            public void convert(ViewHolder holder, CompanyWarningEntity entity, int position) {
+            public void convert(ViewHolder holder, ToDoContractEntity entity, int position) {
 
             }
         };
@@ -97,5 +96,22 @@ public class CompanyWarningActivity extends AllenBaseActivity {
                 finish();
             }
         });
+        adapter.setOnItemClickListener(onItemClickListener);
     }
+
+    private CommonAdapter.OnItemClickListener onItemClickListener=new CommonAdapter.OnItemClickListener() {
+
+
+        @Override
+        public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+            Intent intent=new Intent(mContext,BillDetailsActivity.class);
+            startActivity(intent);
+        }
+
+        @Override
+        public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+            return false;
+        }
+    };
+
 }
