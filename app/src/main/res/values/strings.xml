@@ -19,10 +19,17 @@
     <string name="confirm_psw_name">确认密码</string>
     <string name="new_psw_hint">请输入新密码</string>
     <string name="confirm_psw_hint">请再次输入新密码</string>
+    <string name="old_psw_name">原密码</string>
+    <string name="old_psw_hint">请输入原密码</string>
+
+    <string name="change_bypsw_type">原密码修改>></string>
+    <string name="change_byyzm_type">验证码验证修改>></string>
+
 
     <string name="ok_bt_name">确认</string>
     <string name="user_xg_psw">修改密码</string>
     <string name="user_about_us">关于我们</string>
     <string name="user_exit">退出登录</string>
+
 
 </resources>
