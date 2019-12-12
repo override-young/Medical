@@ -36,7 +36,7 @@ public class MsgUtils {
 		final Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG);
 		View bg = snackbar.getView();
 		if (bg != null) {
-			bg.setBackgroundColor(view.getContext().getResources().getColor(R.color.colorPrimary));
+			bg.setBackgroundColor(view.getContext().getResources().getColor(R.color.frame_default_color));
 		}
 		snackbar.show();
 		if (StringUtils.notEmpty(btn)) {
@@ -53,7 +53,7 @@ public class MsgUtils {
 		final Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG);
 		View bg = snackbar.getView();
 		if (bg != null) {
-			bg.setBackgroundColor(view.getContext().getResources().getColor(R.color.colorPrimary));
+			bg.setBackgroundColor(view.getContext().getResources().getColor(R.color.frame_default_color));
 		}
 		snackbar.show();
 		if (StringUtils.notEmpty(btn)) {
@@ -65,7 +65,7 @@ public class MsgUtils {
 		final Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG);
 		View bg = snackbar.getView();
 		if (bg != null) {
-			bg.setBackgroundColor(view.getContext().getResources().getColor(R.color.colorPrimary));
+			bg.setBackgroundColor(view.getContext().getResources().getColor(R.color.frame_default_color));
 		}
 		if (StringUtils.notEmpty(btn)) {
 			snackbar.setAction(btn, click);
@@ -90,7 +90,7 @@ public class MsgUtils {
 					}
 				}).show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-				.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+				.setTextColor(context.getResources().getColor(R.color.frame_default_color));
 
 	}
 
@@ -126,7 +126,7 @@ public class MsgUtils {
 					}
 				}).show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-		.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+		.setTextColor(context.getResources().getColor(R.color.frame_default_color));
 	}
 
 	public static void showMDMessage(Context context, String text, DialogInterface.OnClickListener onclick) {
@@ -134,7 +134,7 @@ public class MsgUtils {
 				R.style.Theme_AppCompat_Light_Dialog_Alert).setTitle("温馨提示").setMessage(text)
 						.setPositiveButton("确定", onclick).show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-				.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+				.setTextColor(context.getResources().getColor(R.color.frame_default_color));
 	}
 
 	public static void showMDMessage(Context context, String text, DialogInterface.OnClickListener onclick,
@@ -143,7 +143,7 @@ public class MsgUtils {
 				R.style.Theme_AppCompat_Light_Dialog_Alert).setTitle("温馨提示").setMessage(text)
 						.setPositiveButton("确定", onclick).setCancelable(isCancle).show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-				.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+				.setTextColor(context.getResources().getColor(R.color.frame_default_color));
 	}
 
 	public static void showMDMessage(Context context, String msg, String pos,
@@ -157,7 +157,7 @@ public class MsgUtils {
 				R.style.Theme_AppCompat_Light_Dialog_Alert).setTitle(title).setMessage(msg)
 						.setNegativeButton(neg, onNegClick).setPositiveButton(pos, onPosClick).show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-				.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+				.setTextColor(context.getResources().getColor(R.color.frame_default_color));
 		dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
 	}
 
@@ -167,7 +167,7 @@ public class MsgUtils {
 				R.style.Theme_AppCompat_Light_Dialog_Alert).setTitle("温馨提示").setCancelable(false).setMessage(msg)
 						.setNegativeButton(neg, onNegClick).setPositiveButton(pos, onPosClick).show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-				.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+				.setTextColor(context.getResources().getColor(R.color.frame_default_color));
 		dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
 	}
 
@@ -189,7 +189,7 @@ public class MsgUtils {
 							}
 						}).show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-				.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+				.setTextColor(context.getResources().getColor(R.color.frame_default_color));
 		dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
 	}
 
@@ -205,7 +205,7 @@ public class MsgUtils {
 							}
 						}).show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-				.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+				.setTextColor(context.getResources().getColor(R.color.frame_default_color));
 		dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
 	}
 

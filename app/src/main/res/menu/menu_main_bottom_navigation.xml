@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_dcl"
+        android:icon="@mipmap/menu_dcl"
+        android:title="待处理" />
+    <item
+        android:id="@+id/item_data"
+        android:icon="@mipmap/menu_sjtj"
+        android:title="数据统计" />
+    <item
+        android:id="@+id/item_xqyj"
+        android:icon="@mipmap/menu_yjxh"
+        android:title="效期预警" />
+    <item
+        android:id="@+id/item_mine"
+        android:icon="@mipmap/menu_wd"
+        android:title="我的" />
+</menu>

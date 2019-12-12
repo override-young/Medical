@@ -12,4 +12,17 @@
     <string name="login_again_yzm">重发验证码</string>
     <string name="login_phone_type"><![CDATA[验证码登录>>]]></string>
     <string name="login_account_type"><![CDATA[账号密码登录>>]]></string>
+
+    <string name="phone_name">手机号</string>
+    <string name="yzm_name">验证码</string>
+    <string name="new_psw_name">新密码</string>
+    <string name="confirm_psw_name">确认密码</string>
+    <string name="new_psw_hint">请输入新密码</string>
+    <string name="confirm_psw_hint">请再次输入新密码</string>
+
+    <string name="ok_bt_name">确认</string>
+    <string name="user_xg_psw">修改密码</string>
+    <string name="user_about_us">关于我们</string>
+    <string name="user_exit">退出登录</string>
+
 </resources>

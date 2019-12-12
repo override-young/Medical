@@ -1,18 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetStartWithNavigation="0dp"
+        app:titleTextColor="@color/frame_default_title_text_color"
+        app:popupTheme="@style/OverflowMenuStyle"
+        app:navigationIcon="@drawable/ic_back_selector"
+        app:titleTextAppearance="@style/Medical.Toolbar.TitleText"
+        />
+    <allen.frame.widget.ContrlScrollViewPager
+        android:id="@+id/center_panel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:iscanscroll="false">
 
-    <TextView
-        android:layout_width="wrap_content"
+    </allen.frame.widget.ContrlScrollViewPager>
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</android.support.constraint.ConstraintLayout>
+        android:minHeight="@dimen/frame_photo_icon_size"
+        app:menu="@menu/menu_main_bottom_navigation"
+        app:itemTextColor="@drawable/bottom_navigation_selector"
+        app:itemTextAppearanceActive="@style/bottomActiveTextStyle"
+        app:itemTextAppearanceInactive="@style/bottomInActiveTextStyle"
+        app:itemIconTint="@drawable/bottom_navigation_selector"
+        app:itemIconSize="@dimen/frame_edge_distance"
+        app:labelVisibilityMode="labeled"
+        app:itemBackground="@color/white"
+        android:layout_marginTop="@dimen/frame_two_distance"
+        app:elevation="1dp">
+    </android.support.design.widget.BottomNavigationView>
+</android.support.v7.widget.LinearLayoutCompat>

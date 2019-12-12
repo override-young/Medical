@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="frame_default_color">#50C9C3</color>
     <color name="frame_default_title_bar_color">@color/colorPrimary</color>
     <color name="frame_default_title_text_color">@color/white</color>
     <color name="colorPrimary">#008577</color>
