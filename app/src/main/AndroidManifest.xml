@@ -45,6 +45,12 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ContractDetailsActivity"
             android:screenOrientation="portrait" />
+        <!--统计 start-->
+        <activity
+            android:name=".count.CountLyActivity"
+            android:screenOrientation="portrait" />
+
+        <!--统计 end-->
     </application>
 
 </manifest>

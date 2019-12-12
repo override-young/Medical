@@ -1,6 +1,7 @@
 package cn.allen.medical.count;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -63,6 +64,17 @@ public class CountFragment extends Fragment {
         adapter.setItemClickListener(new OnAllenItemClickListener<MeMenu>() {
             @Override
             public void onItemClick(MeMenu menu) {
+                switch (menu.getId()){
+                    case "1":
+                        break;
+                    case "2":
+                        break;
+                    case "3":
+                        startActivity(new Intent(getActivity(),CountLyActivity.class));
+                        break;
+                    case "4":
+                        break;
+                }
             }
         });
     }
@@ -72,10 +84,10 @@ public class CountFragment extends Fragment {
             @Override
             public void run() {
                 list = new ArrayList<>();
-                list.add(new MeMenu("","入库数量统计",0,R.mipmap.count_rk));
-                list.add(new MeMenu("","库存数量统计",0,R.mipmap.count_kcsl));
-                list.add(new MeMenu("","领用数量统计",0,R.mipmap.count_ly));
-                list.add(new MeMenu("","使用数量统计",0,R.mipmap.count_sy));
+                list.add(new MeMenu("1","入库数量统计",0,R.mipmap.count_rk));
+                list.add(new MeMenu("2","库存数量统计",0,R.mipmap.count_kcsl));
+                list.add(new MeMenu("3","领用数量统计",0,R.mipmap.count_ly));
+                list.add(new MeMenu("4","使用数量统计",0,R.mipmap.count_sy));
                 handler.sendEmptyMessage(0);
             }
         }).start();
