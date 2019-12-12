@@ -12,6 +12,7 @@ import android.text.Html;
 import android.view.View;
 
 import allen.frame.AllenBaseActivity;
+import allen.frame.tools.Logger;
 import allen.frame.tools.TimeMeter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +59,8 @@ public class LoginActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        meter = TimeMeter.getInstance().setMaxTime(60);
+        meter = new TimeMeter();
+        meter.setMaxTime(60);
     }
 
     @Override
@@ -96,6 +98,7 @@ public class LoginActivity extends AllenBaseActivity {
 
                 break;
             case R.id.login_get_yzm:
+                Logger.e("debug","getyzm++");
                 meter.start();
                 break;
             case R.id.login_bt:

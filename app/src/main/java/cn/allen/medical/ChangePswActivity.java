@@ -57,7 +57,8 @@ public class ChangePswActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        meter = TimeMeter.getInstance().setMaxTime(60);
+        meter = new TimeMeter();
+        meter.setMaxTime(60);
         actHelper.setToolbarTitleCenter(bar, "修改密码");
         setSupportActionBar(bar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
