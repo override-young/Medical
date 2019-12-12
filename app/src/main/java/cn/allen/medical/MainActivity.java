@@ -129,4 +129,9 @@ public class MainActivity extends AllenBaseActivity {
         }
         centerPanel.setCurrentItem(index,false);
     }
+
+    @Override
+    public void onBackPressed() {
+        actHelper.doClickTwiceExit(centerPanel);
+    }
 }
