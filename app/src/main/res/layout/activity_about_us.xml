@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AboutUsActivity">
+    <include layout="@layout/alen_toolbar_layout"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_about_us"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="@dimen/frame_text_small_size"
+        android:textColor="@color/text_normal_grey_color"
+        android:padding="@dimen/frame_eight_distance"
+        />
+
+</android.support.v7.widget.LinearLayoutCompat>

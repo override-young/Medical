@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cn.allen.medical">
+
+    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"
+        tools:ignore="ProtectedPermissions"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -9,22 +13,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".ChangePswActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".PriceDetailsActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChangePswActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PriceDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CompanyWarningActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SysltjActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".AboutUsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".SelectSumChartActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ContractWarnintActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ContractDetailsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

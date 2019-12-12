@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_company_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/frame_eight_distance"
+        android:text="重庆制造厂"
+        android:textColor="@color/text_normal_tint_color"
+        android:textSize="@dimen/frame_text_normal_size" />
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/frame_eight_distance">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/frame_eight_distance"
+            android:text="营业执照"
+            android:textColor="@color/text_normal_tint_color"
+            android:textSize="@dimen/frame_text_small_size" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/frame_eight_distance"
+                android:text="到期时间"
+                android:textColor="@color/text_normal_tint_color"
+                android:textSize="@dimen/frame_text_small_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_yyzz_due_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/frame_eight_distance"
+                android:text="2019-12-15"
+                android:textColor="@color/text_normal_tint_color"
+                android:textSize="@dimen/frame_text_small_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/frame_two_distance"
+                android:text="效期剩余"
+                android:textColor="@color/text_normal_tint_color"
+                android:textSize="@dimen/frame_text_small_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_yyzz_remaining_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/frame_two_distance"
+                android:text="10"
+                android:textColor="@color/brown"
+                android:textSize="@dimen/frame_text_normal_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/frame_two_distance"
+                android:text="天"
+                android:textColor="@color/text_normal_tint_color"
+                android:textSize="@dimen/frame_text_small_size" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/frame_eight_distance">
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/frame_eight_distance"
+            android:text="销售代表授权书"
+            android:textColor="@color/text_normal_tint_color"
+            android:textSize="@dimen/frame_text_small_size" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/frame_eight_distance"
+                android:text="到期时间"
+                android:textColor="@color/text_normal_tint_color"
+                android:textSize="@dimen/frame_text_small_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_sqs_due_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/frame_eight_distance"
+                android:text="2019-12-15"
+                android:textColor="@color/text_normal_tint_color"
+                android:textSize="@dimen/frame_text_small_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/frame_two_distance"
+                android:text="效期剩余"
+                android:textColor="@color/text_normal_tint_color"
+                android:textSize="@dimen/frame_text_small_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_sqs_remaining_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/frame_two_distance"
+                android:text="10"
+                android:textColor="@color/brown"
+                android:textSize="@dimen/frame_text_normal_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/frame_two_distance"
+                android:text="天"
+                android:textColor="@color/text_normal_tint_color"
+                android:textSize="@dimen/frame_text_small_size" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/frame_one_distance"
+        android:background="@color/gray_line_color" />
+</android.support.v7.widget.LinearLayoutCompat>

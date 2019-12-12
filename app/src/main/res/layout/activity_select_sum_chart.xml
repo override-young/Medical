@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SelectSumChartActivity">
+    <include layout="@layout/alen_toolbar_layout"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shap_btn_bg_border"
+        android:text="2019"
+        android:paddingTop="@dimen/frame_eight_distance"
+        android:paddingBottom="@dimen/frame_eight_distance"
+        android:paddingLeft="@dimen/frame_edge_distance"
+        android:paddingRight="@dimen/frame_edge_distance"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:textColor="@color/light_green"
+        android:textSize="@dimen/frame_text_small_size"
+        android:drawableRight="@drawable/ic_arrow_drop_down_green_24dp"
+        android:layout_margin="@dimen/frame_eight_distance"
+        />
+    <com.github.mikephil.charting.charts.HorizontalBarChart
+        android:id="@+id/barchart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</android.support.v7.widget.LinearLayoutCompat>

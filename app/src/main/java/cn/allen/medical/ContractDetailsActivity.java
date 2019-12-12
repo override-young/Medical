@@ -22,18 +22,21 @@ import allen.frame.widget.MaterialRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.allen.medical.entry.ContractDetailsEntity;
 import cn.allen.medical.entry.PriceDetailsEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
 
-public class PriceDetailsActivity extends AllenBaseActivity {
+public class ContractDetailsActivity extends AllenBaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.tv_gys)
-    AppCompatTextView tvGys;
-    @BindView(R.id.tv_bgrq)
-    AppCompatTextView tvBgrq;
+    @BindView(R.id.tv_contract_num)
+    AppCompatTextView tvContractNum;
+    @BindView(R.id.tv_unit)
+    AppCompatTextView tvUnit;
+    @BindView(R.id.tv_cjr)
+    AppCompatTextView tvCjr;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     @BindView(R.id.refreshLayout)
@@ -42,8 +45,8 @@ public class PriceDetailsActivity extends AllenBaseActivity {
     AppCompatButton btnSubmit;
 
     private Context mContext=this;
-    private CommonAdapter<PriceDetailsEntity> adapter;
-    private List<PriceDetailsEntity> list=new ArrayList<>();
+    private CommonAdapter<ContractDetailsEntity> adapter;
+    private List<ContractDetailsEntity> list=new ArrayList<>();
     @SuppressLint("HandlerLeak")
     private Handler handler=new Handler(){
         @Override
@@ -64,22 +67,21 @@ public class PriceDetailsActivity extends AllenBaseActivity {
 
     @Override
     protected int getLayoutResID() {
-        return R.layout.activity_price_details;
+        return R.layout.activity_contract_details;
     }
 
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        toolbar.setTitle("价格详情");
+        toolbar.setTitle("合同详情");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-
         for (int i = 0; i < 3; i++) {
-            list.add(new PriceDetailsEntity());
+            list.add(new ContractDetailsEntity());
         }
         initAdapter();
     }
@@ -87,15 +89,16 @@ public class PriceDetailsActivity extends AllenBaseActivity {
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter=new CommonAdapter<PriceDetailsEntity>(mContext,R.layout.price_details_item_layout) {
+        adapter=new CommonAdapter<ContractDetailsEntity>(mContext,R.layout.contract_details_item_layout) {
             @Override
-            public void convert(ViewHolder holder, PriceDetailsEntity entity, int position) {
+            public void convert(ViewHolder holder, ContractDetailsEntity entity, int position) {
 
             }
         };
         recyclerview.setAdapter(adapter);
         adapter.setDatas(list);
     }
+
 
     @Override
     protected void addEvent() {
@@ -105,18 +108,19 @@ public class PriceDetailsActivity extends AllenBaseActivity {
                 finish();
             }
         });
-
     }
 
-    @OnClick({R.id.tv_gys, R.id.tv_bgrq, R.id.btn_submit})
+    @OnClick({R.id.tv_contract_num, R.id.tv_unit, R.id.tv_cjr, R.id.btn_submit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_gys:
+            case R.id.tv_contract_num:
                 break;
-            case R.id.tv_bgrq:
+            case R.id.tv_unit:
+                break;
+            case R.id.tv_cjr:
                 break;
             case R.id.btn_submit:
-                startActivity(new Intent(mContext,ContractDetailsActivity.class));
+                startActivity(new Intent(mContext,SysltjActivity.class));
                 break;
         }
     }
