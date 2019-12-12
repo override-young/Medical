@@ -7,4 +7,7 @@
         <item name="android:textSize">@dimen/frame_text_smaller_size</item>
         <item name="itemIconSize">@dimen/frame_edge_distance</item>
     </style>
+    <style name="Medical.Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/frame_text_big_size</item>
+    </style>
 </resources>

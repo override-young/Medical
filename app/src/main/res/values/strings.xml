@@ -21,5 +21,8 @@
     <string name="confirm_psw_hint">请再次输入新密码</string>
 
     <string name="ok_bt_name">确认</string>
+    <string name="user_xg_psw">修改密码</string>
+    <string name="user_about_us">关于我们</string>
+    <string name="user_exit">退出登录</string>
 
 </resources>

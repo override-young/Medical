@@ -6,7 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical">
-    <include layout="@layout/alen_toolbar_layout"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetStartWithNavigation="0dp"
+        app:titleTextColor="@color/frame_default_title_text_color"
+        app:popupTheme="@style/OverflowMenuStyle"
+        app:navigationIcon="@drawable/ic_back_selector"
+        app:titleTextAppearance="@style/Medical.Toolbar.TitleText"
+        />
     <allen.frame.widget.ContrlScrollViewPager
         android:id="@+id/center_panel"
         android:layout_width="match_parent"

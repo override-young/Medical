@@ -39,7 +39,10 @@ public class ActivityHelper {
 	public static int PROGRESS_STATE_START = 0;
 	public static int PROGRESS_STATE_SUCCES = 1;
 	public static int PROGRESS_STATE_FAIL = -1;
-	
+
+	private long preTime = 0l;
+
+
 	/**
 	 * activity引用
 	 * @param context
@@ -307,4 +310,36 @@ public class ActivityHelper {
 	public void startActivity(Intent intent){
 		context.startActivity(intent);
 	}
+	/**
+	 * 是否快速点击(间隔1S)
+	 * @return
+	 */
+	public boolean isFastClick(){
+		long cuTime = System.currentTimeMillis();
+		if(cuTime-1000>preTime){
+			preTime = cuTime;
+			return false;
+		}else{
+			preTime = cuTime;
+			return true;
+		}
+	}
+	/**
+	 * 是否快速点击(自定义时间间隔，默认1S)
+	 * @return
+	 */
+	public boolean isFastClick(long time){
+		if(time<=0){
+			time = 1000;
+		}
+		long cuTime = System.currentTimeMillis();
+		if(cuTime-time>preTime){
+			preTime = cuTime;
+			return false;
+		}else{
+			preTime = cuTime;
+			return true;
+		}
+	}
+
 }
