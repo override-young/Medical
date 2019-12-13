@@ -13,89 +13,140 @@
         android:layout_marginStart="@dimen/frame_edge_distance"
         android:layout_marginEnd="@dimen/frame_edge_distance">
         <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/phone_psw_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/frame_edge_distance"
-            android:gravity="center">
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+            android:orientation="vertical">
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minWidth="@dimen/frame_title_height"
-                android:background="@android:color/transparent"
-                android:paddingTop="@dimen/frame_edge_distance"
-                android:paddingBottom="@dimen/frame_edge_distance"
-                android:text="@string/phone_name"
-                android:textColor="@color/text_black_color"
-                android:textSize="@dimen/frame_text_normal_size" />
-            <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/user_phone"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/frame_edge_distance"
+                android:gravity="center">
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/frame_title_height"
+                    android:background="@android:color/transparent"
+                    android:paddingTop="@dimen/frame_edge_distance"
+                    android:paddingBottom="@dimen/frame_edge_distance"
+                    android:text="@string/phone_name"
+                    android:textColor="@color/text_black_color"
+                    android:textSize="@dimen/frame_text_normal_size" />
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/user_phone"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/login_phone_hint"
+                    android:paddingTop="@dimen/frame_edge_distance"
+                    android:paddingBottom="@dimen/frame_edge_distance"
+                    android:paddingStart="@dimen/frame_eight_distance"
+                    android:paddingEnd="@dimen/frame_four_distance"
+                    android:textColor="@color/text_black_color"
+                    android:textColorHint="@color/text_gray_color"
+                    android:textSize="@dimen/frame_text_normal_size"
+                    android:inputType="phone"
+                    android:singleLine="true"/>
+            </android.support.v7.widget.LinearLayoutCompat>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray"/>
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:hint="@string/login_phone_hint"
-                android:paddingTop="@dimen/frame_edge_distance"
-                android:paddingBottom="@dimen/frame_edge_distance"
-                android:paddingStart="@dimen/frame_eight_distance"
-                android:paddingEnd="@dimen/frame_four_distance"
-                android:textColor="@color/text_black_color"
-                android:textColorHint="@color/text_gray_color"
-                android:textSize="@dimen/frame_text_normal_size"
-                android:inputType="phone"
-                android:singleLine="true"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/frame_edge_distance"
+                android:gravity="center">
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/frame_title_height"
+                    android:background="@android:color/transparent"
+                    android:paddingTop="@dimen/frame_edge_distance"
+                    android:paddingBottom="@dimen/frame_edge_distance"
+                    android:text="@string/yzm_name"
+                    android:textColor="@color/text_black_color"
+                    android:textSize="@dimen/frame_text_normal_size" />
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/user_yzm"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/login_yzm_hint"
+                    android:paddingTop="@dimen/frame_edge_distance"
+                    android:paddingBottom="@dimen/frame_edge_distance"
+                    android:paddingStart="@dimen/frame_eight_distance"
+                    android:paddingEnd="@dimen/frame_four_distance"
+                    android:textColor="@color/text_black_color"
+                    android:textColorHint="@color/text_gray_color"
+                    android:textSize="@dimen/frame_text_normal_size"
+                    android:inputType="text"
+                    android:singleLine="true"/>
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/user_get_yzm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_select"
+                    android:padding="@dimen/frame_four_distance"
+                    android:text="@string/login_get_yzm"
+                    android:textColor="@color/text_white_color"
+                    android:textColorHint="@color/text_gray_color"
+                    android:textSize="@dimen/frame_text_normal_size"/>
+            </android.support.v7.widget.LinearLayoutCompat>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray"/>
         </android.support.v7.widget.LinearLayoutCompat>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/light_gray"/>
         <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/old_psw_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/frame_edge_distance"
-            android:gravity="center">
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minWidth="@dimen/frame_title_height"
-                android:background="@android:color/transparent"
-                android:paddingTop="@dimen/frame_edge_distance"
-                android:paddingBottom="@dimen/frame_edge_distance"
-                android:text="@string/yzm_name"
-                android:textColor="@color/text_black_color"
-                android:textSize="@dimen/frame_text_normal_size" />
-            <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/user_yzm"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:hint="@string/login_yzm_hint"
-                android:paddingTop="@dimen/frame_edge_distance"
-                android:paddingBottom="@dimen/frame_edge_distance"
-                android:paddingStart="@dimen/frame_eight_distance"
-                android:paddingEnd="@dimen/frame_four_distance"
-                android:textColor="@color/text_black_color"
-                android:textColorHint="@color/text_gray_color"
-                android:textSize="@dimen/frame_text_normal_size"
-                android:inputType="text"
-                android:singleLine="true"/>
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/user_get_yzm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_select"
-                android:padding="@dimen/frame_four_distance"
-                android:text="@string/login_get_yzm"
-                android:textColor="@color/text_white_color"
-                android:textColorHint="@color/text_gray_color"
-                android:textSize="@dimen/frame_text_normal_size"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/frame_edge_distance"
+                android:gravity="center">
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:minWidth="@dimen/frame_title_height"
+                    android:paddingTop="@dimen/frame_edge_distance"
+                    android:paddingBottom="@dimen/frame_edge_distance"
+                    android:text="@string/old_psw_name"
+                    android:textColor="@color/text_black_color"
+                    android:textSize="@dimen/frame_text_normal_size" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/user_old_psw"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/old_psw_hint"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/frame_eight_distance"
+                    android:paddingTop="@dimen/frame_edge_distance"
+                    android:paddingEnd="@dimen/frame_four_distance"
+                    android:paddingBottom="@dimen/frame_edge_distance"
+                    android:singleLine="true"
+                    android:textColor="@color/text_black_color"
+                    android:textColorHint="@color/text_gray_color"
+                    android:textSize="@dimen/frame_text_normal_size" />
+            </android.support.v7.widget.LinearLayoutCompat>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray"/>
         </android.support.v7.widget.LinearLayoutCompat>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/light_gray"/>
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,7 +164,7 @@
                 android:textColor="@color/text_black_color"
                 android:textSize="@dimen/frame_text_normal_size" />
             <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/user_psw"
+                android:id="@+id/user_new_psw"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -150,7 +201,7 @@
                 android:textColor="@color/text_black_color"
                 android:textSize="@dimen/frame_text_normal_size" />
             <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/user_confirm"
+                android:id="@+id/user_confirm_psw"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -185,4 +236,21 @@
         android:layout_marginEnd="@dimen/frame_32_distance"
         android:layout_marginTop="@dimen/frame_edge_distance"
         android:layout_marginBottom="@dimen/frame_edge_distance"/>
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/frame_32_distance">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/psw_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/change_psw"
+            android:drawablePadding="@dimen/frame_eight_distance"
+            android:padding="@dimen/frame_edge_distance"
+            android:text="@string/change_bypsw_type"
+            android:textColor="@color/btn_normal_color"
+            android:textSize="@dimen/frame_text_normal_size" />
+    </android.support.v7.widget.LinearLayoutCompat>
 </android.support.v7.widget.LinearLayoutCompat>

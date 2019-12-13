@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <include layout="@layout/alen_toolbar_layout"/>
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="@dimen/frame_edge_distance">
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/frame_input_color_bg">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/ly_ks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@mipmap/ic_choice"
+                android:drawablePadding="@dimen/frame_edge_distance"
+                android:padding="@dimen/frame_eight_distance"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/frame_default_color"
+                android:textColorHint="@color/frame_default_color"
+                android:textSize="@dimen/frame_text_normal_size"
+                android:hint="@string/choice_ks_hint" />
+        </android.support.v7.widget.LinearLayoutCompat>
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/frame_input_color_bg"
+            android:layout_marginStart="@dimen/frame_eight_distance">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/ly_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@mipmap/ic_choice"
+                android:drawablePadding="@dimen/frame_edge_distance"
+                android:padding="@dimen/frame_eight_distance"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/frame_default_color"
+                android:textColorHint="@color/frame_default_color"
+                android:textSize="@dimen/frame_text_normal_size"
+                android:hint="@string/choice_date_hint" />
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat>
+    <include layout="@layout/alen_progress_layout"/>
+    <allen.frame.widget.MaterialRefreshLayout
+        android:id="@+id/mater"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:overlay="false"
+        app:progress_backgroud_color="@android:color/white"
+        app:refresh_style="normal"
+        app:wave_show="true">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:layout_marginStart="@dimen/frame_edge_distance"
+            android:layout_marginEnd="@dimen/frame_edge_distance"
+            android:layout_marginTop="@dimen/frame_two_distance"
+            android:layout_marginBottom="@dimen/frame_two_distance"
+            android:elevation="1dp">
+        </android.support.v7.widget.RecyclerView>
+    </allen.frame.widget.MaterialRefreshLayout>
+</android.support.v7.widget.LinearLayoutCompat>

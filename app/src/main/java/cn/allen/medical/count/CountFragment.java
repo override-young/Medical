@@ -69,17 +69,20 @@ public class CountFragment extends Fragment {
             public void onItemClick(MeMenu menu) {
                 switch (menu.getId()){
                     case "1":
+
                         startActivity(new Intent(getContext(),SelectSumChartActivity.class));
                         break;
                     case "2":
                         startActivity(new Intent(getContext(),KucunCountActivity.class));
                         break;
                     case "3":
-
+startActivity(new Intent(getActivity(),CountLyActivity.class));
                         break;
                     case "4":
                         startActivity(new Intent(getContext(),SysltjActivity.class));
+
                         break;
+                    
                 }
             }
         });

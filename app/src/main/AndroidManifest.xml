@@ -47,6 +47,7 @@
         <activity
             android:name=".warning.ContractWarningActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".todo.ContractDetailsActivity"
             android:screenOrientation="portrait" />
@@ -56,6 +57,13 @@
         <activity android:name=".todo.ToDoBillActivity" />
         <activity android:name=".todo.ToDoPriceActivity" />
         <activity android:name=".todo.BillDetailsActivity"></activity>
+        <!--统计 start-->
+        <activity
+            android:name=".count.CountLyActivity"
+            android:screenOrientation="portrait" />
+
+        <!--统计 end-->
+
     </application>
 
 </manifest>
