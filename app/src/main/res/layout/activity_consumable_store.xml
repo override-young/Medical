@@ -5,16 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AboutUsActivity">
+    tools:context=".warning.ConsumableStoreWarningActivity">
+
     <include layout="@layout/alen_toolbar_layout"/>
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tv_about_us"
+    <allen.frame.widget.MaterialRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="@dimen/frame_text_small_size"
-        android:textColor="@color/text_normal_grey_color"
-        android:padding="@dimen/frame_eight_distance"
-        />
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+    </allen.frame.widget.MaterialRefreshLayout>
+
 
 </android.support.v7.widget.LinearLayoutCompat>

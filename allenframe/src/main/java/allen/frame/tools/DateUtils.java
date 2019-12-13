@@ -8,8 +8,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.format.Time;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -178,6 +180,7 @@ public class DateUtils {
 		}).create();
 		timeDialog.show();
 	}
+
 
 	// 显示其 时间 dialog
 	public static void doSetTimeDialog(Context context, final TextView textView) {

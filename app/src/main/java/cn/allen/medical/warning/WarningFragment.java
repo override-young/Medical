@@ -69,10 +69,10 @@ public class WarningFragment extends Fragment {
                         startActivity(new Intent(getContext(),CompanyWarningActivity.class));
                         break;
                     case "2":
-
+                        startActivity(new Intent(getContext(),ConsumableStoreWarningActivity.class));
                         break;
                     case "3":
-
+                        startActivity(new Intent(getContext(),ConsumableQualityWarningActivity.class));
                         break;
                     case "4":
                         startActivity(new Intent(getContext(),ContractWarningActivity.class));

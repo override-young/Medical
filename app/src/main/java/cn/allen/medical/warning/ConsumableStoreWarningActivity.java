@@ -1,14 +1,11 @@
-package cn.allen.medical.todo;
+package cn.allen.medical.warning;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,33 +18,25 @@ import allen.frame.AllenBaseActivity;
 import allen.frame.widget.MaterialRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.allen.medical.R;
-import cn.allen.medical.entry.ContractDetailsEntity;
+import cn.allen.medical.entry.CompanyWarningEntity;
+import cn.allen.medical.entry.KucunCountEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
 
-public class BillDetailsActivity extends AllenBaseActivity {
-
+public class ConsumableStoreWarningActivity extends AllenBaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.tv_number)
-    AppCompatTextView tvNumber;
-    @BindView(R.id.tv_date)
-    AppCompatTextView tvDate;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     @BindView(R.id.refreshLayout)
     MaterialRefreshLayout refreshLayout;
-    @BindView(R.id.btn_pass)
-    AppCompatButton btnPass;
-    @BindView(R.id.btn_save)
-    AppCompatButton btnSave;
+
 
     private Context mContext=this;
-    private CommonAdapter<ContractDetailsEntity> adapter;
-    private List<ContractDetailsEntity> list=new ArrayList<>();
+    private CommonAdapter<CompanyWarningEntity> adapter;
+    private List<CompanyWarningEntity> list=new ArrayList<>();
     @SuppressLint("HandlerLeak")
     private Handler handler=new Handler(){
         @Override
@@ -61,6 +50,7 @@ public class BillDetailsActivity extends AllenBaseActivity {
     };
 
 
+
     @Override
     protected boolean isStatusBarColorWhite() {
         return true;
@@ -68,13 +58,13 @@ public class BillDetailsActivity extends AllenBaseActivity {
 
     @Override
     protected int getLayoutResID() {
-        return R.layout.activity_bill_details;
+        return R.layout.activity_consumable_store;
     }
 
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(toolbar,"账单详情");
+        toolbar.setTitle("耗材库存效期警告");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -82,7 +72,7 @@ public class BillDetailsActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         for (int i = 0; i < 3; i++) {
-            list.add(new ContractDetailsEntity());
+            list.add(new CompanyWarningEntity());
         }
         initAdapter();
     }
@@ -90,9 +80,9 @@ public class BillDetailsActivity extends AllenBaseActivity {
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter=new CommonAdapter<ContractDetailsEntity>(mContext,R.layout.bill_details_item_layout) {
+        adapter=new CommonAdapter<CompanyWarningEntity>(mContext,R.layout.haocai_cunxiaoqi_warning_item_layout) {
             @Override
-            public void convert(ViewHolder holder, ContractDetailsEntity entity, int position) {
+            public void convert(ViewHolder holder, CompanyWarningEntity entity, int position) {
 
             }
         };
@@ -109,30 +99,5 @@ public class BillDetailsActivity extends AllenBaseActivity {
                 finish();
             }
         });
-        adapter.setOnItemClickListener(onItemClickListener);
-    }
-    private CommonAdapter.OnItemClickListener onItemClickListener=new CommonAdapter.OnItemClickListener() {
-
-
-        @Override
-        public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-            Intent intent=new Intent(mContext,DoDifferenceActivity.class);
-            startActivity(intent);
-        }
-
-        @Override
-        public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-            return false;
-        }
-    };
-
-    @OnClick({R.id.btn_pass, R.id.btn_save})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_pass:
-                break;
-            case R.id.btn_save:
-                break;
-        }
     }
 }
