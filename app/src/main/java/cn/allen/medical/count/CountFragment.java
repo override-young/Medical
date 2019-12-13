@@ -24,6 +24,9 @@ import butterknife.Unbinder;
 import cn.allen.medical.R;
 import cn.allen.medical.adapter.MenuAdapter;
 import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.entry.SysltjEntity;
+import cn.allen.medical.warning.CompanyWarningActivity;
+import cn.allen.medical.warning.ContractWarningActivity;
 
 public class CountFragment extends Fragment {
     @BindView(R.id.rv)
@@ -66,14 +69,20 @@ public class CountFragment extends Fragment {
             public void onItemClick(MeMenu menu) {
                 switch (menu.getId()){
                     case "1":
+
+                        startActivity(new Intent(getContext(),SelectSumChartActivity.class));
                         break;
                     case "2":
+                        startActivity(new Intent(getContext(),KucunCountActivity.class));
                         break;
                     case "3":
-                        startActivity(new Intent(getActivity(),CountLyActivity.class));
+startActivity(new Intent(getActivity(),CountLyActivity.class));
                         break;
                     case "4":
+                        startActivity(new Intent(getContext(),SysltjActivity.class));
+
                         break;
+                    
                 }
             }
         });

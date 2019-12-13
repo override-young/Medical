@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SysltjActivity">
+    tools:context=".count.SysltjActivity">
     <include layout="@layout/alen_toolbar_layout"/>
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"

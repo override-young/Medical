@@ -1,6 +1,7 @@
 package cn.allen.medical.warning;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -63,6 +64,20 @@ public class WarningFragment extends Fragment {
         adapter.setItemClickListener(new OnAllenItemClickListener<MeMenu>() {
             @Override
             public void onItemClick(MeMenu menu) {
+                switch (menu.getId()){
+                    case "1":
+                        startActivity(new Intent(getContext(),CompanyWarningActivity.class));
+                        break;
+                    case "2":
+
+                        break;
+                    case "3":
+
+                        break;
+                    case "4":
+                        startActivity(new Intent(getContext(),ContractWarningActivity.class));
+                        break;
+                }
             }
         });
     }
@@ -72,10 +87,10 @@ public class WarningFragment extends Fragment {
             @Override
             public void run() {
                 list = new ArrayList<>();
-                list.add(new MeMenu("","企业资质预警",1,R.mipmap.waring_zz));
-                list.add(new MeMenu("","耗材库存效期预警",0,R.mipmap.waring_xq));
-                list.add(new MeMenu("","耗材资质预警",3,R.mipmap.waring_hc));
-                list.add(new MeMenu("","合同效期预警",5,R.mipmap.waring_ht));
+                list.add(new MeMenu("1","企业资质预警",1,R.mipmap.waring_zz));
+                list.add(new MeMenu("2","耗材库存效期预警",0,R.mipmap.waring_xq));
+                list.add(new MeMenu("3","耗材资质预警",3,R.mipmap.waring_hc));
+                list.add(new MeMenu("4","合同效期预警",5,R.mipmap.waring_ht));
                 handler.sendEmptyMessage(0);
             }
         }).start();

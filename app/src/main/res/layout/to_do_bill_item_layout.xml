@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/frame_edge_distance"
+        android:paddingRight="@dimen/frame_edge_distance">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/frame_eight_distance"
+            android:paddingRight="@dimen/frame_eight_distance">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="账单编号"
+                android:textColor="@color/text_normal_grey_color"
+                android:textSize="@dimen/frame_text_small_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_bill_num"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/frame_eight_distance"
+                android:text="201912120955"
+                android:textColor="@color/text_normal_grey_color"
+                android:textSize="@dimen/frame_text_small_size" />
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/frame_edge_distance"
+        android:paddingRight="@dimen/frame_edge_distance">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/frame_eight_distance"
+            android:paddingRight="@dimen/frame_eight_distance">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="账单日期"
+                android:textColor="@color/text_normal_grey_color"
+                android:textSize="@dimen/frame_text_small_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_bill_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/frame_eight_distance"
+                android:text="2012-12-12"
+                android:textColor="@color/text_normal_grey_color"
+                android:textSize="@dimen/frame_text_small_size" />
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="待审核"
+            android:padding="@dimen/frame_four_distance"
+            android:background="@drawable/shape_btn_bg_brown"
+            android:textColor="@color/white"
+            android:textSize="@dimen/frame_text_small_size" />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/frame_one_distance"
+        android:background="@color/gray_line_color" />
+
+</android.support.v7.widget.LinearLayoutCompat>

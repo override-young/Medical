@@ -1,6 +1,7 @@
 package cn.allen.medical.todo;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +25,8 @@ import butterknife.Unbinder;
 import cn.allen.medical.R;
 import cn.allen.medical.adapter.MenuAdapter;
 import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.warning.CompanyWarningActivity;
+import cn.allen.medical.warning.ContractWarningActivity;
 
 public class TodoFragment extends Fragment {
 
@@ -66,6 +69,17 @@ public class TodoFragment extends Fragment {
         adapter.setItemClickListener(new OnAllenItemClickListener<MeMenu>() {
             @Override
             public void onItemClick(MeMenu menu) {
+                switch (menu.getId()){
+                    case "1":
+                        startActivity(new Intent(getContext(),ToDoContractActivity.class));
+                        break;
+                    case "2":
+                        startActivity(new Intent(getContext(),ToDoBillActivity.class));
+                        break;
+                    case "3":
+                        startActivity(new Intent(getContext(),ToDoPriceActivity.class));
+                        break;
+                }
             }
         });
     }
@@ -75,9 +89,9 @@ public class TodoFragment extends Fragment {
             @Override
             public void run() {
                 list = new ArrayList<>();
-                list.add(new MeMenu("", "待确认合同", 5, R.mipmap.todo_ht));
-                list.add(new MeMenu("", "待确认账单", 0, R.mipmap.todo_zd));
-                list.add(new MeMenu("", "待确认价格", 3, R.mipmap.todo_jg));
+                list.add(new MeMenu("1", "待确认合同", 5, R.mipmap.todo_ht));
+                list.add(new MeMenu("2", "待确认账单", 0, R.mipmap.todo_zd));
+                list.add(new MeMenu("3", "待确认价格", 3, R.mipmap.todo_jg));
                 handler.sendEmptyMessage(0);
             }
         }).start();
