@@ -47,23 +47,32 @@
         <activity
             android:name=".warning.ContractWarningActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".todo.ContractDetailsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".todo.DoDifferenceActivity" />
-        <activity android:name=".count.KucunCountActivity" />
-        <activity android:name=".todo.ToDoContractActivity" />
-        <activity android:name=".todo.ToDoBillActivity" />
-        <activity android:name=".todo.ToDoPriceActivity" />
-        <activity android:name=".todo.BillDetailsActivity"></activity>
-        <!--统计 start-->
+        <activity android:name=".todo.DoDifferenceActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".count.KucunCountActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".todo.ToDoContractActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".todo.ToDoBillActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".todo.ToDoPriceActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".todo.BillDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <!-- 统计 start -->
         <activity
             android:name=".count.CountLyActivity"
             android:screenOrientation="portrait" />
 
-        <!--统计 end-->
+        <!-- 统计 end -->
 
+        <activity android:name=".warning.ConsumableStoreWarningActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".warning.ConsumableQualityWarningActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -1,11 +1,13 @@
 package cn.allen.medical.count;
 
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.DatePicker;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -20,13 +22,14 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import allen.frame.AllenBaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.allen.medical.R;
-import cn.allen.medical.warning.ContractWarningActivity;
+import cn.allen.medical.utils.YearPickerDialog;
 
 public class SelectSumChartActivity extends AllenBaseActivity implements OnChartValueSelectedListener {
 
@@ -36,6 +39,8 @@ public class SelectSumChartActivity extends AllenBaseActivity implements OnChart
     AppCompatTextView tvYear;
     @BindView(R.id.barchart)
     HorizontalBarChart mHorizontalBarChart;
+
+    private YearPickerDialog yearPickerDialog;
 
 
     @Override
@@ -141,7 +146,24 @@ public class SelectSumChartActivity extends AllenBaseActivity implements OnChart
 
     @OnClick(R.id.tv_year)
     public void onViewClicked() {
-       startActivity(new Intent(this,ContractWarningActivity.class));
+
+        Calendar calendar = Calendar.getInstance();
+        if (yearPickerDialog == null) {
+            new YearPickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+
+                @Override
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, monthOfYear);
+                    tvYear.setText(year + "");
+
+                }
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar
+                    .DATE)).show();
+        }else {
+            yearPickerDialog.show();
+        }
     }
 
     @Override
