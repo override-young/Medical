@@ -2,7 +2,6 @@ package cn.allen.medical.count;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import allen.frame.AllenBaseActivity;
+import allen.frame.tools.DateUtils;
 import allen.frame.widget.MaterialRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +25,6 @@ import cn.allen.medical.R;
 import cn.allen.medical.entry.SysltjEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
-import cn.allen.medical.warning.CompanyWarningActivity;
 
 public class SysltjActivity extends AllenBaseActivity {
 
@@ -40,14 +39,14 @@ public class SysltjActivity extends AllenBaseActivity {
     @BindView(R.id.refreshLayout)
     MaterialRefreshLayout refreshLayout;
 
-    private Context mContext=this;
+    private Context mContext = this;
     private CommonAdapter<SysltjEntity> adapter;
-    private List<SysltjEntity> list=new ArrayList<>();
+    private List<SysltjEntity> list = new ArrayList<>();
     @SuppressLint("HandlerLeak")
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
 
                     break;
@@ -69,7 +68,7 @@ public class SysltjActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(toolbar,"使用数量统计");
+        actHelper.setToolbarTitleCenter(toolbar, "使用数量统计");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -86,7 +85,7 @@ public class SysltjActivity extends AllenBaseActivity {
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter=new CommonAdapter<SysltjEntity>(mContext,R.layout.sysltj_item_layout) {
+        adapter = new CommonAdapter<SysltjEntity>(mContext, R.layout.sysltj_item_layout) {
             @Override
             public void convert(ViewHolder holder, SysltjEntity entity, int position) {
 
@@ -113,6 +112,8 @@ public class SysltjActivity extends AllenBaseActivity {
             case R.id.tv_keshi:
                 break;
             case R.id.tv_time:
+                DateUtils.doSetDateDialog(mContext,tvTime);
+
                 break;
         }
     }
