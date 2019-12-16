@@ -17,6 +17,10 @@ import allen.frame.tools.TimeMeter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.allen.medical.data.DataHelper;
+import cn.allen.medical.data.HttpCallBack;
+import cn.allen.medical.data.MeRespone;
+import cn.allen.medical.entry.User;
 
 public class LoginActivity extends AllenBaseActivity {
 
@@ -59,6 +63,7 @@ public class LoginActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
+        Logger.init().setHttp(true).setDebug(true);
         meter = new TimeMeter();
         meter.setMaxTime(60);
     }
@@ -102,7 +107,8 @@ public class LoginActivity extends AllenBaseActivity {
                 meter.start();
                 break;
             case R.id.login_bt:
-                startActivity(new Intent(context,MainActivity.class));
+//                startActivity(new Intent(context,MainActivity.class));
+                login();
                 break;
             case R.id.login_change:
                 isPhoneLogin = !isPhoneLogin;
@@ -123,5 +129,18 @@ public class LoginActivity extends AllenBaseActivity {
             loginChange.setText(getText(R.string.login_phone_type));
             loginChange.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.ic_phone,0,0,0);
         }
+    }
+    private void login(){
+        DataHelper.init().login(1, "123456", "cHRZdThIYXltU0k9", "", new HttpCallBack<User>() {
+            @Override
+            public void onSuccess(User user) {
+                Logger.e("debug",user.toString());
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Logger.e("debug",respone.toString());
+            }
+        });
     }
 }
