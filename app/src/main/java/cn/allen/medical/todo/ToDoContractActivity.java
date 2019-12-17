@@ -16,16 +16,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import allen.frame.AllenBaseActivity;
+import allen.frame.tools.Logger;
 import allen.frame.widget.MaterialRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.allen.medical.R;
+import cn.allen.medical.data.DataHelper;
+import cn.allen.medical.data.HttpCallBack;
+import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.KucunCountEntity;
 import cn.allen.medical.entry.ToDoContractEntity;
+import cn.allen.medical.entry.User;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
 
 public class ToDoContractActivity extends AllenBaseActivity {
+    private static String TAG="ToDoContractActivity";
 
 
     @BindView(R.id.toolbar)
@@ -35,14 +41,16 @@ public class ToDoContractActivity extends AllenBaseActivity {
     @BindView(R.id.refreshLayout)
     MaterialRefreshLayout refreshLayout;
 
-    private Context mContext=this;
+    private Context mContext = this;
     private CommonAdapter<ToDoContractEntity> adapter;
-    private List<ToDoContractEntity> list=new ArrayList<>();
+    private List<ToDoContractEntity> list = new ArrayList<>();
+    private DataHelper dataHelper = DataHelper.init();
+    private int page = 0;
     @SuppressLint("HandlerLeak")
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
 
                     break;
@@ -63,7 +71,7 @@ public class ToDoContractActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(toolbar,"待确认合同");
+        actHelper.setToolbarTitleCenter(toolbar, "待确认合同");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -74,12 +82,33 @@ public class ToDoContractActivity extends AllenBaseActivity {
             list.add(new ToDoContractEntity());
         }
         initAdapter();
+        loadData();
+    }
+
+    private void loadData() {
+        dataHelper.getTodoContract(page++, new HttpCallBack<ToDoContractEntity>() {
+            @Override
+            public void onSuccess(ToDoContractEntity respone) {
+                Logger.e("debug","成功");
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Logger.e("debug","todo");
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Logger.e("debug",respone.toString());
+            }
+        });
     }
 
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter=new CommonAdapter<ToDoContractEntity>(mContext,R.layout.to_do_contract_item_layout) {
+        adapter = new CommonAdapter<ToDoContractEntity>(mContext, R.layout
+                .to_do_contract_item_layout) {
             @Override
             public void convert(ViewHolder holder, ToDoContractEntity entity, int position) {
 
@@ -100,12 +129,13 @@ public class ToDoContractActivity extends AllenBaseActivity {
         adapter.setOnItemClickListener(onItemClickListener);
     }
 
-    private CommonAdapter.OnItemClickListener onItemClickListener=new CommonAdapter.OnItemClickListener() {
+    private CommonAdapter.OnItemClickListener onItemClickListener = new CommonAdapter
+            .OnItemClickListener() {
 
 
         @Override
         public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-            Intent intent=new Intent(mContext,ContractDetailsActivity.class);
+            Intent intent = new Intent(mContext, ContractDetailsActivity.class);
             startActivity(intent);
         }
 
