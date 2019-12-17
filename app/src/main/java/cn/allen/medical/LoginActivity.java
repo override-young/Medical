@@ -156,6 +156,11 @@ public class LoginActivity extends AllenBaseActivity {
             }
 
             @Override
+            public void onTodo(MeRespone respone) {
+
+            }
+
+            @Override
             public void onFailed(MeRespone respone) {
                 Logger.e("debug",respone.toString());
                 Message msg = new Message();
