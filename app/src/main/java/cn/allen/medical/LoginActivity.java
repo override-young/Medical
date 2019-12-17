@@ -146,14 +146,13 @@ public class LoginActivity extends AllenBaseActivity {
                 Logger.e("debug",muser.toString());
                 user = muser;
                 actHelper.getSharedPreferences().edit().putString(Constants.User_ID,user.getUserId()).putString(Constants.User_Token,user.getToken()).commit();
+            }
+            @Override
+            public void onTodo(MeRespone respone){
                 Message msg = new Message();
                 msg.what = 0;
+                msg.obj = respone.getMessage();
                 handler.sendMessage(msg);
-            }
-
-            @Override
-            public void onTodo(MeRespone respone) {
-
             }
 
             @Override
@@ -215,6 +214,7 @@ public class LoginActivity extends AllenBaseActivity {
                     break;
                 case 0:
                     dismissProgressDialog();
+                    DataHelper.init().refush();
                     startActivity(new Intent(context,MainActivity.class));
                     break;
             }

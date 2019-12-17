@@ -1,5 +1,7 @@
 package cn.allen.medical.data;
 
+import java.util.List;
+
 import cn.allen.medical.entry.ToDoContractEntity;
 import allen.frame.tools.EncryptUtils;
 import cn.allen.medical.entry.User;
@@ -22,9 +24,21 @@ public class DataHelper {
         return helper;
     }
 
+    public void refush(){
+        request = new HttpRequest();
+    }
+
+    /**
+     * 登录
+     * @param type
+     * @param user
+     * @param psw
+     * @param smsCode
+     * @param callBack
+     */
     public void login(int type, String user, String psw, String smsCode, HttpCallBack<User> callBack){
         Object[] arrays = new Object[] { "loginType",type,"user",user,"password",MedicalEncry.encrypt(psw),"smsVerificationCode",smsCode};
-        request.okhttppost(API.login,body.okHttpPost(arrays),callBack);
+        request.okhttppost(API.login,arrays,callBack);
     }
 
     /**
@@ -34,7 +48,7 @@ public class DataHelper {
      */
     public void getTodoContract(int page, HttpCallBack<ToDoContractEntity> callBack){
         Object[] arrays = new Object[] {"PageIndex",page};
-        request.okhttppost(API.todoContract,body.okHttpPost(arrays),callBack);
+        request.okhttpget(API.todoContract,arrays,callBack);
     }
 
     /**
@@ -44,6 +58,19 @@ public class DataHelper {
      */
     public void getContractDetails(String id, HttpCallBack<ToDoContractEntity> callBack){
         Object[] arrays = new Object[] {"id",id};
-        request.okhttppost(API.contractDetails,body.okHttpPost(arrays),callBack);
+        request.okhttppost(API.contractDetails,arrays,callBack);
     }
+
+    /**
+     * 获取用户信息
+     * @param callBack
+     */
+    public void uerInfo(HttpCallBack<User> callBack){
+        Object[] arrays = new Object[] {};
+        request.okhttpget(API.userInfo,arrays,callBack);
+    }
+//    public void updatePsw(){
+//        Object[] arrays = new Object[] {};
+//        request.okhttppost(API.userInfo,arrays,callBack);
+//    }
 }

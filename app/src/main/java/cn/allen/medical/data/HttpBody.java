@@ -16,7 +16,18 @@ public class HttpBody {
             }
         }
         sb.append("}");
-        Logger.http("body",  "[" + sb.toString() + "]");
+        Logger.http("post:body->",  sb.toString() );
+        return sb.toString();
+    }
+    public String okHttpGet(Object[] arrays) {
+        StringBuilder sb = new StringBuilder();
+        if (arrays != null) {
+            for (int i = 0; i < arrays.length; i++) {
+                sb.append((i == 0 ? "" : "&") + arrays[i++] + "="
+                        + (arrays[i] == null ? "" : StringUtils.null2Empty(arrays[i].toString())));
+            }
+        }
+        Logger.http("get:url->",  sb.toString());
         return sb.toString();
     }
 }
