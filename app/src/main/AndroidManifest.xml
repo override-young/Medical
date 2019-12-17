@@ -41,7 +41,7 @@
             android:name=".count.SysltjActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AboutUsActivity"
+            android:name=".mine.AboutUsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".count.SelectSumChartActivity"

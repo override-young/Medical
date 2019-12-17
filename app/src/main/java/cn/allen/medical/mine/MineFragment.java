@@ -73,6 +73,7 @@ public class MineFragment extends Fragment {
                 startActivity(new Intent(getActivity(),ChangePswActivity.class));
                 break;
             case R.id.user_info:
+                startActivity(new Intent(getActivity(),AboutUsActivity.class));
                 break;
             case R.id.user_exit:
                 MsgUtils.showMDMessage(getActivity(), "是否退出登录?", "确定", new DialogInterface.OnClickListener() {

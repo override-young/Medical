@@ -21,8 +21,21 @@ public class DataHelper {
         return helper;
     }
 
+    /**
+     * 登录
+     * @param type
+     * @param user
+     * @param psw
+     * @param smsCode
+     * @param callBack
+     */
     public void login(int type, String user, String psw, String smsCode, HttpCallBack<User> callBack){
         Object[] arrays = new Object[] { "loginType",type,"user",user,"password",MedicalEncry.encrypt(psw),"smsVerificationCode",smsCode};
         request.okhttppost(API.login,body.okHttpPost(arrays),callBack);
+    }
+
+    public void uerInfo(){
+//        Object[] arrays = new Object[] { "loginType",type,"user",user,"password",MedicalEncry.encrypt(psw),"smsVerificationCode",smsCode};
+//        request.okhttppost(API.userInfo,body.okHttpPost(arrays),callBack);
     }
 }

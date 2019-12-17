@@ -1,4 +1,4 @@
-package cn.allen.medical;
+package cn.allen.medical.mine;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,7 @@ import android.view.View;
 import allen.frame.AllenBaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.allen.medical.R;
 
 public class AboutUsActivity extends AllenBaseActivity {
 

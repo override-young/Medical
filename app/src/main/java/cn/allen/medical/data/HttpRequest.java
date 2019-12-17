@@ -54,7 +54,9 @@ public class HttpRequest {
                     Logger.http("data",">>"+data);
                     MeRespone respone = new Gson().fromJson(data,MeRespone.class);
                     if(respone.getCode()==200){
-                        callBack.onSuccess(new Gson().fromJson(respone.getData().toString(),callBack.getGenericityType()));
+                        if(respone.getData()!=null){
+                            callBack.onSuccess(new Gson().fromJson(respone.getData().toString(),callBack.getGenericityType()));
+                        }
                         callBack.onTodo(respone);
                     }else{
                         callBack.onFailed(respone);
@@ -63,5 +65,4 @@ public class HttpRequest {
             }
         });
     }
-    private Handler handler = new Handler();
 }

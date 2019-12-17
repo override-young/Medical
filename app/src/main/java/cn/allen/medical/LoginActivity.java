@@ -146,8 +146,12 @@ public class LoginActivity extends AllenBaseActivity {
                 Logger.e("debug",muser.toString());
                 user = muser;
                 actHelper.getSharedPreferences().edit().putString(Constants.User_ID,user.getUserId()).putString(Constants.User_Token,user.getToken()).commit();
+            }
+
+            public void onTodo(MeRespone respone){
                 Message msg = new Message();
                 msg.what = 0;
+                msg.obj = respone.getMessage();
                 handler.sendMessage(msg);
             }
 
