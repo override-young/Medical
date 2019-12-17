@@ -1,5 +1,7 @@
 package cn.allen.medical.data;
 
+import java.util.List;
+
 import cn.allen.medical.entry.ToDoContractEntity;
 import allen.frame.tools.EncryptUtils;
 import cn.allen.medical.entry.User;
@@ -67,4 +69,8 @@ public class DataHelper {
         Object[] arrays = new Object[] {};
         request.okhttpget(API.userInfo,arrays,callBack);
     }
+//    public void updatePsw(){
+//        Object[] arrays = new Object[] {};
+//        request.okhttppost(API.userInfo,arrays,callBack);
+//    }
 }

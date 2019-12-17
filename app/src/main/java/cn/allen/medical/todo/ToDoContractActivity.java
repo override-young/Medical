@@ -44,7 +44,6 @@ public class ToDoContractActivity extends AllenBaseActivity {
     private Context mContext = this;
     private CommonAdapter<ToDoContractEntity> adapter;
     private List<ToDoContractEntity> list = new ArrayList<>();
-    private DataHelper dataHelper = DataHelper.init();
     private int page = 0;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -86,20 +85,20 @@ public class ToDoContractActivity extends AllenBaseActivity {
     }
 
     private void loadData() {
-        dataHelper.getTodoContract(page++, new HttpCallBack<ToDoContractEntity>() {
+        DataHelper.init().getTodoContract(page++, new HttpCallBack<ToDoContractEntity>() {
             @Override
             public void onSuccess(ToDoContractEntity respone) {
-                Logger.e("debug","成功");
+                Logger.e("TodoContract",respone.toString());
             }
 
             @Override
             public void onTodo(MeRespone respone) {
-                Logger.e("debug","todo");
+
             }
 
             @Override
             public void onFailed(MeRespone respone) {
-                Logger.e("debug",respone.toString());
+
             }
         });
     }

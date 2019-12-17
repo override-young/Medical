@@ -32,17 +32,13 @@ public class HttpRequest {
     public <T>void okhttppost(String mothed, Object[] arrays,HttpCallBack<T> callBack) {
         Logger.http("token",">>"+token);
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(TIME_OUT, TimeUnit.SECONDS).readTimeout(TIME_OUT, TimeUnit.SECONDS).authenticator(new Authenticator() {
-                    @Override
-                    public Request authenticate(Route route, Response response) throws IOException {
-                        return response.request().newBuilder().header("Authorization", token).build();
-                    }
-                })
+                .connectTimeout(TIME_OUT, TimeUnit.SECONDS).readTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .build();// 创建OkHttpClient对象。
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");// 数据类型为json格式，
         RequestBody body = RequestBody.create(JSON, mbody.okHttpPost(arrays));
         Request request = new Request.Builder().url(Constants.url + mothed)
-                .addHeader("keep-alive","false").post(body)
+                .addHeader("keep-alive","false")
+                .addHeader("Authorization","Bearer "+token).post(body)
                 .build();
         Logger.http("header",request.headers().toString());
         client.newCall(request).enqueue(new Callback() {
@@ -72,12 +68,7 @@ public class HttpRequest {
     public <T>void okhttpget(String mothed, Object[] arrays,HttpCallBack<T> callBack) {
         Logger.http("token",">>"+token);
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(TIME_OUT, TimeUnit.SECONDS).readTimeout(TIME_OUT, TimeUnit.SECONDS).authenticator(new Authenticator() {
-                    @Override
-                    public Request authenticate(Route route, Response response) throws IOException {
-                        return response.request().newBuilder().header("Authorization", token).build();
-                    }
-                })
+                .connectTimeout(TIME_OUT, TimeUnit.SECONDS).readTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .build();// 创建OkHttpClient对象。
 //        MediaType JSON = MediaType.parse("application/json; charset=utf-8");// 数据类型为json格式，
 //        RequestBody body = RequestBody.create(JSON, json);
@@ -86,6 +77,7 @@ public class HttpRequest {
         Logger.http("url","url>>"+url);
         Request request = new Request.Builder().url(url)
                 .addHeader("keep-alive","false")
+                .addHeader("Authorization","Bearer "+token)
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
