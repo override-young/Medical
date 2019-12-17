@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class MeRespone implements Serializable {
     private int code;
     private String message;
-    private String data;
+    private Object data;
     private Object error;
 
     public MeRespone() {
@@ -27,11 +27,11 @@ public class MeRespone implements Serializable {
         this.message = message;
     }
 
-    public String getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

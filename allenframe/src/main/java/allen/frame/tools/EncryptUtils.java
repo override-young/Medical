@@ -218,7 +218,7 @@ public class EncryptUtils {
 	@SuppressLint("DefaultLocale")
 	public static String decryptString(String message, String key) {
 		try {
-			byte[] content = Base64.decode(message.getBytes("utf-8"),
+			byte[] content = Base64.decode(message.getBytes("UTF-8"),
 					Base64.DEFAULT);
 			String strsString = decrypt(toHexString(content).toUpperCase(), key);
 			return strsString.trim();
