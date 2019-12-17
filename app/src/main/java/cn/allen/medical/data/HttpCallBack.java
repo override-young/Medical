@@ -21,6 +21,8 @@ public abstract class HttpCallBack<T> {
      */
     public abstract void onSuccess(T respone);
 
+    public abstract void onTodo(MeRespone respone);
+
     public abstract void onFailed(MeRespone respone);
 
     public Type getGenericityType() {

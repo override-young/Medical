@@ -55,6 +55,7 @@ public class HttpRequest {
                     MeRespone respone = new Gson().fromJson(data,MeRespone.class);
                     if(respone.getCode()==200){
                         callBack.onSuccess(new Gson().fromJson(respone.getData().toString(),callBack.getGenericityType()));
+                        callBack.onTodo(respone);
                     }else{
                         callBack.onFailed(respone);
                     }
