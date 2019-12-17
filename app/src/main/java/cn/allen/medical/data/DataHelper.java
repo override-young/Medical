@@ -1,6 +1,9 @@
 package cn.allen.medical.data;
 
+import allen.frame.tools.EncryptUtils;
 import cn.allen.medical.entry.User;
+import cn.allen.medical.utils.Constants;
+import cn.allen.medical.utils.MedicalEncry;
 
 public class DataHelper {
     private static DataHelper helper;
@@ -19,7 +22,7 @@ public class DataHelper {
     }
 
     public void login(int type, String user, String psw, String smsCode, HttpCallBack<User> callBack){
-        Object[] arrays = new Object[] { "loginType",type,"user",user,"password",psw,"smsVerificationCode",smsCode};
+        Object[] arrays = new Object[] { "loginType",type,"user",user,"password",MedicalEncry.encrypt(psw),"smsVerificationCode",smsCode};
         request.okhttppost(API.login,body.okHttpPost(arrays),callBack);
     }
 }

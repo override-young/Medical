@@ -1,7 +1,10 @@
 package cn.allen.medical;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -13,6 +16,8 @@ import android.view.View;
 
 import allen.frame.AllenBaseActivity;
 import allen.frame.tools.Logger;
+import allen.frame.tools.MsgUtils;
+import allen.frame.tools.StringUtils;
 import allen.frame.tools.TimeMeter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +26,7 @@ import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.User;
+import cn.allen.medical.utils.Constants;
 
 public class LoginActivity extends AllenBaseActivity {
 
@@ -107,8 +113,10 @@ public class LoginActivity extends AllenBaseActivity {
                 meter.start();
                 break;
             case R.id.login_bt:
-//                startActivity(new Intent(context,MainActivity.class));
-                login();
+//
+                if(checkIsOk()){
+                    login();
+                }
                 break;
             case R.id.login_change:
                 isPhoneLogin = !isPhoneLogin;
@@ -131,16 +139,81 @@ public class LoginActivity extends AllenBaseActivity {
         }
     }
     private void login(){
-        DataHelper.init().login(1, "123456", "cHRZdThIYXltU0k9", "", new HttpCallBack<User>() {
+        showProgressDialog("");
+        DataHelper.init().login(isPhoneLogin?2:1, zh, psw, yzm, new HttpCallBack<User>() {
             @Override
-            public void onSuccess(User user) {
-                Logger.e("debug",user.toString());
+            public void onSuccess(User muser) {
+                Logger.e("debug",muser.toString());
+                user = muser;
+                actHelper.getSharedPreferences().edit().putString(Constants.User_ID,user.getUserId()).putString(Constants.User_Token,user.getToken()).commit();
+                Message msg = new Message();
+                msg.what = 0;
+                handler.sendMessage(msg);
             }
 
             @Override
             public void onFailed(MeRespone respone) {
                 Logger.e("debug",respone.toString());
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
             }
         });
     }
+
+    private User user;
+    private String zh,psw,phone,yzm,fwyzm;
+    private boolean checkIsOk(){
+        zh = loginAccout.getText().toString().trim();
+        psw = loginPsw.getText().toString().trim();
+        phone = loginPhone.getText().toString().trim();
+        yzm = loginYzm.getText().toString().trim();
+        if(isPhoneLogin){
+            if(StringUtils.empty(phone)){
+                MsgUtils.showMDMessage(context,"请输入手机号!");
+                return false;
+            }
+            if(StringUtils.empty(fwyzm)){
+                MsgUtils.showMDMessage(context,"请先获取验证码!");
+                return false;
+            }
+            if(StringUtils.empty(yzm)){
+                MsgUtils.showMDMessage(context,"请输入验证码!");
+                return false;
+            }
+            if(!yzm.equals(fwyzm)){
+                MsgUtils.showMDMessage(context,"验证码不一致!");
+                return false;
+            }
+        }else{
+            if(StringUtils.empty(zh)){
+                MsgUtils.showMDMessage(context,"请输入账号!");
+                return false;
+            }
+            if(StringUtils.empty(psw)){
+                MsgUtils.showMDMessage(context,"请输入密码!");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case -1:
+                    dismissProgressDialog();
+                    MsgUtils.showMDMessage(context, (String) msg.obj);
+                    break;
+                case 0:
+                    dismissProgressDialog();
+                    startActivity(new Intent(context,MainActivity.class));
+                    break;
+            }
+        }
+    };
+
 }
