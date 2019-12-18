@@ -97,6 +97,11 @@ public class ToDoContractActivity extends AllenBaseActivity {
             }
 
             @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
             public void onFailed(MeRespone respone) {
 
             }

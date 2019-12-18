@@ -15,6 +15,7 @@ import allen.frame.tools.OnAllenItemClickListener;
 import allen.frame.widget.BadgeView;
 import cn.allen.medical.R;
 import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.entry.MenuEnum;
 
 public class MenuAdapter extends RecyclerView.Adapter {
 
@@ -76,8 +77,8 @@ public class MenuAdapter extends RecyclerView.Adapter {
         }
         public void bind(MeMenu menu){
             if(menu!=null){
-                icon.setImageResource(menu.getResId());
-                name.setText(menu.getName());
+                icon.setImageResource(MenuEnum.getResId(menu.getCode()));
+                name.setText(menu.getText());
                 badge.setBadgeCount(menu.getCount());
                 lay.setOnClickListener(new View.OnClickListener() {
                     @Override

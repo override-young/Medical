@@ -80,6 +80,7 @@ public class LoginActivity extends AllenBaseActivity {
     protected void initUI(@Nullable Bundle savedInstanceState) {
         change();
         boolean isRemember = actHelper.getSharedPreferences().getBoolean(Constants.Remember_Psw,false);
+        loginGetBox.setChecked(isRemember);
         if(isRemember){
             loginAccout.setText(actHelper.getSharedPreferences().getString(Constants.User_Account,""));
             loginPsw.setText(actHelper.getSharedPreferences().getString(Constants.User_Psw,""));
@@ -177,6 +178,11 @@ public class LoginActivity extends AllenBaseActivity {
                 msg.what = 0;
                 msg.obj = respone.getMessage();
                 handler.sendMessage(msg);
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
             }
 
             @Override

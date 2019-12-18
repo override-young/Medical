@@ -37,6 +37,11 @@ public class WarningFragment extends Fragment {
         return fragment;
     }
 
+    public WarningFragment setList(List<MeMenu> list){
+        this.list = list;
+        return this;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,11 +91,11 @@ public class WarningFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                list = new ArrayList<>();
-                list.add(new MeMenu("1","企业资质预警",1,R.mipmap.waring_zz));
-                list.add(new MeMenu("2","耗材库存效期预警",0,R.mipmap.waring_xq));
-                list.add(new MeMenu("3","耗材资质预警",3,R.mipmap.waring_hc));
-                list.add(new MeMenu("4","合同效期预警",5,R.mipmap.waring_ht));
+//                list = new ArrayList<>();
+//                list.add(new MeMenu("1","企业资质预警",1,R.mipmap.waring_zz));
+//                list.add(new MeMenu("2","耗材库存效期预警",0,R.mipmap.waring_xq));
+//                list.add(new MeMenu("3","耗材资质预警",3,R.mipmap.waring_hc));
+//                list.add(new MeMenu("4","合同效期预警",5,R.mipmap.waring_ht));
                 handler.sendEmptyMessage(0);
             }
         }).start();

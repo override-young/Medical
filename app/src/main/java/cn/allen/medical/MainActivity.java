@@ -1,6 +1,9 @@
 package cn.allen.medical;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -12,14 +15,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import allen.frame.AllenBaseActivity;
 import allen.frame.adapter.FragmentAdapter;
+import allen.frame.tools.Logger;
 import allen.frame.widget.BadgeView;
 import allen.frame.widget.ContrlScrollViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.allen.medical.count.CountFragment;
+import cn.allen.medical.data.DataHelper;
+import cn.allen.medical.data.HttpCallBack;
+import cn.allen.medical.data.MeRespone;
+import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.entry.Role;
 import cn.allen.medical.mine.MineFragment;
 import cn.allen.medical.todo.TodoFragment;
 import cn.allen.medical.warning.WarningFragment;
@@ -73,19 +83,12 @@ public class MainActivity extends AllenBaseActivity {
         yjBadge.setBadgeCount(5);
         yjBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
         yjBadge.setHideOnNull(true);
-        list = new ArrayList<>();
-        list.add(TodoFragment.init());
-        list.add(CountFragment.init());
-        list.add(WarningFragment.init());
-        list.add(MineFragment.init());
-        adapter = new FragmentAdapter(getSupportFragmentManager(),list);
-        centerPanel.setAdapter(adapter);
+        userAthur();
     }
 
     @Override
     protected void addEvent() {
         bottomBar.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        bottomBar.setSelectedItemId(R.id.item_dcl);
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -129,6 +132,53 @@ public class MainActivity extends AllenBaseActivity {
         }
         centerPanel.setCurrentItem(index,false);
     }
+
+    private List<MeMenu> roles;
+    private void userAthur(){
+        DataHelper.init().userAuth(new HttpCallBack<List<MeMenu>>() {
+            @Override
+            public void onSuccess(List<MeMenu> respone) {
+                roles = respone;
+                for(MeMenu r:roles){
+                    Logger.e("debug",r.toString());
+                }
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                handler.sendEmptyMessage(0);
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+
+            }
+        });
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 0:
+                    list = new ArrayList<>();
+                    list.add(TodoFragment.init().setList(roles.get(0).getChildList()));
+                    list.add(CountFragment.init().setList(roles.get(1).getChildList()));
+                    list.add(WarningFragment.init().setList(roles.get(2).getChildList()));
+                    list.add(MineFragment.init());
+                    adapter = new FragmentAdapter(getSupportFragmentManager(),list);
+                    centerPanel.setAdapter(adapter);
+                    bottomBar.setSelectedItemId(R.id.item_dcl);
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onBackPressed() {

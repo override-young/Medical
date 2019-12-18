@@ -180,6 +180,11 @@ public class ChangePswActivity extends AllenBaseActivity {
             }
 
             @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
             public void onFailed(MeRespone respone) {
                 Message msg = new Message();
                 msg.what = -1;

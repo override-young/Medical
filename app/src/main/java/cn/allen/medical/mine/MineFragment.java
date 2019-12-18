@@ -116,6 +116,11 @@ public class MineFragment extends Fragment {
             }
 
             @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
             public void onFailed(MeRespone respone) {
                 Message msg = new Message();
                 msg.what = -1;
@@ -134,9 +139,12 @@ public class MineFragment extends Fragment {
 
             @Override
             public void onTodo(MeRespone respone) {
+                handler.sendEmptyMessage(1);
+            }
+            @Override
+            public void tokenErro(MeRespone respone) {
 
             }
-
             @Override
             public void onFailed(MeRespone respone) {
 
@@ -161,6 +169,8 @@ public class MineFragment extends Fragment {
                 case 1:
                     Glide.with(getActivity())
                             .load(user.getPictureUrl())
+                            .placeholder(R.mipmap.ic_default_photo)
+                            .error(R.mipmap.ic_default_photo)
                             .into(userPhoto);
                     userName.setText(user.getUserName());
                     break;

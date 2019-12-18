@@ -59,7 +59,11 @@ public class HttpRequest {
                         }
                         callBack.onTodo(respone);
                     }else{
-                        callBack.onFailed(respone);
+                        if(respone.getCode()==406||respone.getCode()==408){
+                            callBack.tokenErro(respone);
+                        }else{
+                            callBack.onFailed(respone);
+                        }
                     }
                 }
             }
@@ -97,7 +101,11 @@ public class HttpRequest {
                         }
                         callBack.onTodo(respone);
                     }else{
-                        callBack.onFailed(respone);
+                        if(respone.getCode()==406||respone.getCode()==408){
+                            callBack.tokenErro(respone);
+                        }else{
+                            callBack.onFailed(respone);
+                        }
                     }
                 }
             }

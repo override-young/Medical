@@ -2,10 +2,9 @@ package cn.allen.medical.data;
 
 import java.util.List;
 
+import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.ToDoContractEntity;
-import allen.frame.tools.EncryptUtils;
 import cn.allen.medical.entry.User;
-import cn.allen.medical.utils.Constants;
 import cn.allen.medical.utils.MedicalEncry;
 
 public class DataHelper {
@@ -48,6 +47,15 @@ public class DataHelper {
     public void exit(HttpCallBack callBack){
         Object[] arrays = new Object[] { };
         request.okhttpget(API.exit,arrays,callBack);
+    }
+
+    /**
+     * 获取用户权限列表
+     * @param callBack
+     */
+    public void userAuth(HttpCallBack<List<MeMenu>> callBack){
+        Object[] arrays = new Object[] { };
+        request.okhttpget(API.userAuth,arrays,callBack);
     }
 
     /**

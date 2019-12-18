@@ -27,6 +27,7 @@ import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.SysltjEntity;
 import cn.allen.medical.warning.CompanyWarningActivity;
 import cn.allen.medical.warning.ContractWarningActivity;
+import cn.allen.medical.warning.WarningFragment;
 
 public class CountFragment extends Fragment {
     @BindView(R.id.rv)
@@ -38,6 +39,11 @@ public class CountFragment extends Fragment {
     public static CountFragment init() {
         CountFragment fragment = new CountFragment();
         return fragment;
+    }
+
+    public CountFragment setList(List<MeMenu> list){
+        this.list = list;
+        return this;
     }
 
     @Nullable
@@ -67,7 +73,7 @@ public class CountFragment extends Fragment {
         adapter.setItemClickListener(new OnAllenItemClickListener<MeMenu>() {
             @Override
             public void onItemClick(MeMenu menu) {
-                switch (menu.getId()){
+                switch (menu.getCode()){
                     case "1":
 
                         startActivity(new Intent(getContext(),SelectSumChartActivity.class));
@@ -76,7 +82,7 @@ public class CountFragment extends Fragment {
                         startActivity(new Intent(getContext(),KucunCountActivity.class));
                         break;
                     case "3":
-startActivity(new Intent(getActivity(),CountLyActivity.class));
+                        startActivity(new Intent(getActivity(),CountLyActivity.class));
                         break;
                     case "4":
                         startActivity(new Intent(getContext(),SysltjActivity.class));
@@ -92,11 +98,11 @@ startActivity(new Intent(getActivity(),CountLyActivity.class));
         new Thread(new Runnable() {
             @Override
             public void run() {
-                list = new ArrayList<>();
-                list.add(new MeMenu("1","入库数量统计",0,R.mipmap.count_rk));
-                list.add(new MeMenu("2","库存数量统计",0,R.mipmap.count_kcsl));
-                list.add(new MeMenu("3","领用数量统计",0,R.mipmap.count_ly));
-                list.add(new MeMenu("4","使用数量统计",0,R.mipmap.count_sy));
+//                list = new ArrayList<>();
+//                list.add(new MeMenu("1","入库数量统计",0,R.mipmap.count_rk));
+//                list.add(new MeMenu("2","库存数量统计",0,R.mipmap.count_kcsl));
+//                list.add(new MeMenu("3","领用数量统计",0,R.mipmap.count_ly));
+//                list.add(new MeMenu("4","使用数量统计",0,R.mipmap.count_sy));
                 handler.sendEmptyMessage(0);
             }
         }).start();
