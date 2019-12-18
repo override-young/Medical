@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.allen.medical.R;
 import cn.allen.medical.adapter.MenuAdapter;
+import cn.allen.medical.count.CountFragment;
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.warning.CompanyWarningActivity;
 import cn.allen.medical.warning.ContractWarningActivity;
@@ -39,6 +40,11 @@ public class TodoFragment extends Fragment {
     public static TodoFragment init() {
         TodoFragment fragment = new TodoFragment();
         return fragment;
+    }
+
+    public TodoFragment setList(List<MeMenu> list){
+        this.list = list;
+        return this;
     }
 
     @Nullable
@@ -88,10 +94,10 @@ public class TodoFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                list = new ArrayList<>();
-                list.add(new MeMenu("1", "待确认合同", 5, R.mipmap.todo_ht));
-                list.add(new MeMenu("2", "待确认账单", 0, R.mipmap.todo_zd));
-                list.add(new MeMenu("3", "待确认价格", 3, R.mipmap.todo_jg));
+//                list = new ArrayList<>();
+//                list.add(new MeMenu("1", "待确认合同", 5, R.mipmap.todo_ht));
+//                list.add(new MeMenu("2", "待确认账单", 0, R.mipmap.todo_zd));
+//                list.add(new MeMenu("3", "待确认价格", 3, R.mipmap.todo_jg));
                 handler.sendEmptyMessage(0);
             }
         }).start();
