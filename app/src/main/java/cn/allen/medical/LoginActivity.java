@@ -2,6 +2,7 @@ package cn.allen.medical;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.Html;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import allen.frame.AllenBaseActivity;
 import allen.frame.tools.Logger;
@@ -77,6 +79,11 @@ public class LoginActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         change();
+        boolean isRemember = actHelper.getSharedPreferences().getBoolean(Constants.Remember_Psw,false);
+        if(isRemember){
+            loginAccout.setText(actHelper.getSharedPreferences().getString(Constants.User_Account,""));
+            loginPsw.setText(actHelper.getSharedPreferences().getString(Constants.User_Psw,""));
+        }
     }
 
     @Override
@@ -95,6 +102,12 @@ public class LoginActivity extends AllenBaseActivity {
             @Override
             public void onEnd() {
                 loginGetYzm.setText(getString(R.string.login_again_yzm));
+            }
+        });
+        loginGetBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                actHelper.getSharedPreferences().edit().putBoolean(Constants.Remember_Psw,isChecked).commit();
             }
         });
     }
@@ -145,7 +158,18 @@ public class LoginActivity extends AllenBaseActivity {
             public void onSuccess(User muser) {
                 Logger.e("debug",muser.toString());
                 user = muser;
-                actHelper.getSharedPreferences().edit().putString(Constants.User_ID,user.getUserId()).putString(Constants.User_Token,user.getToken()).commit();
+                SharedPreferences shared = actHelper.getSharedPreferences();
+                SharedPreferences.Editor editor = shared.edit();
+                editor.putString(Constants.User_ID,user.getUserId());
+                editor.putString(Constants.User_Token,user.getToken());
+                if(!isPhoneLogin){
+                    boolean isRemember = actHelper.getSharedPreferences().getBoolean(Constants.Remember_Psw,false);
+                    if(isRemember){
+                        editor.putString(Constants.User_Account,zh);
+                        editor.putString(Constants.User_Psw,psw);
+                    }
+                }
+                editor.commit();
             }
             @Override
             public void onTodo(MeRespone respone){

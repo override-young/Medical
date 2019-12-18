@@ -42,6 +42,15 @@ public class DataHelper {
     }
 
     /**
+     * 退出登录
+     * @param callBack
+     */
+    public void exit(HttpCallBack callBack){
+        Object[] arrays = new Object[] { };
+        request.okhttpget(API.exit,arrays,callBack);
+    }
+
+    /**
      * 获取待处理合同列表
      * @param page
      * @param callBack
@@ -69,8 +78,18 @@ public class DataHelper {
         Object[] arrays = new Object[] {};
         request.okhttpget(API.userInfo,arrays,callBack);
     }
-//    public void updatePsw(){
-//        Object[] arrays = new Object[] {};
-//        request.okhttppost(API.userInfo,arrays,callBack);
-//    }
+
+    /**
+     * 修改密码
+     * @param oldPsw
+     * @param newPsw
+     * @param conPsw
+     * @param callBack
+     */
+    public void updatePsw(String oldPsw,String newPsw,String conPsw,HttpCallBack callBack){
+        Object[] arrays = new Object[] {"oldPassword",MedicalEncry.encrypt(oldPsw),
+                "loginPassword",MedicalEncry.encrypt(newPsw),
+                "confirmLoginPassword",MedicalEncry.encrypt(conPsw)};
+        request.okhttppost(API.updatePsw,arrays,callBack);
+    }
 }
