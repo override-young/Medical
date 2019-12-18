@@ -1,8 +1,11 @@
 package cn.allen.medical.mine;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +13,8 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bumptech.glide.Glide;
 
 import allen.frame.ActivityHelper;
 import allen.frame.AllenManager;
@@ -19,9 +24,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import cn.allen.medical.ChangePswActivity;
 import cn.allen.medical.LoginActivity;
 import cn.allen.medical.R;
+import cn.allen.medical.data.DataHelper;
+import cn.allen.medical.data.HttpCallBack;
+import cn.allen.medical.data.MeRespone;
+import cn.allen.medical.entry.User;
+import cn.allen.medical.utils.Constants;
 
 public class MineFragment extends Fragment {
     @BindView(R.id.user_photo)
@@ -37,6 +46,7 @@ public class MineFragment extends Fragment {
     AppCompatTextView userExit;
 
     private ActivityHelper helper;
+    private User user;
 
     public static MineFragment init() {
         MineFragment fragment = new MineFragment();
@@ -55,6 +65,7 @@ public class MineFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        userInfo();
     }
 
     @Override
@@ -80,7 +91,7 @@ public class MineFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        AllenManager.getInstance().back2Activity(LoginActivity.class);
+                        exit();
                     }
                 }, "取消", new DialogInterface.OnClickListener() {
                     @Override
@@ -91,4 +102,69 @@ public class MineFragment extends Fragment {
                 break;
         }
     }
+    private void exit(){
+        helper.showProgressDialog("");
+        DataHelper.init().exit(new HttpCallBack() {
+            @Override
+            public void onSuccess(Object respone) {
+
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                handler.sendEmptyMessage(0);
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
+    private void userInfo(){
+        DataHelper.init().uerInfo(new HttpCallBack<User>() {
+            @Override
+            public void onSuccess(User respone) {
+                user = respone;
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+
+            }
+        });
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 0:
+                    helper.dismissProgressDialog();
+                    helper.getSharedPreferences().edit().putString(Constants.User_Token,"").commit();
+                    AllenManager.getInstance().back2Activity(LoginActivity.class);
+                    break;
+                case -1:
+                    helper.dismissProgressDialog();
+                    MsgUtils.showMDMessage(getActivity(), (String) msg.obj);
+                    break;
+                case 1:
+                    Glide.with(getActivity())
+                            .load(user.getPictureUrl())
+                            .into(userPhoto);
+                    userName.setText(user.getUserName());
+                    break;
+            }
+        }
+    };
 }

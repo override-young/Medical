@@ -55,7 +55,7 @@ public class HttpRequest {
                     MeRespone respone = new Gson().fromJson(data,MeRespone.class);
                     if(respone.getCode()==200){
                         if(respone.getData()!=null){
-                            callBack.onSuccess(new Gson().fromJson(respone.getData().toString(),callBack.getGenericityType()));
+                            callBack.onSuccess(new Gson().fromJson(new Gson().toJson(respone.getData()),callBack.getGenericityType()));
                         }
                         callBack.onTodo(respone);
                     }else{
@@ -93,7 +93,7 @@ public class HttpRequest {
                     MeRespone respone = new Gson().fromJson(data,MeRespone.class);
                     if(respone.getCode()==200){
                         if(respone.getData()!=null){
-                            callBack.onSuccess(new Gson().fromJson(respone.getData().toString(),callBack.getGenericityType()));
+                            callBack.onSuccess(new Gson().fromJson(new Gson().toJson(respone.getData()),callBack.getGenericityType()));
                         }
                         callBack.onTodo(respone);
                     }else{

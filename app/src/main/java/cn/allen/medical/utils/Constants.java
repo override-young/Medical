@@ -7,5 +7,9 @@ public class Constants {
 
     public final static String User_ID = "User_ID";
     public final static String User_Name = "User_Name";
+    public final static String User_Account = "User_Account";
+    public final static String User_Psw = "User_Psw";
     public final static String User_Token = "User_Token";
+
+    public final static String Remember_Psw = "Remember_Psw";
 }

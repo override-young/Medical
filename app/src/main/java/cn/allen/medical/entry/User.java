@@ -8,6 +8,15 @@ public class User implements Serializable {
     private boolean isDefaultPwd;
     private int invalidTime;
     private int expiresTime;
+    private String merchantName;
+    private String organizationName;
+    private String loginAccount;
+    private String userName;
+    private String mobilePhone;
+    private String telPhone;
+    private String email;
+    private String address;
+    private String pictureUrl;
 
     public User() {
     }
@@ -52,6 +61,78 @@ public class User implements Serializable {
         this.expiresTime = expiresTime;
     }
 
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getLoginAccount() {
+        return loginAccount;
+    }
+
+    public void setLoginAccount(String loginAccount) {
+        this.loginAccount = loginAccount;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+
+    public String getTelPhone() {
+        return telPhone;
+    }
+
+    public void setTelPhone(String telPhone) {
+        this.telPhone = telPhone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -60,6 +141,15 @@ public class User implements Serializable {
                 ", isDefaultPwd=" + isDefaultPwd +
                 ", invalidTime=" + invalidTime +
                 ", expiresTime=" + expiresTime +
+                ", merchantName='" + merchantName + '\'' +
+                ", organizationName='" + organizationName + '\'' +
+                ", loginAccount='" + loginAccount + '\'' +
+                ", userName='" + userName + '\'' +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", telPhone='" + telPhone + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", pictureUrl='" + pictureUrl + '\'' +
                 '}';
     }
 }

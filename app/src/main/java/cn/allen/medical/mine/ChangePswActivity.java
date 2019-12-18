@@ -1,6 +1,9 @@
-package cn.allen.medical;
+package cn.allen.medical.mine;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
@@ -11,10 +14,16 @@ import android.text.Html;
 import android.view.View;
 
 import allen.frame.AllenBaseActivity;
+import allen.frame.tools.MsgUtils;
+import allen.frame.tools.StringUtils;
 import allen.frame.tools.TimeMeter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.allen.medical.R;
+import cn.allen.medical.data.DataHelper;
+import cn.allen.medical.data.HttpCallBack;
+import cn.allen.medical.data.MeRespone;
 
 public class ChangePswActivity extends AllenBaseActivity {
 
@@ -102,6 +111,9 @@ public class ChangePswActivity extends AllenBaseActivity {
                 meter.start();
                 break;
             case R.id.ok_bt:
+                if(checkIsOk()){
+                    updatePsw();
+                }
                 break;
             case R.id.psw_change:
                 isPhone = !isPhone;
@@ -124,4 +136,74 @@ public class ChangePswActivity extends AllenBaseActivity {
         }
     }
 
+    private boolean checkIsOk(){
+        oldPsw = userOldPsw.getText().toString().trim();
+        newPsw = userNewPsw.getText().toString().trim();
+        conPsw = userConfirmPsw.getText().toString().trim();
+        if(isPhone){
+
+        }else{
+            if(StringUtils.empty(oldPsw)){
+                MsgUtils.showMDMessage(context,"请输入原密码!");
+                return false;
+            }
+            if(StringUtils.empty(newPsw)){
+                MsgUtils.showMDMessage(context,"请输入新密码!");
+                return false;
+            }
+            if(StringUtils.empty(conPsw)){
+                MsgUtils.showMDMessage(context,"请再次输入新密码!");
+                return false;
+            }
+            if(!newPsw.equals(conPsw)){
+                MsgUtils.showMDMessage(context,"两次输入密码不一致!");
+                return false;
+            }
+        }
+        return true;
+    }
+    private String oldPsw,newPsw,conPsw;
+    private void updatePsw(){
+        showProgressDialog("");
+        DataHelper.init().updatePsw(oldPsw, newPsw, conPsw, new HttpCallBack() {
+            @Override
+            public void onSuccess(Object respone) {
+
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 0;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 0:
+                    dismissProgressDialog();
+                    MsgUtils.showShortToast(context, (String) msg.obj);
+                    finish();
+                    break;
+                case -1:
+                    dismissProgressDialog();
+                    MsgUtils.showMDMessage(context, (String) msg.obj);
+                    break;
+            }
+        }
+    };
 }
