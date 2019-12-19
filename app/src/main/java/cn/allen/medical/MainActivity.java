@@ -74,13 +74,13 @@ public class MainActivity extends AllenBaseActivity {
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-//        BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomBar.getChildAt(0);
+
 //        dclBadge = new BadgeView(this);
-//        yjBadge = new BadgeView(this);
 //        dclBadge.setTargetView(menuView.getChildAt(0));
 //        dclBadge.setBadgeCount(2);
 //        dclBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
 //        dclBadge.setHideOnNull(true);
+//        yjBadge = new BadgeView(this);
 //        yjBadge.setTargetView(menuView.getChildAt(2));
 //        yjBadge.setBadgeCount(5);
 //        yjBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
@@ -170,6 +170,7 @@ public class MainActivity extends AllenBaseActivity {
             switch (msg.what){
                 case 0:
                     list = new ArrayList<>();
+                    int i = 0;
                     for(MeMenu menu:roles){
                         String code = menu.getCode();
                         if(code.equals(MenuEnum.todo)){
@@ -197,6 +198,25 @@ public class MainActivity extends AllenBaseActivity {
                     MenuItem item = m.findItem(MenuEnum.Mine_ItemId);
                     item.setIcon(R.mipmap.menu_wd);//设置菜单图片
                     list.add(MineFragment.init());
+                    BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomBar.getChildAt(0);
+                    for(MeMenu menu:roles){
+                        String code = menu.getCode();
+                        if(code.equals(MenuEnum.todo)){
+                            dclBadge = new BadgeView(context);
+                            dclBadge.setTargetView(menuView.getChildAt(i++));
+                            dclBadge.setBadgeCount(2);
+                            dclBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
+                            dclBadge.setHideOnNull(true);
+                        }else if(code.equals(MenuEnum.count)){
+                            i++;
+                        }else if(code.equals(MenuEnum.waring)){
+                            yjBadge = new BadgeView(context);
+                            yjBadge.setTargetView(menuView.getChildAt(i++));
+                            yjBadge.setBadgeCount(5);
+                            yjBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
+                            yjBadge.setHideOnNull(true);
+                        }
+                    }
                     adapter = new FragmentAdapter(getSupportFragmentManager(),list);
                     centerPanel.setAdapter(adapter);
                     bottomBar.setSelectedItemId(bottomBar.getMenu().getItem(0).getItemId());
