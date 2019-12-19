@@ -57,6 +57,7 @@ public class LoginActivity extends AllenBaseActivity {
 
     private boolean isPhoneLogin = false;
     private TimeMeter meter;
+    private boolean isTokenErro = false;
 
     @Override
     protected boolean isStatusBarColorWhite() {
@@ -78,6 +79,7 @@ public class LoginActivity extends AllenBaseActivity {
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
+        isTokenErro = getIntent().getBooleanExtra(Constants.Login_Token_Erro,false);
         change();
         boolean isRemember = actHelper.getSharedPreferences().getBoolean(Constants.Remember_Psw,false);
         loginGetBox.setChecked(isRemember);
@@ -245,7 +247,12 @@ public class LoginActivity extends AllenBaseActivity {
                 case 0:
                     dismissProgressDialog();
                     DataHelper.init().refush();
-                    startActivity(new Intent(context,MainActivity.class));
+                    if(isTokenErro){
+                        setResult(RESULT_OK,getIntent());
+                        finish();
+                    }else{
+                        startActivity(new Intent(context,MainActivity.class));
+                    }
                     break;
             }
         }

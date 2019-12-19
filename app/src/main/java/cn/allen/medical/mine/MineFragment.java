@@ -117,7 +117,7 @@ public class MineFragment extends Fragment {
 
             @Override
             public void tokenErro(MeRespone respone) {
-
+                handler.sendEmptyMessage(0);
             }
 
             @Override

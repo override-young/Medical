@@ -29,9 +29,11 @@ import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.entry.Role;
 import cn.allen.medical.mine.MineFragment;
 import cn.allen.medical.todo.TodoFragment;
+import cn.allen.medical.utils.Constants;
 import cn.allen.medical.warning.WarningFragment;
 
 public class MainActivity extends AllenBaseActivity {
@@ -72,17 +74,17 @@ public class MainActivity extends AllenBaseActivity {
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomBar.getChildAt(0);
-        dclBadge = new BadgeView(this);
-        yjBadge = new BadgeView(this);
-        dclBadge.setTargetView(menuView.getChildAt(0));
-        dclBadge.setBadgeCount(2);
-        dclBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
-        dclBadge.setHideOnNull(true);
-        yjBadge.setTargetView(menuView.getChildAt(2));
-        yjBadge.setBadgeCount(5);
-        yjBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
-        yjBadge.setHideOnNull(true);
+//        BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomBar.getChildAt(0);
+//        dclBadge = new BadgeView(this);
+//        yjBadge = new BadgeView(this);
+//        dclBadge.setTargetView(menuView.getChildAt(0));
+//        dclBadge.setBadgeCount(2);
+//        dclBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
+//        dclBadge.setHideOnNull(true);
+//        yjBadge.setTargetView(menuView.getChildAt(2));
+//        yjBadge.setBadgeCount(5);
+//        yjBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
+//        yjBadge.setHideOnNull(true);
         userAthur();
     }
 
@@ -101,28 +103,28 @@ public class MainActivity extends AllenBaseActivity {
     };
     private void setAppModule(int module) {
         switch (module) {
-            case R.id.item_dcl:
+            case MenuEnum.Todo_ItemId:
                 index = 0;
                 bar.setTitle("待处理");
                 if(bar.getMenu().size()>0){
                     bar.getMenu().getItem(0).setVisible(false);
                 }
                 break;
-            case R.id.item_data:
+            case MenuEnum.Count_ItemId:
                 index = 1;
                 bar.setTitle("数据统计");
                 if(bar.getMenu().size()>0){
                     bar.getMenu().getItem(0).setVisible(false);
                 }
                 break;
-            case R.id.item_xqyj:
+            case MenuEnum.Waring_ItemId:
                 index = 2;
                 bar.setTitle("效期预警");
                 if(bar.getMenu().size()>0){
                     bar.getMenu().getItem(0).setVisible(false);
                 }
                 break;
-            case R.id.item_mine:
+            case MenuEnum.Mine_ItemId:
                 index = 3;
                 bar.setTitle("");
                 if(bar.getMenu().size()>0){
@@ -168,13 +170,37 @@ public class MainActivity extends AllenBaseActivity {
             switch (msg.what){
                 case 0:
                     list = new ArrayList<>();
-                    list.add(TodoFragment.init().setList(roles.get(0).getChildList()));
-                    list.add(CountFragment.init().setList(roles.get(1).getChildList()));
-                    list.add(WarningFragment.init().setList(roles.get(2).getChildList()));
+                    for(MeMenu menu:roles){
+                        String code = menu.getCode();
+                        if(code.equals(MenuEnum.todo)){
+                            Menu m = bottomBar.getMenu();
+                            m.add(0,MenuEnum.Todo_ItemId,0,menu.getText());
+                            MenuItem item = m.findItem(MenuEnum.Todo_ItemId);
+                            item.setIcon(MenuEnum.getResId(code));//设置菜单图片
+                            list.add(TodoFragment.init().setList(menu.getChildList()));
+                        }else if(code.equals(MenuEnum.count)){
+                            Menu m = bottomBar.getMenu();
+                            m.add(0,MenuEnum.Count_ItemId,1,menu.getText());
+                            MenuItem item = m.findItem(MenuEnum.Count_ItemId);
+                            item.setIcon(MenuEnum.getResId(code));//设置菜单图片
+                            list.add(CountFragment.init().setList(menu.getChildList()));
+                        }else if(code.equals(MenuEnum.waring)){
+                            Menu m = bottomBar.getMenu();
+                            m.add(0,MenuEnum.Waring_ItemId,2,menu.getText());
+                            MenuItem item = m.findItem(MenuEnum.Waring_ItemId);
+                            item.setIcon(MenuEnum.getResId(code));//设置菜单图片
+                            list.add(WarningFragment.init().setList(menu.getChildList()));
+                        }
+                    }
+                    Menu m = bottomBar.getMenu();
+                    m.add(0,MenuEnum.Mine_ItemId,3,"我的");
+                    MenuItem item = m.findItem(MenuEnum.Mine_ItemId);
+                    item.setIcon(R.mipmap.menu_wd);//设置菜单图片
                     list.add(MineFragment.init());
                     adapter = new FragmentAdapter(getSupportFragmentManager(),list);
                     centerPanel.setAdapter(adapter);
-                    bottomBar.setSelectedItemId(R.id.item_dcl);
+                    bottomBar.setSelectedItemId(bottomBar.getMenu().getItem(0).getItemId());
+                    bar.setTitle("待处理");
                     break;
             }
         }
