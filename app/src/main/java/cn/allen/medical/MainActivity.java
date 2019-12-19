@@ -34,6 +34,7 @@ import cn.allen.medical.entry.Role;
 import cn.allen.medical.mine.MineFragment;
 import cn.allen.medical.todo.TodoFragment;
 import cn.allen.medical.utils.Constants;
+import cn.allen.medical.utils.OnUpdateCountListener;
 import cn.allen.medical.warning.WarningFragment;
 
 public class MainActivity extends AllenBaseActivity {
@@ -178,7 +179,14 @@ public class MainActivity extends AllenBaseActivity {
                             m.add(0,MenuEnum.Todo_ItemId,0,menu.getText());
                             MenuItem item = m.findItem(MenuEnum.Todo_ItemId);
                             item.setIcon(MenuEnum.getResId(code));//设置菜单图片
-                            list.add(TodoFragment.init().setList(menu.getChildList()));
+                            list.add(TodoFragment.init().setList(menu.getChildList()).setUpdateCount(new OnUpdateCountListener() {
+                                @Override
+                                public void count(int count) {
+                                    if(dclBadge!=null){
+                                        dclBadge.setBadgeCount(count);
+                                    }
+                                }
+                            }));
                         }else if(code.equals(MenuEnum.count)){
                             Menu m = bottomBar.getMenu();
                             m.add(0,MenuEnum.Count_ItemId,1,menu.getText());
@@ -190,7 +198,14 @@ public class MainActivity extends AllenBaseActivity {
                             m.add(0,MenuEnum.Waring_ItemId,2,menu.getText());
                             MenuItem item = m.findItem(MenuEnum.Waring_ItemId);
                             item.setIcon(MenuEnum.getResId(code));//设置菜单图片
-                            list.add(WarningFragment.init().setList(menu.getChildList()));
+                            list.add(WarningFragment.init().setList(menu.getChildList()).setUpdateCount(new OnUpdateCountListener() {
+                                @Override
+                                public void count(int count) {
+                                    if(yjBadge!=null){
+                                        yjBadge.setBadgeCount(count);
+                                    }
+                                }
+                            }));
                         }
                     }
                     Menu m = bottomBar.getMenu();
@@ -204,7 +219,7 @@ public class MainActivity extends AllenBaseActivity {
                         if(code.equals(MenuEnum.todo)){
                             dclBadge = new BadgeView(context);
                             dclBadge.setTargetView(menuView.getChildAt(i++));
-                            dclBadge.setBadgeCount(2);
+                            dclBadge.setBadgeCount(0);
                             dclBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
                             dclBadge.setHideOnNull(true);
                         }else if(code.equals(MenuEnum.count)){
@@ -212,7 +227,7 @@ public class MainActivity extends AllenBaseActivity {
                         }else if(code.equals(MenuEnum.waring)){
                             yjBadge = new BadgeView(context);
                             yjBadge.setTargetView(menuView.getChildAt(i++));
-                            yjBadge.setBadgeCount(5);
+                            yjBadge.setBadgeCount(0);
                             yjBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
                             yjBadge.setHideOnNull(true);
                         }

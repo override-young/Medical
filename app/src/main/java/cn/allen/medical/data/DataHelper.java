@@ -4,7 +4,9 @@ import java.util.List;
 
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.ToDoContractEntity;
+import cn.allen.medical.entry.TodoCount;
 import cn.allen.medical.entry.User;
+import cn.allen.medical.entry.WaringCount;
 import cn.allen.medical.utils.MedicalEncry;
 
 public class DataHelper {
@@ -56,6 +58,24 @@ public class DataHelper {
     public void userAuth(HttpCallBack<List<MeMenu>> callBack){
         Object[] arrays = new Object[] { };
         request.okhttpget(API.userAuth,arrays,callBack);
+    }
+
+    /**
+     * 获取待处理数量
+     * @param callBack
+     */
+    public void todoCount(HttpCallBack<TodoCount> callBack){
+        Object[] arrays = new Object[] { };
+        request.okhttpget(API.todoCount,arrays,callBack);
+    }
+
+    /**
+     * 获取预警数量
+     * @param callBack
+     */
+    public void waringCount(HttpCallBack<WaringCount> callBack){
+        Object[] arrays = new Object[] { };
+        request.okhttpget(API.waringCount,arrays,callBack);
     }
 
     /**
