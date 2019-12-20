@@ -79,6 +79,7 @@ public class LoginActivity extends AllenBaseActivity {
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
+        loginForget.setVisibility(View.GONE);
         isTokenErro = getIntent().getBooleanExtra(Constants.Login_Token_Erro,false);
         change();
         boolean isRemember = actHelper.getSharedPreferences().getBoolean(Constants.Remember_Psw,false);
@@ -104,6 +105,7 @@ public class LoginActivity extends AllenBaseActivity {
 
             @Override
             public void onEnd() {
+                isCanGetYzm = true;
                 loginGetYzm.setText(getString(R.string.login_again_yzm));
             }
         });
@@ -126,10 +128,9 @@ public class LoginActivity extends AllenBaseActivity {
                 break;
             case R.id.login_get_yzm:
                 Logger.e("debug","getyzm++");
-                meter.start();
+                getYzm();
                 break;
             case R.id.login_bt:
-//
                 if(checkIsOk()){
                     login();
                 }
@@ -198,8 +199,54 @@ public class LoginActivity extends AllenBaseActivity {
         });
     }
 
+    private boolean isCanGetYzm = true;
+    private void getYzm(){
+        if(!isCanGetYzm){
+            MsgUtils.showMDMessage(context,"请60秒后再获取验证码!");
+            return;
+        }
+        phone = loginPhone.getText().toString().trim();
+        if(StringUtils.empty(phone)){
+            MsgUtils.showMDMessage(context,"请输入手机号!");
+            return;
+        }
+        showProgressDialog("");
+        DataHelper.init().smsAuther(phone,"SystemLogin",new HttpCallBack() {
+            @Override
+            public void onSuccess(Object respone) {
+
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                isCanGetYzm = false;
+                isGetYzm = true;
+                meter.start();
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                isCanGetYzm = true;
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
     private User user;
-    private String zh,psw,phone,yzm,fwyzm;
+    private String zh,psw,phone,yzm;
+    private boolean isGetYzm = false;
     private boolean checkIsOk(){
         zh = loginAccout.getText().toString().trim();
         psw = loginPsw.getText().toString().trim();
@@ -210,16 +257,12 @@ public class LoginActivity extends AllenBaseActivity {
                 MsgUtils.showMDMessage(context,"请输入手机号!");
                 return false;
             }
-            if(StringUtils.empty(fwyzm)){
+            if(!isGetYzm){
                 MsgUtils.showMDMessage(context,"请先获取验证码!");
                 return false;
             }
             if(StringUtils.empty(yzm)){
                 MsgUtils.showMDMessage(context,"请输入验证码!");
-                return false;
-            }
-            if(!yzm.equals(fwyzm)){
-                MsgUtils.showMDMessage(context,"验证码不一致!");
                 return false;
             }
         }else{
@@ -253,6 +296,10 @@ public class LoginActivity extends AllenBaseActivity {
                     }else{
                         startActivity(new Intent(context,MainActivity.class));
                     }
+                    break;
+                case 1:
+                    dismissProgressDialog();
+
                     break;
             }
         }

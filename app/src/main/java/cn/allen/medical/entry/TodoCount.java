@@ -5,7 +5,8 @@ import java.io.Serializable;
 public class TodoCount implements Serializable {
     private int contractCount;//待处理合同数量
     private int priceCount;//	待确认价格数量
-    private int billCount;//待处理账单数量
+    private int billCount;//待处理账单数量 设备科
+    private int departmentBillCount;//待处理账单数量 科室
     private int totalCount;//总数量
 
     public TodoCount() {
@@ -33,6 +34,14 @@ public class TodoCount implements Serializable {
 
     public void setBillCount(int billCount) {
         this.billCount = billCount;
+    }
+
+    public int getDepartmentBillCount() {
+        return departmentBillCount;
+    }
+
+    public void setDepartmentBillCount(int departmentBillCount) {
+        this.departmentBillCount = departmentBillCount;
     }
 
     public int getTotalCount() {

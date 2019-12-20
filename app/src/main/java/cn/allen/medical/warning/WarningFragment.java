@@ -135,9 +135,6 @@ public class WarningFragment extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
-                    if(listener!=null){
-                        listener.count(entry.getTotalCount());
-                    }
                     if(entry!=null){
                         Map<String,Integer> map = new HashMap<>();
                         map.put(MenuEnum.waring_hc,entry.getProductCertWarningCount());
@@ -145,6 +142,13 @@ public class WarningFragment extends Fragment {
                         map.put(MenuEnum.waring_zz,entry.getEnterpriseCertWarningCount());
                         map.put(MenuEnum.waring_xq,entry.getStockWarningCount());
                         adapter.setCount(map);
+                        int index = 0;
+                        for(MeMenu menu:list){
+                            index = index + map.get(menu.getCode());
+                        }
+                        if(listener!=null){
+                            listener.count(index);
+                        }
                     }
                     break;
             }

@@ -43,6 +43,15 @@ public class DataHelper {
     }
 
     /**
+     * 获取短信验证码
+     * @param callBack
+     */
+    public void smsAuther(String mobile, String verificationCodeType, HttpCallBack callBack){
+        Object[] arrays = new Object[] { "mobile",mobile,"verificationCodeType",verificationCodeType };
+        request.okhttpget(API.smsAuth,arrays,callBack);
+    }
+
+    /**
      * 退出登录
      * @param callBack
      */
@@ -108,16 +117,29 @@ public class DataHelper {
     }
 
     /**
-     * 修改密码
+     * 修改密码（原密码）
      * @param oldPsw
      * @param newPsw
      * @param conPsw
      * @param callBack
      */
-    public void updatePsw(String oldPsw,String newPsw,String conPsw,HttpCallBack callBack){
+    public void updatePswByPsw(String oldPsw,String newPsw,String conPsw,HttpCallBack callBack){
         Object[] arrays = new Object[] {"oldPassword",MedicalEncry.encrypt(oldPsw),
                 "loginPassword",MedicalEncry.encrypt(newPsw),
                 "confirmLoginPassword",MedicalEncry.encrypt(conPsw)};
-        request.okhttppost(API.updatePsw,arrays,callBack);
+        request.okhttppost(API.updatePswByPsw,arrays,callBack);
+    }
+    /**
+     * 修改密码（原密码）
+     * @param verificationCode
+     * @param newPsw
+     * @param conPsw
+     * @param callBack
+     */
+    public void updatePswBySms(String verificationCode,String newPsw,String conPsw,HttpCallBack callBack){
+        Object[] arrays = new Object[] {"verificationCode",verificationCode,
+                "loginPassword",MedicalEncry.encrypt(newPsw),
+                "confirmLoginPassword",MedicalEncry.encrypt(conPsw)};
+        request.okhttppost(API.updatePswBySms,arrays,callBack);
     }
 }

@@ -134,16 +134,20 @@ public class TodoFragment extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
-                    if(listener!=null){
-                        listener.count(entry.getTotalCount());
-                    }
                     if(entry!=null){
                         Map<String,Integer> map = new HashMap<>();
                         map.put(MenuEnum.todo_ht,entry.getContractCount());
                         map.put(MenuEnum.todo_jg,entry.getPriceCount());
-                        map.put(MenuEnum.todo_zd_ks,entry.getBillCount());
+                        map.put(MenuEnum.todo_zd_ks,entry.getDepartmentBillCount());
                         map.put(MenuEnum.todo_zd_sb,entry.getBillCount());
                         adapter.setCount(map);
+                        int index = 0;
+                        for(MeMenu menu:list){
+                            index = index + map.get(menu.getCode());
+                        }
+                        if(listener!=null){
+                            listener.count(index);
+                        }
                     }
                     break;
             }
