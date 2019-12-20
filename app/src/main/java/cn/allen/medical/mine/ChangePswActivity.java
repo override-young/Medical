@@ -1,6 +1,7 @@
 package cn.allen.medical.mine;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,7 @@ import allen.frame.tools.TimeMeter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.allen.medical.LoginActivity;
 import cn.allen.medical.R;
 import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
@@ -217,7 +219,10 @@ public class ChangePswActivity extends AllenBaseActivity {
 
                 @Override
                 public void tokenErro(MeRespone respone) {
-
+                    Message msg = new Message();
+                    msg.what = 2;
+                    msg.obj = respone.getMessage();
+                    handler.sendMessage(msg);
                 }
 
                 @Override
@@ -245,7 +250,10 @@ public class ChangePswActivity extends AllenBaseActivity {
 
                 @Override
                 public void tokenErro(MeRespone respone) {
-
+                    Message msg = new Message();
+                    msg.what = 2;
+                    msg.obj = respone.getMessage();
+                    handler.sendMessage(msg);
                 }
 
                 @Override
@@ -290,7 +298,6 @@ public class ChangePswActivity extends AllenBaseActivity {
 
             @Override
             public void tokenErro(MeRespone respone) {
-
             }
 
             @Override
@@ -321,6 +328,11 @@ public class ChangePswActivity extends AllenBaseActivity {
                 case 1:
                     dismissProgressDialog();
 
+                    break;
+                case 2:
+                    dismissProgressDialog();
+                    MsgUtils.showShortToast(context, (String) msg.obj);
+                    startActivityForResult(new Intent(context,LoginActivity.class).putExtra(Constants.Login_Token_Erro,true),11);
                     break;
             }
         }
