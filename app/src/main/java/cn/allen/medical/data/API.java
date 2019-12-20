@@ -6,7 +6,14 @@ public class API {
     public static String userInfo = "/api/mobile/User/GetUserProfile";
     public static String aboutUs = "/api/mobile/Common/GetAboutInfo";
     public static String updatePsw = "/api/mobile/User/UpdateUserPassword";
+    public static String updatePswByPsw = "/api/mobile/User/UpdateUserPassword";
+    public static String updatePswBySms = "/api/mobile/User/MobileUpdatePassword";
     public static String userAuth = "/api/mobile/User/GetUserAuth";
+    public static String smsAuth = "/api/mobile/Common/SendVerificationCode";
+
+    public static final String todoCount = "/api/mobile/HospitalApp/GetWaitConfirmCount";
+    public static final String waringCount = "/api/mobile/HospitalApp/GetExpireWarningCount";
+
     //待处理合同列表
     public static String todoContract = "/api/mobile/HospitalApp/GetWaitConfirmContractPageList";
     //待确认账单（科室）

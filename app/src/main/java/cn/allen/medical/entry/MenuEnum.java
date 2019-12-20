@@ -24,6 +24,11 @@ public class MenuEnum {
     public final static String waring_hc = "14C9606BEFFF49F8933A95DBD101B106";//耗材资质预警
     public final static String waring_ht = "CCB91E4DAB6940829A8D364ABFEB2164";//合同效期预警
 
+    public static final int Todo_ItemId = 12340;
+    public static final int Count_ItemId = 12341;
+    public static final int Waring_ItemId = 12342;
+    public static final int Mine_ItemId = 12343;
+
     static {
         resId = new HashMap<>();
         resId.put(todo, R.mipmap.menu_dcl);//待处理

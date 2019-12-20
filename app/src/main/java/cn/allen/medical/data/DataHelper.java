@@ -20,9 +20,11 @@ import cn.allen.medical.entry.SelectSumChartEntity;
 import cn.allen.medical.entry.ToDoBillEntity;
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.ToDoContractEntity;
+import cn.allen.medical.entry.TodoCount;
 import allen.frame.tools.EncryptUtils;
 import cn.allen.medical.entry.ToDoPriceEntity;
 import cn.allen.medical.entry.User;
+import cn.allen.medical.entry.WaringCount;
 import cn.allen.medical.utils.MedicalEncry;
 
 public class DataHelper {
@@ -63,6 +65,15 @@ public class DataHelper {
     }
 
     /**
+     * 获取短信验证码
+     * @param callBack
+     */
+    public void smsAuther(String mobile, String verificationCodeType, HttpCallBack callBack){
+        Object[] arrays = new Object[] { "mobile",mobile,"verificationCodeType",verificationCodeType };
+        request.okhttpget(API.smsAuth,arrays,callBack);
+    }
+
+    /**
      * 退出登录
      * @param callBack
      */
@@ -78,6 +89,24 @@ public class DataHelper {
     public void userAuth(HttpCallBack<List<MeMenu>> callBack){
         Object[] arrays = new Object[] { };
         request.okhttpget(API.userAuth,arrays,callBack);
+    }
+
+    /**
+     * 获取待处理数量
+     * @param callBack
+     */
+    public void todoCount(HttpCallBack<TodoCount> callBack){
+        Object[] arrays = new Object[] { };
+        request.okhttpget(API.todoCount,arrays,callBack);
+    }
+
+    /**
+     * 获取预警数量
+     * @param callBack
+     */
+    public void waringCount(HttpCallBack<WaringCount> callBack){
+        Object[] arrays = new Object[] { };
+        request.okhttpget(API.waringCount,arrays,callBack);
     }
 
     /**
@@ -265,16 +294,29 @@ public class DataHelper {
     }
 
     /**
-     * 修改密码
+     * 修改密码（原密码）
      * @param oldPsw
      * @param newPsw
      * @param conPsw
      * @param callBack
      */
-    public void updatePsw(String oldPsw,String newPsw,String conPsw,HttpCallBack callBack){
+    public void updatePswByPsw(String oldPsw,String newPsw,String conPsw,HttpCallBack callBack){
         Object[] arrays = new Object[] {"oldPassword",MedicalEncry.encrypt(oldPsw),
                 "loginPassword",MedicalEncry.encrypt(newPsw),
                 "confirmLoginPassword",MedicalEncry.encrypt(conPsw)};
-        request.okhttppost(API.updatePsw,arrays,callBack);
+        request.okhttppost(API.updatePswByPsw,arrays,callBack);
+    }
+    /**
+     * 修改密码（原密码）
+     * @param verificationCode
+     * @param newPsw
+     * @param conPsw
+     * @param callBack
+     */
+    public void updatePswBySms(String verificationCode,String newPsw,String conPsw,HttpCallBack callBack){
+        Object[] arrays = new Object[] {"verificationCode",verificationCode,
+                "loginPassword",MedicalEncry.encrypt(newPsw),
+                "confirmLoginPassword",MedicalEncry.encrypt(conPsw)};
+        request.okhttppost(API.updatePswBySms,arrays,callBack);
     }
 }

@@ -1,6 +1,7 @@
 package cn.allen.medical.mine;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,16 +15,20 @@ import android.text.Html;
 import android.view.View;
 
 import allen.frame.AllenBaseActivity;
+import allen.frame.tools.CheckUtils;
 import allen.frame.tools.MsgUtils;
 import allen.frame.tools.StringUtils;
 import allen.frame.tools.TimeMeter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.allen.medical.LoginActivity;
 import cn.allen.medical.R;
 import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
+import cn.allen.medical.entry.User;
+import cn.allen.medical.utils.Constants;
 
 public class ChangePswActivity extends AllenBaseActivity {
 
@@ -53,6 +58,8 @@ public class ChangePswActivity extends AllenBaseActivity {
 
     private boolean isPhone = false;
 
+    private User user;
+
     @Override
     protected boolean isStatusBarColorWhite() {
         return true;
@@ -75,6 +82,8 @@ public class ChangePswActivity extends AllenBaseActivity {
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
+        user = (User) getIntent().getSerializableExtra("entry");
+        userPhone.setEnabled(false);
         change();
     }
 
@@ -99,6 +108,7 @@ public class ChangePswActivity extends AllenBaseActivity {
 
             @Override
             public void onEnd() {
+                isCanGetYzm = true;
                 userGetYzm.setText(getString(R.string.login_again_yzm));
             }
         });
@@ -108,7 +118,7 @@ public class ChangePswActivity extends AllenBaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.user_get_yzm:
-                meter.start();
+                getYzm();
                 break;
             case R.id.ok_bt:
                 if(checkIsOk()){
@@ -123,6 +133,14 @@ public class ChangePswActivity extends AllenBaseActivity {
     }
 
     private void change(){
+        if(user==null){
+            pswChange.setVisibility(View.GONE);
+        }else if(StringUtils.empty(user.getMobilePhone())){
+            pswChange.setVisibility(View.GONE);
+        }else{
+            userPhone.setText(user.getMobilePhone());
+        }
+
         if(isPhone){
             phonePswLayout.setVisibility(View.VISIBLE);
             oldPswLayout.setVisibility(View.GONE);
@@ -137,35 +155,131 @@ public class ChangePswActivity extends AllenBaseActivity {
     }
 
     private boolean checkIsOk(){
+        phone = userPhone.getText().toString().trim();
+        yzm = userYzm.getText().toString().trim();
         oldPsw = userOldPsw.getText().toString().trim();
         newPsw = userNewPsw.getText().toString().trim();
         conPsw = userConfirmPsw.getText().toString().trim();
         if(isPhone){
-
+            if(StringUtils.empty(phone)){
+                MsgUtils.showMDMessage(context,"请输入手机号!");
+                return false;
+            }
+            if(!isGetYzm){
+                MsgUtils.showMDMessage(context,"请先获取验证码!");
+                return false;
+            }
+            if(StringUtils.empty(yzm)){
+                MsgUtils.showMDMessage(context,"请输入验证码!");
+                return false;
+            }
         }else{
             if(StringUtils.empty(oldPsw)){
                 MsgUtils.showMDMessage(context,"请输入原密码!");
                 return false;
             }
-            if(StringUtils.empty(newPsw)){
-                MsgUtils.showMDMessage(context,"请输入新密码!");
-                return false;
-            }
-            if(StringUtils.empty(conPsw)){
-                MsgUtils.showMDMessage(context,"请再次输入新密码!");
-                return false;
-            }
-            if(!newPsw.equals(conPsw)){
-                MsgUtils.showMDMessage(context,"两次输入密码不一致!");
-                return false;
-            }
+        }
+        if(StringUtils.empty(newPsw)){
+            MsgUtils.showMDMessage(context,"请输入新密码!");
+            return false;
+        }
+        if(CheckUtils.checkPsw(newPsw)){
+            MsgUtils.showMDMessage(context,"密码格式不正确，必须由6-16位字母和数字组成，不能包含空格、制表符!");
+            return false;
+        }
+        if(StringUtils.empty(conPsw)){
+            MsgUtils.showMDMessage(context,"请再次输入新密码!");
+            return false;
+        }
+        if(!newPsw.equals(conPsw)){
+            MsgUtils.showMDMessage(context,"两次输入密码不一致!");
+            return false;
         }
         return true;
     }
-    private String oldPsw,newPsw,conPsw;
+    private String oldPsw,newPsw,conPsw,phone,yzm;
+    private boolean isGetYzm = false;
     private void updatePsw(){
         showProgressDialog("");
-        DataHelper.init().updatePsw(oldPsw, newPsw, conPsw, new HttpCallBack() {
+        if(isPhone){
+            DataHelper.init().updatePswBySms(yzm, newPsw, conPsw, new HttpCallBack() {
+                @Override
+                public void onSuccess(Object respone) {
+
+                }
+
+                @Override
+                public void onTodo(MeRespone respone) {
+                    actHelper.getSharedPreferences().edit().putString(Constants.User_Psw,newPsw).commit();
+                    Message msg = new Message();
+                    msg.what = 0;
+                    msg.obj = respone.getMessage();
+                    handler.sendMessage(msg);
+                }
+
+                @Override
+                public void tokenErro(MeRespone respone) {
+                    Message msg = new Message();
+                    msg.what = 2;
+                    msg.obj = respone.getMessage();
+                    handler.sendMessage(msg);
+                }
+
+                @Override
+                public void onFailed(MeRespone respone) {
+                    Message msg = new Message();
+                    msg.what = -1;
+                    msg.obj = respone.getMessage();
+                    handler.sendMessage(msg);
+                }
+            });
+        }else{
+            DataHelper.init().updatePswByPsw(oldPsw, newPsw, conPsw, new HttpCallBack() {
+                @Override
+                public void onSuccess(Object respone) {
+
+                }
+
+                @Override
+                public void onTodo(MeRespone respone) {
+                    Message msg = new Message();
+                    msg.what = 0;
+                    msg.obj = respone.getMessage();
+                    handler.sendMessage(msg);
+                }
+
+                @Override
+                public void tokenErro(MeRespone respone) {
+                    Message msg = new Message();
+                    msg.what = 2;
+                    msg.obj = respone.getMessage();
+                    handler.sendMessage(msg);
+                }
+
+                @Override
+                public void onFailed(MeRespone respone) {
+                    Message msg = new Message();
+                    msg.what = -1;
+                    msg.obj = respone.getMessage();
+                    handler.sendMessage(msg);
+                }
+            });
+        }
+    }
+
+    private boolean isCanGetYzm = true;
+    private void getYzm(){
+        if(!isCanGetYzm){
+            MsgUtils.showMDMessage(context,"请60秒后再获取验证码!");
+            return;
+        }
+        phone = userPhone.getText().toString().trim();
+        if(StringUtils.empty(phone)){
+            MsgUtils.showMDMessage(context,"请输入手机号!");
+            return;
+        }
+        showProgressDialog("");
+        DataHelper.init().smsAuther(phone,"UpdatePassword",new HttpCallBack() {
             @Override
             public void onSuccess(Object respone) {
 
@@ -173,19 +287,22 @@ public class ChangePswActivity extends AllenBaseActivity {
 
             @Override
             public void onTodo(MeRespone respone) {
+                isCanGetYzm = false;
+                isGetYzm = true;
+                meter.start();
                 Message msg = new Message();
-                msg.what = 0;
+                msg.what = 1;
                 msg.obj = respone.getMessage();
                 handler.sendMessage(msg);
             }
 
             @Override
             public void tokenErro(MeRespone respone) {
-
             }
 
             @Override
             public void onFailed(MeRespone respone) {
+                isCanGetYzm = true;
                 Message msg = new Message();
                 msg.what = -1;
                 msg.obj = respone.getMessage();
@@ -207,6 +324,15 @@ public class ChangePswActivity extends AllenBaseActivity {
                 case -1:
                     dismissProgressDialog();
                     MsgUtils.showMDMessage(context, (String) msg.obj);
+                    break;
+                case 1:
+                    dismissProgressDialog();
+
+                    break;
+                case 2:
+                    dismissProgressDialog();
+                    MsgUtils.showShortToast(context, (String) msg.obj);
+                    startActivityForResult(new Intent(context,LoginActivity.class).putExtra(Constants.Login_Token_Erro,true),11);
                     break;
             }
         }

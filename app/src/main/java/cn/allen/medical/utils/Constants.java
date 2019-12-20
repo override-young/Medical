@@ -10,6 +10,7 @@ public class Constants {
     public final static String User_Account = "User_Account";
     public final static String User_Psw = "User_Psw";
     public final static String User_Token = "User_Token";
+    public final static String Login_Token_Erro = "Login_Token_Erro";
 
     public final static String Remember_Psw = "Remember_Psw";
 }
