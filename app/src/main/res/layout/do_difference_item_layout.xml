@@ -106,67 +106,49 @@
             android:paddingLeft="@dimen/frame_eight_distance"
             android:paddingRight="@dimen/frame_eight_distance"
             >
+
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_normal_grey_color"
+                android:layout_gravity="center"
                 android:textSize="@dimen/frame_text_small_size"
-                android:text="领用数量"
+                android:text="差异数量"
                 />
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_receive_count"
+            <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="8"
-                android:padding="@dimen/frame_eight_distance"
-                />
-        </android.support.v7.widget.LinearLayoutCompat>
-
-    </android.support.v7.widget.LinearLayoutCompat>
-    <android.support.v7.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/frame_edge_distance"
-        android:paddingRight="@dimen/frame_edge_distance"
-        >
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/frame_eight_distance"
-            android:paddingRight="@dimen/frame_eight_distance"
-            >
-        </android.support.v7.widget.LinearLayoutCompat>
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/frame_eight_distance"
-            android:paddingRight="@dimen/frame_eight_distance"
-            >
+                android:background="@mipmap/add_subtract"
+                android:layout_margin="@dimen/frame_four_distance"
+                android:orientation="horizontal">
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_difference_subtract"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="差异数量"
+                android:padding="@dimen/frame_four_distance"
+                android:layout_weight="1"
                 />
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tv_difference_count"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
+                android:textSize="@dimen/frame_text_smaller_size"
                 android:text="8"
-                android:padding="@dimen/frame_eight_distance"
+                android:padding="@dimen/frame_four_distance"
                 />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_difference_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/frame_four_distance"
+                android:layout_weight="1"
+                />
+            </android.support.v7.widget.LinearLayoutCompat>
         </android.support.v7.widget.LinearLayoutCompat>
 
     </android.support.v7.widget.LinearLayoutCompat>

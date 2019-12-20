@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pop_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/frame_eight_distance"
+            >
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/frame_text_normal_size"
+                android:textColor="@color/btn_normal_color"
+                android:text="添加耗材"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/frame_eight_distance"
+                />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@mipmap/close"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/frame_eight_distance"
+                />
+        </RelativeLayout>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/frame_text_small_size"
+            android:textColor="@color/light_gray"
+            android:text="输入耗材名称"
+            android:padding="@dimen/frame_eight_distance"
+            />
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_search_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/frame_eight_distance"
+            android:layout_margin="@dimen/frame_eight_distance"
+            android:textSize="@dimen/frame_text_normal_size"
+            android:textColor="@color/text_normal_tint_color"
+            android:background="@drawable/shap_btn_bg_border"
+            />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="@dimen/popup_height">
+
+            </android.support.v7.widget.RecyclerView>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+</RelativeLayout>

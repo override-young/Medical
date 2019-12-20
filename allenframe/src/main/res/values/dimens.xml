@@ -21,6 +21,7 @@
     <dimen name="frame_photo_icon_big_size">96dp</dimen>
     <dimen name="frame_photo_icon_big_height">134dp</dimen>
     <dimen name="frame_photo_icon_biger_height">268dp</dimen>
+    <dimen name="popup_height">300dp</dimen>
     <dimen name="frame_photo_small_icon_size">32dp</dimen>
     <dimen name="frame_photo_big_size">88dp</dimen>
 

@@ -24,6 +24,7 @@ import butterknife.Unbinder;
 import cn.allen.medical.R;
 import cn.allen.medical.adapter.MenuAdapter;
 import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.entry.MenuEnum;
 
 public class WarningFragment extends Fragment {
     @BindView(R.id.rv)
@@ -69,17 +70,17 @@ public class WarningFragment extends Fragment {
         adapter.setItemClickListener(new OnAllenItemClickListener<MeMenu>() {
             @Override
             public void onItemClick(MeMenu menu) {
-                switch (menu.getId()){
-                    case "1":
+                switch (menu.getCode()){
+                    case MenuEnum.waring_zz:
                         startActivity(new Intent(getContext(),CompanyWarningActivity.class));
                         break;
-                    case "2":
+                    case MenuEnum.waring_xq:
                         startActivity(new Intent(getContext(),ConsumableStoreWarningActivity.class));
                         break;
-                    case "3":
+                    case MenuEnum.waring_hc:
                         startActivity(new Intent(getContext(),ConsumableQualityWarningActivity.class));
                         break;
-                    case "4":
+                    case MenuEnum.waring_ht:
                         startActivity(new Intent(getContext(),ContractWarningActivity.class));
                         break;
                 }

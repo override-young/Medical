@@ -26,6 +26,7 @@ import cn.allen.medical.R;
 import cn.allen.medical.adapter.MenuAdapter;
 import cn.allen.medical.count.CountFragment;
 import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.warning.CompanyWarningActivity;
 import cn.allen.medical.warning.ContractWarningActivity;
 
@@ -75,14 +76,17 @@ public class TodoFragment extends Fragment {
         adapter.setItemClickListener(new OnAllenItemClickListener<MeMenu>() {
             @Override
             public void onItemClick(MeMenu menu) {
-                switch (menu.getId()){
-                    case "1":
+                switch (menu.getCode()){
+                    case MenuEnum.todo_ht://待确认合同
                         startActivity(new Intent(getContext(),ToDoContractActivity.class));
                         break;
-                    case "2":
-                        startActivity(new Intent(getContext(),ToDoBillActivity.class));
+                    case MenuEnum.todo_zd_ks://待确认账单（科室）
+                        startActivity(new Intent(getContext(),ToDoBillActivity.class).putExtra("CODE",MenuEnum.todo_zd_ks));
                         break;
-                    case "3":
+                    case MenuEnum.todo_zd_sb://待确认账单（设备室）
+                        startActivity(new Intent(getContext(),ToDoBillActivity.class).putExtra("CODE",MenuEnum.todo_zd_sb));
+                        break;
+                    case MenuEnum.todo_jg://待确认价格
                         startActivity(new Intent(getContext(),ToDoPriceActivity.class));
                         break;
                 }
