@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import allen.frame.tools.OnAllenItemClickListener;
 import butterknife.BindView;
@@ -23,7 +25,15 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.allen.medical.R;
 import cn.allen.medical.adapter.MenuAdapter;
+import cn.allen.medical.data.DataHelper;
+import cn.allen.medical.data.HttpCallBack;
+import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.entry.MenuEnum;
+import cn.allen.medical.entry.WaringCount;
+import cn.allen.medical.todo.TodoFragment;
+import cn.allen.medical.utils.Constants;
+import cn.allen.medical.utils.OnUpdateCountListener;
 
 public class WarningFragment extends Fragment {
     @BindView(R.id.rv)
@@ -57,12 +67,18 @@ public class WarningFragment extends Fragment {
         addEvent();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData();
+    }
+
     private void initUI(){
         adapter = new MenuAdapter(true);
         GridLayoutManager manager = new GridLayoutManager(getActivity(),2);
         rv.setLayoutManager(manager);
         rv.setAdapter(adapter);
-        loadData();
+        adapter.setData(list);
     }
 
     private void addEvent(){
@@ -87,18 +103,29 @@ public class WarningFragment extends Fragment {
         });
     }
 
+    private WaringCount entry;
     private void loadData(){
-        new Thread(new Runnable() {
+        DataHelper.init().waringCount(new HttpCallBack<WaringCount>() {
             @Override
-            public void run() {
-//                list = new ArrayList<>();
-//                list.add(new MeMenu("1","企业资质预警",1,R.mipmap.waring_zz));
-//                list.add(new MeMenu("2","耗材库存效期预警",0,R.mipmap.waring_xq));
-//                list.add(new MeMenu("3","耗材资质预警",3,R.mipmap.waring_hc));
-//                list.add(new MeMenu("4","合同效期预警",5,R.mipmap.waring_ht));
+            public void onSuccess(WaringCount respone) {
+                entry = respone;
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
                 handler.sendEmptyMessage(0);
             }
-        }).start();
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+
+            }
+        });
     }
 
 
@@ -108,7 +135,21 @@ public class WarningFragment extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
-                    adapter.setData(list);
+                    if(entry!=null){
+                        Map<String,Integer> map = new HashMap<>();
+                        map.put(MenuEnum.waring_hc,entry.getProductCertWarningCount());
+                        map.put(MenuEnum.waring_ht,entry.getContractWarningCount());
+                        map.put(MenuEnum.waring_zz,entry.getEnterpriseCertWarningCount());
+                        map.put(MenuEnum.waring_xq,entry.getStockWarningCount());
+                        adapter.setCount(map);
+                        int index = 0;
+                        for(MeMenu menu:list){
+                            index = index + map.get(menu.getCode());
+                        }
+                        if(listener!=null){
+                            listener.count(index);
+                        }
+                    }
                     break;
             }
         }
@@ -119,4 +160,10 @@ public class WarningFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    public WarningFragment setUpdateCount(OnUpdateCountListener listener){
+        this.listener = listener;
+        return this;
+    }
+    private OnUpdateCountListener listener;
 }

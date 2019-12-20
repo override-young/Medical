@@ -26,12 +26,12 @@
         app:iscanscroll="false">
 
     </allen.frame.widget.ContrlScrollViewPager>
+    <!--app:menu="@menu/menu_main_bottom_navigation"-->
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/frame_photo_icon_size"
-        app:menu="@menu/menu_main_bottom_navigation"
         app:itemTextColor="@drawable/bottom_navigation_selector"
         app:itemTextAppearanceActive="@style/bottomActiveTextStyle"
         app:itemTextAppearanceInactive="@style/bottomInActiveTextStyle"

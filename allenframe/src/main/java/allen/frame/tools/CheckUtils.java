@@ -183,4 +183,19 @@ public class CheckUtils {
 		return qrq.equals(equese);
 	}
 
+	/**
+	 * 判断密码
+	 * @param psw
+	 * @return
+	 */
+	public static boolean checkPsw(String psw){
+		if(StringUtils.notEmpty(psw)){
+			if(psw.length()>16||psw.length()<6){
+				return false;
+			}
+			return Pattern.matches("^(?=.[a-zA-Z])(?=.\\d)[^\\s]{0,100}$",psw);
+		}
+		return false;
+	}
+
 }

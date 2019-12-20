@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import allen.frame.tools.OnAllenItemClickListener;
 import allen.frame.widget.BadgeView;
@@ -21,11 +23,17 @@ public class MenuAdapter extends RecyclerView.Adapter {
 
     private List<MeMenu> list;
     private boolean isGrid = false;
+    private Map<String,Integer> map;
     public MenuAdapter(boolean isGrid) {
         this.isGrid = isGrid;
     }
     public void setData(List<MeMenu> list){
+        map = new HashMap<>();
         this.list = list;
+        notifyDataSetChanged();
+    }
+    public void setCount(Map<String,Integer> map){
+        this.map = map;
         notifyDataSetChanged();
     }
     @NonNull
@@ -79,7 +87,7 @@ public class MenuAdapter extends RecyclerView.Adapter {
             if(menu!=null){
                 icon.setImageResource(MenuEnum.getResId(menu.getCode()));
                 name.setText(menu.getText());
-                badge.setBadgeCount(menu.getCount());
+                badge.setBadgeCount(getCountFromMap(menu.getCode()));
                 lay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -90,6 +98,14 @@ public class MenuAdapter extends RecyclerView.Adapter {
                 });
             }
         }
+    }
+    private int getCountFromMap(String code){
+        if(map!=null&&!map.isEmpty()){
+            if(map.containsKey(code)){
+                return map.get(code);
+            }
+        }
+        return 0;
     }
     private OnAllenItemClickListener listener;
     public void setItemClickListener(OnAllenItemClickListener listener){

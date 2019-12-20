@@ -81,7 +81,7 @@ public class MineFragment extends Fragment {
         }
         switch (view.getId()) {
             case R.id.user_psw:
-                startActivity(new Intent(getActivity(),ChangePswActivity.class));
+                startActivity(new Intent(getActivity(),ChangePswActivity.class).putExtra("entry",user));
                 break;
             case R.id.user_info:
                 startActivity(new Intent(getActivity(),AboutUsActivity.class));
@@ -117,7 +117,7 @@ public class MineFragment extends Fragment {
 
             @Override
             public void tokenErro(MeRespone respone) {
-
+                handler.sendEmptyMessage(0);
             }
 
             @Override
