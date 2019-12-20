@@ -105,8 +105,9 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     protected void initUI(@Nullable Bundle savedInstanceState) {
 
         initAdapter();
-        showProgressDialog("");
-        loadData();
+//        showProgressDialog("");
+//        loadData();
+        //TODO 返回的数据结构变化，虚调整
     }
 
 
