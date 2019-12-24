@@ -15,6 +15,13 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import static android.icu.text.DateTimePatternGenerator.DAY;
+
 public class DateUtils {
 
 	/**
@@ -46,6 +53,48 @@ public class DateUtils {
 			}
 		}
 		return StringUtils.null2Empty(date);
+	}
+
+	// strTime要转换的string类型的时间，formatType要转换的格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日
+	// HH时mm分ss秒，
+	// strTime的时间格式必须要与formatType的时间格式相同
+	public static Date stringToDate(String strTime, String formatType) {
+		SimpleDateFormat formatter = new SimpleDateFormat(formatType);
+		Date date = null;
+		try {
+			date = formatter.parse(strTime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
+
+	/**
+	 * 获得两个日期间距多少天
+	 *
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	public static long getDataDistance(Date beginDate, Date endDate) {
+		Calendar fromCalendar = Calendar.getInstance();
+		fromCalendar.setTime(beginDate);
+		fromCalendar.set(Calendar.HOUR_OF_DAY, fromCalendar.getMinimum(Calendar.HOUR_OF_DAY));
+		fromCalendar.set(Calendar.MINUTE, fromCalendar.getMinimum(Calendar.MINUTE));
+		fromCalendar.set(Calendar.SECOND, fromCalendar.getMinimum(Calendar.SECOND));
+		fromCalendar.set(Calendar.MILLISECOND, fromCalendar.getMinimum(Calendar.MILLISECOND));
+
+		Calendar toCalendar = Calendar.getInstance();
+		toCalendar.setTime(endDate);
+		toCalendar.set(Calendar.HOUR_OF_DAY, fromCalendar.getMinimum(Calendar.HOUR_OF_DAY));
+		toCalendar.set(Calendar.MINUTE, fromCalendar.getMinimum(Calendar.MINUTE));
+		toCalendar.set(Calendar.SECOND, fromCalendar.getMinimum(Calendar.SECOND));
+		toCalendar.set(Calendar.MILLISECOND, fromCalendar.getMinimum(Calendar.MILLISECOND));
+
+		long dayDistance = ((toCalendar.getTime().getTime()/1000) - (fromCalendar.getTime().getTime()/1000)) / 3600/24;
+//		dayDistance = Math.abs(dayDistance);//绝对值
+
+		return dayDistance;
 	}
 
 	public static void doTimeDateSetting(final Context context, Handler handler) {

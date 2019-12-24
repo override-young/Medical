@@ -1,22 +1,56 @@
 package cn.allen.medical.mine;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import allen.frame.AllenBaseActivity;
+import allen.frame.tools.MsgUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.allen.medical.R;
+import cn.allen.medical.data.DataHelper;
+import cn.allen.medical.data.HttpCallBack;
+import cn.allen.medical.data.MeRespone;
+import cn.allen.medical.entry.User;
 
 public class AboutUsActivity extends AllenBaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.tv_about_us)
-    AppCompatTextView tvAboutUs;
+    @BindView(R.id.wv_about_us)
+    WebView wvAboutUs;
+
+    private String url;
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    wvAboutUs.loadUrl(url);
+                    break;
+                case 1:
+                    dismissProgressDialog();
+                    break;
+                case -1:
+                    dismissProgressDialog();
+                    MsgUtils.showMDMessage(context, (String) msg.obj);
+                    break;
+            }
+        }
+    };
 
 
     @Override
@@ -33,29 +67,112 @@ public class AboutUsActivity extends AllenBaseActivity {
     protected void initBar() {
         ButterKnife.bind(this);
         toolbar.setTitle("关于我们");
-        actHelper.setToolbarTitleCenter(toolbar,"关于我们");
+        actHelper.setToolbarTitleCenter(toolbar, "关于我们");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-        tvAboutUs.setText("医院赋能、给患者减负是我们坚守的信条，凭借领先的 技术和优质的服务赢得客户的信赖。\n\n        " +
-                "重庆博尔德医疗科技股份有限公司位于重庆两江新区空\n" +
-                "港保税区内，以三十年医疗领域的成熟经验，结合前沿科学\n" +
-                "技术，致力于打造一个基于互联网云平台的医用药品和耗材\n" +
-                "的现代化管理和物流体系，为医院提供药品和耗材供应链管\n" +
-                "理和运营的完整解决方案。        公司拥有完全自主知识产权的医用耗材管理云平台，拥\n" +
-                "有一万平方米的常温库、阴凉库、冷藏库、冷冻库，配备\n" +
-                "WMS仓储管理软件，TMS运输监控软件，CCTS全程冷链系\n" +
-                "统。配备各种运输车辆，包括带有GPS定位和24小时不间断\n" +
-                "温度监控的冷链运输车辆，可提供全天候的配送服务。公司\n" +
-                "先后获得了商标证书22件，取得国家医疗器械经营许可证、\n" +
-                "药品经营许可证、计算机软件著作权登记证书、软件产品证\n" +
-                "书、软件企业证书，自主研发的平台获得了软件产品登记测\n" +
-                "试报告，自主开发的智能终端获得了两件发明专利，一件实\n" +
-                "用新型专利，多项行业领先的技术已经申报国家发明专利和\n" +
-                "实用新型专利。");
+
+        loadData();
+
+        webviewSet();
+
+    }
+
+    private void loadData() {
+        DataHelper.init().aboutUs(new HttpCallBack<User>() {
+            @Override
+            public void onSuccess(User respone) {
+                url = respone.getUrl();
+                handler.sendEmptyMessage(0);
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
+    private void webviewSet() {
+        WebSettings webSettings = wvAboutUs.getSettings();
+//如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
+        webSettings.setJavaScriptEnabled(true);
+// 若加载的 html 里有JS 在执行动画等操作，会造成资源浪费（CPU、电量）
+// 在 onStop 和 onResume 里分别把 setJavaScriptEnabled() 给设置成 false 和 true 即可
+
+//支持插件
+//        webSettings.setPluginsEnabled(true);
+
+//设置自适应屏幕，两者合用
+        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
+        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
+
+//缩放操作
+        webSettings.setSupportZoom(true); //支持缩放，默认为true。是下面那个的前提。
+        webSettings.setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
+        webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
+
+//其他细节操作
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //关闭webview中缓存
+        webSettings.setAllowFileAccess(true); //设置可以访问文件
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
+        webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
+        webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
+
+        wvAboutUs.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                Log.d("KeithXiaoY", "开始加载");
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                Log.d("KeithXiaoY", "加载结束");
+            }
+
+            // 链接跳转都会走这个方法
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.d("KeithXiaoY", "Url：" + url);
+                view.loadUrl(url);// 强制在当前 WebView 中加载 url
+                return true;
+            }
+        });
+
+        wvAboutUs.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                Log.d("KeithXiaoY", "newProgress：" + newProgress);
+            }
+
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+                Log.d("KeithXiaoY", "标题：" + title);
+            }
+        });
     }
 
     @Override
@@ -67,4 +184,5 @@ public class AboutUsActivity extends AllenBaseActivity {
             }
         });
     }
+
 }

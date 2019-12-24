@@ -8,13 +8,11 @@
     tools:context=".mine.AboutUsActivity">
     <include layout="@layout/alen_toolbar_layout"/>
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tv_about_us"
+    <WebView
+        android:id="@+id/wv_about_us"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="@dimen/frame_text_small_size"
-        android:textColor="@color/text_normal_grey_color"
-        android:padding="@dimen/frame_eight_distance"
-        />
+        android:layout_height="match_parent">
+
+    </WebView>
 
 </android.support.v7.widget.LinearLayoutCompat>

@@ -28,6 +28,7 @@
     <com.github.mikephil.charting.charts.HorizontalBarChart
         android:id="@+id/barchart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/frame_eight_distance"/>
 
 </android.support.v7.widget.LinearLayoutCompat>

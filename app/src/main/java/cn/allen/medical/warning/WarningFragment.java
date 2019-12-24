@@ -30,6 +30,7 @@ import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.MenuEnum;
+import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.entry.WaringCount;
 import cn.allen.medical.todo.TodoFragment;
 import cn.allen.medical.utils.Constants;
@@ -85,17 +86,17 @@ public class WarningFragment extends Fragment {
         adapter.setItemClickListener(new OnAllenItemClickListener<MeMenu>() {
             @Override
             public void onItemClick(MeMenu menu) {
-                switch (menu.getId()){
-                    case "1":
+                switch (menu.getCode()){
+                    case MenuEnum.waring_zz:
                         startActivity(new Intent(getContext(),CompanyWarningActivity.class));
                         break;
-                    case "2":
+                    case MenuEnum.waring_xq:
                         startActivity(new Intent(getContext(),ConsumableStoreWarningActivity.class));
                         break;
-                    case "3":
+                    case MenuEnum.waring_hc:
                         startActivity(new Intent(getContext(),ConsumableQualityWarningActivity.class));
                         break;
-                    case "4":
+                    case MenuEnum.waring_ht:
                         startActivity(new Intent(getContext(),ContractWarningActivity.class));
                         break;
                 }
