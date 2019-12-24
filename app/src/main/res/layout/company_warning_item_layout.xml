@@ -14,136 +14,13 @@
         android:textColor="@color/text_normal_tint_color"
         android:textSize="@dimen/frame_text_normal_size" />
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:padding="@dimen/frame_eight_distance">
 
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/frame_eight_distance"
-            android:text="营业执照"
-            android:textColor="@color/text_normal_tint_color"
-            android:textSize="@dimen/frame_text_small_size" />
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/frame_eight_distance"
-                android:text="到期时间"
-                android:textColor="@color/text_normal_tint_color"
-                android:textSize="@dimen/frame_text_small_size" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_yyzz_due_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="@dimen/frame_eight_distance"
-                android:text="2019-12-15"
-                android:textColor="@color/text_normal_tint_color"
-                android:textSize="@dimen/frame_text_small_size" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/frame_two_distance"
-                android:text="效期剩余"
-                android:textColor="@color/text_normal_tint_color"
-                android:textSize="@dimen/frame_text_small_size" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_yyzz_remaining_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/frame_two_distance"
-                android:text="10"
-                android:textColor="@color/brown"
-                android:textSize="@dimen/frame_text_normal_size" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/frame_two_distance"
-                android:text="天"
-                android:textColor="@color/text_normal_tint_color"
-                android:textSize="@dimen/frame_text_small_size" />
-
-        </android.support.v7.widget.LinearLayoutCompat>
-    </android.support.v7.widget.LinearLayoutCompat>
-
-    <android.support.v7.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/frame_eight_distance">
-
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/frame_eight_distance"
-            android:text="销售代表授权书"
-            android:textColor="@color/text_normal_tint_color"
-            android:textSize="@dimen/frame_text_small_size" />
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/frame_eight_distance"
-                android:text="到期时间"
-                android:textColor="@color/text_normal_tint_color"
-                android:textSize="@dimen/frame_text_small_size" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_sqs_due_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="@dimen/frame_eight_distance"
-                android:text="2019-12-15"
-                android:textColor="@color/text_normal_tint_color"
-                android:textSize="@dimen/frame_text_small_size" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/frame_two_distance"
-                android:text="效期剩余"
-                android:textColor="@color/text_normal_tint_color"
-                android:textSize="@dimen/frame_text_small_size" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_sqs_remaining_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/frame_two_distance"
-                android:text="10"
-                android:textColor="@color/brown"
-                android:textSize="@dimen/frame_text_normal_size" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/frame_two_distance"
-                android:text="天"
-                android:textColor="@color/text_normal_tint_color"
-                android:textSize="@dimen/frame_text_small_size" />
-
-        </android.support.v7.widget.LinearLayoutCompat>
-    </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.RecyclerView>
 
     <View
         android:layout_width="match_parent"

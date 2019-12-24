@@ -135,6 +135,19 @@ public class ToDoBillActivity extends AllenBaseActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode==RESULT_OK){
+            page=0;
+            isRefresh=true;
+            if (code.equals(MenuEnum.todo_zd_ks)) {
+                loadDataByDep();
+            } else if (code.equals(MenuEnum.todo_zd_sb)){
+                loadDataByDevice();
+            }
+        }
+    }
+
+    @Override
     protected void addEvent() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

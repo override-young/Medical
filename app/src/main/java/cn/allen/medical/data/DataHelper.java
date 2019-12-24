@@ -1,12 +1,11 @@
 package cn.allen.medical.data;
 
-import com.google.gson.JsonArray;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.List;
 
+import allen.frame.entry.Type;
 import cn.allen.medical.entry.BillDetailsEntity;
 import cn.allen.medical.entry.BillDifferentEntity;
 import cn.allen.medical.entry.CompanyWarningEntity;
@@ -15,13 +14,14 @@ import cn.allen.medical.entry.ConsumableStoreEntity;
 import cn.allen.medical.entry.ContractDetailsEntity;
 import cn.allen.medical.entry.ContractWarnintEntity;
 import cn.allen.medical.entry.DoDifferenceEntity;
+import cn.allen.medical.entry.KucunCountEntity;
 import cn.allen.medical.entry.PriceDetailsEntity;
 import cn.allen.medical.entry.SelectSumChartEntity;
+import cn.allen.medical.entry.SysltjEntity;
 import cn.allen.medical.entry.ToDoBillEntity;
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.ToDoContractEntity;
 import cn.allen.medical.entry.TodoCount;
-import allen.frame.tools.EncryptUtils;
 import cn.allen.medical.entry.ToDoPriceEntity;
 import cn.allen.medical.entry.User;
 import cn.allen.medical.entry.WaringCount;
@@ -132,6 +132,18 @@ public class DataHelper {
     }
 
     /**
+     * 合同审核
+     * @param id
+     * @param isAgree
+     * @param remark
+     * @param callBack
+     */
+    public void getContractExamine(String id,boolean isAgree, String remark,HttpCallBack callBack) {
+        Object[] arrays = new Object[]{"id", id,"examineResult",isAgree,"remarks",remark};
+        request.okhttppost(API.contractExamine, arrays, callBack);
+    }
+
+    /**
      * 待确认账单（科室）
      * @param page
      * @param callBack
@@ -172,6 +184,19 @@ public class DataHelper {
     }
 
     /**
+     *审核价格
+     * @param id
+     * @param isAgree
+     * @param remark
+     * @param callBack
+     */
+    public void getPriceExamine(String id,boolean isAgree, String remark,HttpCallBack callBack) {
+        Object[] arrays = new Object[]{"id", id,"isAgree",isAgree,"remarks",remark};
+        request.okhttppost(API.priceExamine, arrays, callBack);
+    }
+
+
+    /**
      *账单详情-获取对账单明细
      * @param id
      * @param callBack
@@ -190,6 +215,30 @@ public class DataHelper {
         Object[] arrays = new Object[]{"Id", id};
         request.okhttpget(API.billDifferentDetails, arrays, callBack);
     }
+
+    /**
+     * 账单确认（科室）
+     * @param id
+     * @param remark
+     * @param callBack
+     */
+    public void getBillExamineKs(String id, String remark,HttpCallBack callBack) {
+        Object[] arrays = new Object[]{"orderId", id,"remarks",remark};
+        request.okhttppost(API.billExamineKs, arrays, callBack);
+    }
+
+    /**
+     * 账单确认（设备科）
+     * @param id
+     * @param remark
+     * @param callBack
+     */
+    public void getBillExamineSbk(String id, String remark,HttpCallBack callBack) {
+        Object[] arrays = new Object[]{"orderId", id,"remarks",remark};
+        request.okhttppost(API.billExamineSbk, arrays, callBack);
+    }
+
+
 
     /**
      * 处理差异-筛选医院耗材列表
@@ -233,6 +282,51 @@ public class DataHelper {
         Object[] arrays = new Object[]{"year", year};
         request.okhttpget(API.selectSumChart, arrays, callBack);
     }
+
+    /**
+     * 库存数量统计
+     * @param page
+     * @param callBack
+     */
+    public void getKucunCount(int page, HttpCallBack<KucunCountEntity> callBack) {
+        Object[] arrays = new Object[]{"PageIndex", page};
+        request.okhttpget(API.kucunCount, arrays, callBack);
+    }
+
+    /**
+     * 领用数量统计
+     * @param page
+     * @param keshiID 科室ID
+     * @param startDate
+     * @param endDate
+     */
+    public void getLiyongCount(int page,String keshiID,String startDate,String endDate , HttpCallBack<SysltjEntity> callBack) {
+        Object[] arrays = new Object[]{"PageIndex", page,"DeptId",keshiID,"StartDate",startDate,"EndDate",endDate};
+        request.okhttpget(API.liyongCount, arrays, callBack);
+    }
+
+    /**
+     * 使用数量统计
+     * @param page
+     * @param keshiID 科室ID
+     * @param startDate
+     * @param endDate
+     * @param callBack
+     */
+    public void getUseCount(int page,String keshiID,String startDate,String endDate , HttpCallBack<SysltjEntity> callBack) {
+        Object[] arrays = new Object[]{"PageIndex", page,"DeptId",keshiID,"StartDate",startDate,"EndDate",endDate};
+        request.okhttpget(API.useCount, arrays, callBack);
+    }
+
+    /**
+     * 查询科室下拉列表
+     * @param callBack
+     */
+    public void getKeShi(HttpCallBack<List<Type>> callBack) {
+        Object[] arrays = new Object[]{};
+        request.okhttpget(API.KeShiList, arrays, callBack);
+    }
+
 
     /**
      * 企业资质预警

@@ -121,17 +121,18 @@
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="批次号"
+                        android:text="供应商"
                         android:textColor="@color/text_normal_grey_color"
                         android:textSize="@dimen/frame_text_small_size" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/tv_pch"
+                        android:id="@+id/tv_gys"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="@dimen/frame_eight_distance"
                         android:text="8"
+                        android:singleLine="true"
                         android:textColor="@color/text_normal_grey_color"
                         android:textSize="@dimen/frame_text_small_size" />
                 </android.support.v7.widget.LinearLayoutCompat>

@@ -40,17 +40,17 @@ public class ToDoPriceActivity extends AllenBaseActivity {
     @BindView(R.id.refreshLayout)
     MaterialRefreshLayout refreshLayout;
 
-    private Context mContext=this;
+    private Context mContext = this;
     private CommonAdapter<ToDoPriceEntity.ItemsBean> adapter;
-    private List<ToDoPriceEntity.ItemsBean> list=new ArrayList<>();
-    private List<ToDoPriceEntity.ItemsBean> sublist=new ArrayList<>();
-    private boolean isRefresh=false;
-    private int page=0,pageSize=20;
+    private List<ToDoPriceEntity.ItemsBean> list = new ArrayList<>();
+    private List<ToDoPriceEntity.ItemsBean> sublist = new ArrayList<>();
+    private boolean isRefresh = false;
+    private int page = 0, pageSize = 20;
     @SuppressLint("HandlerLeak")
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
                     if (isRefresh) {
                         list = sublist;
@@ -64,7 +64,7 @@ public class ToDoPriceActivity extends AllenBaseActivity {
                         refreshLayout.finishRefreshLoadMore();
                     }
                     adapter.setDatas(list);
-                    actHelper.setCanLoadMore(refreshLayout,pageSize,list);
+                    actHelper.setCanLoadMore(refreshLayout, pageSize, list);
                     break;
                 case 1:
                     dismissProgressDialog();
@@ -92,7 +92,7 @@ public class ToDoPriceActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(toolbar,"待确认价格");
+        actHelper.setToolbarTitleCenter(toolbar, "待确认价格");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -105,15 +105,15 @@ public class ToDoPriceActivity extends AllenBaseActivity {
     }
 
 
-
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter=new CommonAdapter<ToDoPriceEntity.ItemsBean>(mContext,R.layout.to_do_price_item_layout) {
+        adapter = new CommonAdapter<ToDoPriceEntity.ItemsBean>(mContext, R.layout
+                .to_do_price_item_layout) {
             @Override
             public void convert(ViewHolder holder, ToDoPriceEntity.ItemsBean entity, int position) {
-                holder.setText(R.id.tv_gys,entity.getOrgName());
-                holder.setText(R.id.tv_change_date,entity.getCreateTime());
+                holder.setText(R.id.tv_gys, entity.getOrgName());
+                holder.setText(R.id.tv_change_date, entity.getCreateTime());
             }
         };
         recyclerview.setAdapter(adapter);
@@ -131,7 +131,16 @@ public class ToDoPriceActivity extends AllenBaseActivity {
         refreshLayout.setMaterialRefreshListener(refreshListener);
     }
 
-    private MaterialRefreshListener refreshListener=new MaterialRefreshListener() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            isRefresh = true;
+            page = 0;
+            loadData();
+        }
+    }
+
+    private MaterialRefreshListener refreshListener = new MaterialRefreshListener() {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
@@ -147,14 +156,15 @@ public class ToDoPriceActivity extends AllenBaseActivity {
     };
 
 
-    private CommonAdapter.OnItemClickListener onItemClickListener=new CommonAdapter.OnItemClickListener() {
+    private CommonAdapter.OnItemClickListener onItemClickListener = new CommonAdapter
+            .OnItemClickListener() {
 
 
         @Override
         public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-            Intent intent=new Intent(mContext,PriceDetailsActivity.class);
-            intent.putExtra("ID",list.get(position).getId());
-            startActivity(intent);
+            Intent intent = new Intent(mContext, PriceDetailsActivity.class);
+            intent.putExtra("ID", list.get(position).getId());
+            startActivityForResult(intent,100);
         }
 
         @Override
@@ -167,8 +177,8 @@ public class ToDoPriceActivity extends AllenBaseActivity {
         DataHelper.init().getTodoPrice(page++, new HttpCallBack<ToDoPriceEntity>() {
             @Override
             public void onSuccess(ToDoPriceEntity respone) {
-                sublist=respone.getItems();
-                pageSize=respone.getPageSize();
+                sublist = respone.getItems();
+                pageSize = respone.getPageSize();
                 handler.sendEmptyMessage(0);
             }
 
@@ -188,7 +198,7 @@ public class ToDoPriceActivity extends AllenBaseActivity {
 
             @Override
             public void onFailed(MeRespone respone) {
-                Logger.e("debug",respone.toString());
+                Logger.e("debug", respone.toString());
                 Message msg = new Message();
                 msg.what = -1;
                 msg.obj = respone.getMessage();

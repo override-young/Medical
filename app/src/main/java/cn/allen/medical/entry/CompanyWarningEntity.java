@@ -6,14 +6,21 @@ import java.util.List;
 public class CompanyWarningEntity implements Serializable {
 
     /**
-     * pageIndex : 1
-     * pageSize : 1
-     * totalCount : 1
+     * pageIndex : 0
+     * pageSize : 20
+     * totalCount : 3
      * totalPages : 1
-     * items : [{"organizationId":"7e4f2729-fa3b-412a-8088-9d7827370a87",
-     * "organizationName":"开发供应商","organizationTel":"18696728320","currentDate":"2019-12-18
-     * 16:45:17","businessLicenseDate":"2019-09-30 00:00:00",
-     * "marketingAuthorizationDate":"2019-08-31 00:00:00","businessCertificateDate":null}]
+     * items : [{"id":"b62ab0f7-ef95-4ceb-893c-32c4ff0a854d","organizationName":"供应商",
+     * "certList":[{"currentDate":"2019-12-19 11:23:52","certName":"销售代表授权书",
+     * "expireDate":"2019-11-08 00:00:00"},{"currentDate":"2019-12-19 11:23:52",
+     * "certName":"营业执照","expireDate":"2019-10-31 00:00:00"}]},
+     * {"id":"7e4f2729-fa3b-412a-8088-9d7827370a87","organizationName":"开发供应商",
+     * "certList":[{"currentDate":"2019-12-19 11:23:52","certName":"销售代表授权书",
+     * "expireDate":"2019-08-31 00:00:00"},{"currentDate":"2019-12-19 11:23:52",
+     * "certName":"营业执照","expireDate":"2019-09-30 00:00:00"}]},
+     * {"id":"0dcef36b-052b-4a8f-abf6-c98a71e50ac1","organizationName":"开发配送商",
+     * "certList":[{"currentDate":"2019-12-19 11:23:52","certName":"销售代表授权书",
+     * "expireDate":"2019-08-25 00:00:00"}]}]
      */
 
     private int pageIndex;
@@ -64,29 +71,23 @@ public class CompanyWarningEntity implements Serializable {
 
     public static class ItemsBean {
         /**
-         * organizationId : 7e4f2729-fa3b-412a-8088-9d7827370a87
-         * organizationName : 开发供应商
-         * organizationTel : 18696728320
-         * currentDate : 2019-12-18 16:45:17
-         * businessLicenseDate : 2019-09-30 00:00:00
-         * marketingAuthorizationDate : 2019-08-31 00:00:00
-         * businessCertificateDate : null
+         * id : b62ab0f7-ef95-4ceb-893c-32c4ff0a854d
+         * organizationName : 供应商
+         * certList : [{"currentDate":"2019-12-19 11:23:52","certName":"销售代表授权书",
+         * "expireDate":"2019-11-08 00:00:00"},{"currentDate":"2019-12-19 11:23:52",
+         * "certName":"营业执照","expireDate":"2019-10-31 00:00:00"}]
          */
 
-        private String organizationId;
+        private String id;
         private String organizationName;
-        private String organizationTel;
-        private String currentDate;
-        private String businessLicenseDate;
-        private String marketingAuthorizationDate;
-        private String businessCertificateDate;
+        private List<CertListBean> certList;
 
-        public String getOrganizationId() {
-            return organizationId;
+        public String getId() {
+            return id;
         }
 
-        public void setOrganizationId(String organizationId) {
-            this.organizationId = organizationId;
+        public void setId(String id) {
+            this.id = id;
         }
 
         public String getOrganizationName() {
@@ -97,44 +98,48 @@ public class CompanyWarningEntity implements Serializable {
             this.organizationName = organizationName;
         }
 
-        public String getOrganizationTel() {
-            return organizationTel;
+        public List<CertListBean> getCertList() {
+            return certList;
         }
 
-        public void setOrganizationTel(String organizationTel) {
-            this.organizationTel = organizationTel;
+        public void setCertList(List<CertListBean> certList) {
+            this.certList = certList;
         }
 
-        public String getCurrentDate() {
-            return currentDate;
-        }
+        public static class CertListBean {
+            /**
+             * currentDate : 2019-12-19 11:23:52
+             * certName : 销售代表授权书
+             * expireDate : 2019-11-08 00:00:00
+             */
 
-        public void setCurrentDate(String currentDate) {
-            this.currentDate = currentDate;
-        }
+            private String currentDate;
+            private String certName;
+            private String expireDate;
 
-        public String getBusinessLicenseDate() {
-            return businessLicenseDate;
-        }
+            public String getCurrentDate() {
+                return currentDate;
+            }
 
-        public void setBusinessLicenseDate(String businessLicenseDate) {
-            this.businessLicenseDate = businessLicenseDate;
-        }
+            public void setCurrentDate(String currentDate) {
+                this.currentDate = currentDate;
+            }
 
-        public String getMarketingAuthorizationDate() {
-            return marketingAuthorizationDate;
-        }
+            public String getCertName() {
+                return certName;
+            }
 
-        public void setMarketingAuthorizationDate(String marketingAuthorizationDate) {
-            this.marketingAuthorizationDate = marketingAuthorizationDate;
-        }
+            public void setCertName(String certName) {
+                this.certName = certName;
+            }
 
-        public String getBusinessCertificateDate() {
-            return businessCertificateDate;
-        }
+            public String getExpireDate() {
+                return expireDate;
+            }
 
-        public void setBusinessCertificateDate(String businessCertificateDate) {
-            this.businessCertificateDate = businessCertificateDate;
+            public void setExpireDate(String expireDate) {
+                this.expireDate = expireDate;
+            }
         }
     }
 }

@@ -92,8 +92,6 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
                     tvDate.setText(differentEntity.getStartTime().replaceAll(" 00:00:00", "") +
                             "\n" + differentEntity.getEndTime().replaceAll(" 00:00:00", ""));
 
-//                    list = differentEntity.getDiffRecords();
-//                    adapter.setDatas(list);
                     break;
                 case 1:
                     dismissProgressDialog();
@@ -146,7 +144,7 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
         setSwipeMenu();
         swipeRecyclerView.setSwipeMenuCreator(swipeMenuCreator);
         initAdapter();
-//        loadData();
+        loadData();
 
 
     }
@@ -192,7 +190,7 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
                 holder.setText(R.id.tv_name, entity.getPackageName());
                 holder.setText(R.id.tv_danwei, entity.getUnit());
                 holder.setText(R.id.tv_guige, entity.getSpec());
-                holder.setText(R.id.tv_pch, entity.getCode());
+                holder.setText(R.id.tv_gys, entity.getSName());
                 holder.setBackgroundRes(R.id.tv_add, R.mipmap.pop_add);
                 for (DoDifferenceEntity.ItemsBean addEntity : list) {
                     if (addEntity.getSpid().equals(entity.getSpid())) {

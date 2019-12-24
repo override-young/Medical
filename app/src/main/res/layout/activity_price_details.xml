@@ -89,14 +89,22 @@
             android:textColor="@color/brown"
             android:textSize="@dimen/frame_text_normal_size" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/frame_eight_distance"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="@dimen/frame_four_distance"
+            app:cardElevation="@dimen/frame_four_distance">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+            </android.support.v7.widget.RecyclerView>
 
+        </android.support.v7.widget.CardView>
     </android.support.v7.widget.LinearLayoutCompat>
 
     <android.support.v7.widget.AppCompatButton

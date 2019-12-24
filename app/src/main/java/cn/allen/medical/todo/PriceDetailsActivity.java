@@ -2,6 +2,7 @@ package cn.allen.medical.todo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,6 +65,12 @@ public class PriceDetailsActivity extends AllenBaseActivity {
                     break;
                 case 1:
                     dismissProgressDialog();
+                    break;
+                case 2:
+                    dismissProgressDialog();
+                    MsgUtils.showLongToast(mContext,"成功！");
+                    setResult(RESULT_OK);
+                    finish();
                     break;
                 case -1:
                     dismissProgressDialog();
@@ -171,8 +178,45 @@ public class PriceDetailsActivity extends AllenBaseActivity {
             case R.id.tv_bgrq:
                 break;
             case R.id.btn_submit:
-                startActivity(new Intent(mContext,ContractDetailsActivity.class));
+                MsgUtils.showMDMessage(mContext, "确定通过审核?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        passVer();
+                    }
+                });
                 break;
         }
     }
+
+    private void passVer(){
+        showProgressDialog("");
+        DataHelper.init().getPriceExamine(id,true, "", new HttpCallBack() {
+            @Override
+            public void onSuccess(Object respone) {
+
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 2;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
 }

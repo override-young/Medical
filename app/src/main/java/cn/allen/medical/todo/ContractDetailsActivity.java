@@ -2,6 +2,8 @@ package cn.allen.medical.todo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +13,8 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -55,6 +59,7 @@ public class ContractDetailsActivity extends AllenBaseActivity {
     private Context mContext = this;
     private CommonAdapter<ContractDetailsEntity.SupplierProductListBean> adapter;
     private List<ContractDetailsEntity.SupplierProductListBean> list = new ArrayList<>();
+    private List<String> picList=new ArrayList<>();
     private String id = "";
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -81,11 +86,18 @@ public class ContractDetailsActivity extends AllenBaseActivity {
                     }else if (state==40){
                         tvState.setText("驳回");
                     }
+                    picList=contractDetailsEntity.getPictures();
                     list = contractDetailsEntity.getSupplierProductList();
                     adapter.setDatas(list);
                     break;
                 case 1:
                     dismissProgressDialog();
+                    break;
+                case 2:
+                    dismissProgressDialog();
+                    MsgUtils.showLongToast(mContext,"成功！");
+                    setResult(RESULT_OK);
+                    finish();
                     break;
                 case -1:
                     dismissProgressDialog();
@@ -104,6 +116,30 @@ public class ContractDetailsActivity extends AllenBaseActivity {
     @Override
     protected int getLayoutResID() {
         return R.layout.activity_contract_details;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        toolbar.inflateMenu(R.menu.menu_contract);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_contract:
+                if (picList!=null&&!picList.isEmpty()){
+                    Intent intent=new Intent(mContext,PicsActivity.class);
+                    intent.putStringArrayListExtra("Urls", (ArrayList<String>) picList);
+                    startActivity(intent);
+                }else {
+                    MsgUtils.showLongToast(mContext,"当前合同没有对应图片!");
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -186,6 +222,9 @@ public class ContractDetailsActivity extends AllenBaseActivity {
 
     @OnClick({R.id.tv_contract_num, R.id.tv_unit, R.id.tv_cjr, R.id.btn_submit})
     public void onViewClicked(View view) {
+        if (actHelper.isFastClick()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.tv_contract_num:
                 break;
@@ -194,8 +233,46 @@ public class ContractDetailsActivity extends AllenBaseActivity {
             case R.id.tv_cjr:
                 break;
             case R.id.btn_submit:
+                MsgUtils.showMDMessage(mContext, "确定通过审核?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        passVer();
+                    }
+                });
+
                 break;
         }
+    }
+
+    private void passVer(){
+        showProgressDialog("");
+        DataHelper.init().getContractExamine(id, true, "", new HttpCallBack() {
+            @Override
+            public void onSuccess(Object respone) {
+
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 2;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
     }
 
 }

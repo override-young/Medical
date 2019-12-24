@@ -25,10 +25,18 @@ public class API {
 
     //合同详情
     public static String contractDetails = "/api/mobile/HospitalApp/GetContractDetails";
+    //合同审核
+    public static String contractExamine = "/api/mobile/HospitalApp/ContractExamine";
     //价格详情
     public static String priceDetails = "/api/mobile/HospitalApp/GetPriceEntity";
+    //价格审核
+    public static String priceExamine = "/api/mobile/HospitalApp/PriceConfirm";
     //账单详情-获取详情信息
     public static String billDifferentDetails = "/api/mobile/HospitalApp/GetFinanceBillOrderEntity";
+    //账单确认（科室）
+    public static String billExamineKs = "/api/mobile/HospitalApp/FinanceBillOrderDeptConfirm";
+    //账单确认（设备科）
+    public static String billExamineSbk = "/api/mobile/HospitalApp/FinanceBillOrderDeviceConfirm";
     /**
      * 处理差异-筛选医院耗材列表
      */
@@ -41,6 +49,14 @@ public class API {
     public static String billDetails = "/api/mobile/HospitalApp/GetFinanceBillOrderDetailsPageList";
     //入库统计
     public static String selectSumChart = "/api/mobile/HospitalApp/InDepotStatistics";
+    //库存数量统计
+    public static String kucunCount = "/api/mobile/HospitalApp/GetStockStatisticPageList";
+    //领用数量统计
+    public static String liyongCount = "/api/mobile/HospitalApp/GetReceiveStatisticPageList";
+    //查询科室下拉列表
+    public static String KeShiList = "/api/mobile/HospitalApp/GetDeptList";
+    //使用数量统计
+    public static String useCount = "/api/mobile/HospitalApp/GetUsedStatisticPageList";
     //企业资质预警
     public static String companyWarning = "/api/mobile/HospitalApp/GetCertWarnPageList";
     //耗材库存效期预警
