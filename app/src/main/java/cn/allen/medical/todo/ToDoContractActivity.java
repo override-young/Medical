@@ -136,7 +136,6 @@ public class ToDoContractActivity extends AllenBaseActivity {
             }
         };
         recyclerview.setAdapter(adapter);
-//        adapter.setDatas(list);
     }
 
     @Override
@@ -149,6 +148,15 @@ public class ToDoContractActivity extends AllenBaseActivity {
         });
         adapter.setOnItemClickListener(onItemClickListener);
         refreshLayout.setMaterialRefreshListener(refreshListener);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode==RESULT_OK){
+            isRefresh = true;
+            page = 0;
+            loadData();
+        }
     }
 
     private MaterialRefreshListener refreshListener = new MaterialRefreshListener() {
@@ -174,7 +182,7 @@ public class ToDoContractActivity extends AllenBaseActivity {
         public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
             Intent intent = new Intent(mContext, ContractDetailsActivity.class);
             intent.putExtra("ID", list.get(position).getId());
-            startActivity(intent);
+            startActivityForResult(intent,100);
         }
 
         @Override

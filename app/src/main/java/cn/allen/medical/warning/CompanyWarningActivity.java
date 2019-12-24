@@ -43,17 +43,17 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     @BindView(R.id.refreshLayout)
     MaterialRefreshLayout refreshLayout;
 
-    private Context mContext=this;
+    private Context mContext = this;
     private CommonAdapter<CompanyWarningEntity.ItemsBean> adapter;
-    private List<CompanyWarningEntity.ItemsBean> list=new ArrayList<>();
-    private List<CompanyWarningEntity.ItemsBean> sublist=new ArrayList<>();
-    private boolean isRefresh=false;
-    private int page=0,pageSize=20;
+    private List<CompanyWarningEntity.ItemsBean> list = new ArrayList<>();
+    private List<CompanyWarningEntity.ItemsBean> sublist = new ArrayList<>();
+    private boolean isRefresh = false;
+    private int page = 0, pageSize = 20;
     @SuppressLint("HandlerLeak")
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
                     if (isRefresh) {
                         list = sublist;
@@ -67,7 +67,7 @@ public class CompanyWarningActivity extends AllenBaseActivity {
                         refreshLayout.finishRefreshLoadMore();
                     }
                     adapter.setDatas(list);
-                    actHelper.setCanLoadMore(refreshLayout,pageSize,list);
+                    actHelper.setCanLoadMore(refreshLayout, pageSize, list);
                     break;
                 case 1:
                     dismissProgressDialog();
@@ -80,7 +80,6 @@ public class CompanyWarningActivity extends AllenBaseActivity {
             }
         }
     };
-
 
 
     @Override
@@ -105,37 +104,46 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     protected void initUI(@Nullable Bundle savedInstanceState) {
 
         initAdapter();
-//        showProgressDialog("");
-//        loadData();
-        //TODO 返回的数据结构变化，虚调整
+        showProgressDialog("");
+        loadData();
     }
-
 
 
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter=new CommonAdapter<CompanyWarningEntity.ItemsBean>(mContext,R.layout.company_warning_item_layout) {
+        adapter = new CommonAdapter<CompanyWarningEntity.ItemsBean>(mContext, R.layout
+                .company_warning_item_layout) {
             @Override
-            public void convert(ViewHolder holder, CompanyWarningEntity.ItemsBean entity, int position) {
-                holder.setText(R.id.tv_company_name,entity.getOrganizationName());
-                holder.setText(R.id.tv_yyzz_due_time,entity.getBusinessLicenseDate());
-                holder.setText(R.id.tv_sqs_due_time,entity.getMarketingAuthorizationDate());
-                Date currentDate=DateUtils.stringToDate(entity.getCurrentDate(),"yyyy-MM-dd HH:mm:ss");
-                if (StringUtils.empty(entity.getBusinessLicenseDate())){
-                    holder.setText(R.id.tv_yyzz_remaining_time,"--");
-                }else {
-                    Date bussinessExpiredDate=DateUtils.stringToDate(entity.getBusinessLicenseDate(),"yyyy-MM-dd HH:mm:ss");
-                    long bussinessCount=DateUtils.getDataDistance(currentDate,bussinessExpiredDate);
-                    holder.setText(R.id.tv_yyzz_remaining_time,bussinessCount+"");
-                }
-                if (StringUtils.empty(entity.getMarketingAuthorizationDate())){
-                    holder.setText(R.id.tv_sqs_remaining_time, "--");
-                }else {
-                    Date sqsExpiredDate = DateUtils.stringToDate(entity.getMarketingAuthorizationDate(), "yyyy-MM-dd HH:mm:ss");
-                    long sqsCount = DateUtils.getDataDistance(currentDate, sqsExpiredDate);
-                    holder.setText(R.id.tv_sqs_remaining_time, sqsCount + "");
-                }
+            public void convert(ViewHolder holder, CompanyWarningEntity.ItemsBean entity, int
+                    position) {
+                holder.setText(R.id.tv_company_name, entity.getOrganizationName());
+                RecyclerView rvDetails = holder.getView(R.id.rv_details);
+                rvDetails.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
+                        .VERTICAL, false));
+                CommonAdapter<CompanyWarningEntity.ItemsBean.CertListBean> detailAdapter = new
+                        CommonAdapter<CompanyWarningEntity.ItemsBean.CertListBean>(mContext,R.layout.company_warning_details_item_layout) {
+                    @Override
+                    public void convert(ViewHolder holder, CompanyWarningEntity.ItemsBean
+                            .CertListBean entity, int position) {
+                        holder.setText(R.id.tv_permit_name,entity.getCertName());
+                        holder.setText(R.id.tv_due_time, entity.getExpireDate());
+                        Date currentDate = DateUtils.stringToDate(entity.getCurrentDate(), "yyyy-MM-dd " +
+                                "HH:mm:ss");
+                        if (StringUtils.empty(entity.getExpireDate())) {
+                            holder.setText(R.id.tv_remaining_time, "--");
+                        } else {
+                            Date ExpiredDate = DateUtils.stringToDate(entity
+                                    .getExpireDate(), "yyyy-MM-dd HH:mm:ss");
+                            long bussinessCount = DateUtils.getDataDistance(currentDate,
+                                    ExpiredDate);
+                            holder.setText(R.id.tv_remaining_time, bussinessCount + "");
+                        }
+                    }
+                };
+                rvDetails.setAdapter(detailAdapter);
+                detailAdapter.setDatas(entity.getCertList());
+
             }
         };
         recyclerview.setAdapter(adapter);
@@ -172,7 +180,7 @@ public class CompanyWarningActivity extends AllenBaseActivity {
             @Override
             public void onSuccess(CompanyWarningEntity respone) {
                 sublist = respone.getItems();
-                pageSize=respone.getPageSize();
+                pageSize = respone.getPageSize();
                 handler.sendEmptyMessage(0);
             }
 

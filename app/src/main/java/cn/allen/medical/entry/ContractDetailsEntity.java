@@ -25,6 +25,7 @@ public class ContractDetailsEntity implements Serializable {
     private int status;
     private String remarks;
     private List<SupplierProductListBean> supplierProductList;
+    private List<String> pictures;
 
     public String getId() {
         return id;
@@ -88,6 +89,14 @@ public class ContractDetailsEntity implements Serializable {
 
     public void setSupplierProductList(List<SupplierProductListBean> supplierProductList) {
         this.supplierProductList = supplierProductList;
+    }
+
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 
     public static class SupplierProductListBean {

@@ -7,18 +7,28 @@
     android:orientation="vertical"
     tools:context=".count.KucunCountActivity">
 
-    <include layout="@layout/alen_toolbar_layout"/>
+    <include layout="@layout/alen_toolbar_layout" />
 
-    <allen.frame.widget.MaterialRefreshLayout
-        android:id="@+id/refreshLayout"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/frame_eight_distance"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="@dimen/frame_four_distance"
+        app:cardElevation="@dimen/frame_four_distance">
+
+        <allen.frame.widget.MaterialRefreshLayout
+            android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </android.support.v7.widget.RecyclerView>
-    </allen.frame.widget.MaterialRefreshLayout>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+        </allen.frame.widget.MaterialRefreshLayout>
+    </android.support.v7.widget.CardView>
 
 </android.support.v7.widget.LinearLayoutCompat>

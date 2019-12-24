@@ -63,6 +63,7 @@
     <!-- 屏幕推流 -->
     <color name="colorText">#FFFFFF</color>
 
+    <color name="black">#000000</color>
     <color name="black_overlay">#66000000</color>
 
     <color name="white_background">#ffffffff</color>

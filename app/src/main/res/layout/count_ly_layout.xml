@@ -9,49 +9,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="@dimen/frame_edge_distance">
-        <android.support.v7.widget.LinearLayoutCompat
+        android:padding="@dimen/frame_eight_distance"
+        >
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/ly_ks"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shap_btn_bg_border"
+            android:text="科室"
+            android:paddingLeft="@dimen/frame_four_distance"
+            android:paddingRight="@dimen/frame_four_distance"
+            android:paddingTop="@dimen/frame_eight_distance"
+            android:paddingBottom="@dimen/frame_eight_distance"
             android:gravity="center"
-            android:background="@drawable/frame_input_color_bg">
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/ly_ks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@mipmap/ic_choice"
-                android:drawablePadding="@dimen/frame_edge_distance"
-                android:padding="@dimen/frame_eight_distance"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textColor="@color/frame_default_color"
-                android:textColorHint="@color/frame_default_color"
-                android:textSize="@dimen/frame_text_normal_size"
-                android:hint="@string/choice_ks_hint" />
-        </android.support.v7.widget.LinearLayoutCompat>
-        <android.support.v7.widget.LinearLayoutCompat
+            android:textColor="@color/light_green"
+            android:textSize="@dimen/frame_text_smaller_size"
+            android:drawableRight="@drawable/ic_arrow_drop_down_green_24dp"
+            android:layout_margin="@dimen/frame_four_distance"
+            />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/ly_date"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
-            android:background="@drawable/frame_input_color_bg"
-            android:layout_marginStart="@dimen/frame_eight_distance">
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/ly_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@mipmap/ic_choice"
-                android:drawablePadding="@dimen/frame_edge_distance"
-                android:padding="@dimen/frame_eight_distance"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textColor="@color/frame_default_color"
-                android:textColorHint="@color/frame_default_color"
-                android:textSize="@dimen/frame_text_normal_size"
-                android:hint="@string/choice_date_hint" />
-        </android.support.v7.widget.LinearLayoutCompat>
+            android:paddingLeft="@dimen/frame_four_distance"
+            android:paddingRight="@dimen/frame_four_distance"
+            android:paddingTop="@dimen/frame_eight_distance"
+            android:paddingBottom="@dimen/frame_eight_distance"
+            android:text="19-12-20至19-12-22"
+            android:background="@drawable/shap_btn_bg_border"
+            android:textColor="@color/light_green"
+            android:singleLine="true"
+            android:textSize="@dimen/frame_text_smaller_size"
+            android:drawableRight="@drawable/ic_arrow_drop_down_green_24dp"
+            android:layout_margin="@dimen/frame_four_distance"
+            />
     </android.support.v7.widget.LinearLayoutCompat>
     <include layout="@layout/alen_progress_layout"/>
     <allen.frame.widget.MaterialRefreshLayout

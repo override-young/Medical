@@ -10,9 +10,9 @@
         android:id="@+id/count_item_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/light_gray"
+        android:background="@color/gray_line_color"
         android:layout_marginStart="@dimen/frame_eight_distance"
-        android:layout_marginEnd="@dimen/frame_edge_distance"/>
+        android:layout_marginEnd="@dimen/frame_eight_distance"/>
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

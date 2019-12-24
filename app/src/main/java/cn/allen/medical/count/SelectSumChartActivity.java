@@ -210,7 +210,7 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
             mHorizontalBarChart.getData().notifyDataChanged();
             mHorizontalBarChart.notifyDataSetChanged();
         } else {
-        set1 = new BarDataSet(yVals1, "DataSet 1");
+        set1 = new BarDataSet(yVals1, "");
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         dataSets.add(set1);
@@ -235,7 +235,9 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
 
     @OnClick(R.id.tv_year)
     public void onViewClicked() {
-
+        if (actHelper.isFastClick()){
+            return;
+        }
         Calendar calendar = Calendar.getInstance();
         if (yearPickerDialog == null) {
             new YearPickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog

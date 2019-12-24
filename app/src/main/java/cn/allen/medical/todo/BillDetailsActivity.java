@@ -2,6 +2,7 @@ package cn.allen.medical.todo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -95,6 +96,12 @@ public class BillDetailsActivity extends AllenBaseActivity {
 
                     difflist = differentEntity.getDiffRecords();
                     differentAdapter.setDatas(difflist);
+                    break;
+                case 3:
+                    dismissProgressDialog();
+                    MsgUtils.showLongToast(mContext,"成功！");
+                    setResult(RESULT_OK);
+                    finish();
                     break;
                 case -1:
                     dismissProgressDialog();
@@ -190,7 +197,9 @@ public class BillDetailsActivity extends AllenBaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode==RESULT_OK){
-            loadDifference();
+//            loadDifference();
+            setResult(RESULT_OK);
+            finish();
         }
     }
 
@@ -226,8 +235,22 @@ public class BillDetailsActivity extends AllenBaseActivity {
 
     @OnClick({R.id.btn_pass, R.id.btn_do_different})
     public void onViewClicked(View view) {
+        if (actHelper.isFastClick()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.btn_pass:
+                MsgUtils.showMDMessage(mContext, "确定通过审核?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (code.equals(MenuEnum.todo_zd_ks)) {
+                            passVerKs();
+                        } else if (code.equals(MenuEnum.todo_zd_sb)){
+                            passVerSbk();
+                        }
+
+                    }
+                });
                 break;
             case R.id.btn_do_different:
                 Intent intent = new Intent(mContext, DoDifferenceActivity.class);
@@ -236,6 +259,69 @@ public class BillDetailsActivity extends AllenBaseActivity {
                 break;
         }
     }
+
+    private void passVerKs(){
+        showProgressDialog("");
+        DataHelper.init().getBillExamineKs(id, "", new HttpCallBack() {
+            @Override
+            public void onSuccess(Object respone) {
+
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 3;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
+    private void passVerSbk(){
+        showProgressDialog("");
+        DataHelper.init().getBillExamineSbk(id, "", new HttpCallBack() {
+            @Override
+            public void onSuccess(Object respone) {
+
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 3;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
 
 
     private void loadDifference() {
