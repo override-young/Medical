@@ -355,6 +355,9 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
 
     @OnClick({R.id.tv_number, R.id.tv_date, R.id.btn_submit, R.id.tv_add})
     public void onViewClicked(View view) {
+        if (actHelper.isFastClick()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.tv_number:
                 break;

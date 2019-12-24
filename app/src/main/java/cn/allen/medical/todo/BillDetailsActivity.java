@@ -235,6 +235,9 @@ public class BillDetailsActivity extends AllenBaseActivity {
 
     @OnClick({R.id.btn_pass, R.id.btn_do_different})
     public void onViewClicked(View view) {
+        if (actHelper.isFastClick()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.btn_pass:
                 MsgUtils.showMDMessage(mContext, "确定通过审核?", new DialogInterface.OnClickListener() {

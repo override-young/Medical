@@ -126,6 +126,9 @@ public class ContractDetailsActivity extends AllenBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (actHelper.isFastClick()){
+            return super.onOptionsItemSelected(item);
+        }
         switch (item.getItemId()) {
             case R.id.item_contract:
                 if (picList!=null&&!picList.isEmpty()){

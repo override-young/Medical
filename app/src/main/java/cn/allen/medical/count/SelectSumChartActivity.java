@@ -235,7 +235,9 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
 
     @OnClick(R.id.tv_year)
     public void onViewClicked() {
-
+        if (actHelper.isFastClick()){
+            return;
+        }
         Calendar calendar = Calendar.getInstance();
         if (yearPickerDialog == null) {
             new YearPickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog

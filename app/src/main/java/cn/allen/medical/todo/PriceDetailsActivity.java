@@ -172,6 +172,9 @@ public class PriceDetailsActivity extends AllenBaseActivity {
 
     @OnClick({R.id.tv_gys, R.id.tv_bgrq, R.id.btn_submit})
     public void onViewClicked(View view) {
+        if (actHelper.isFastClick()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.tv_gys:
                 break;
