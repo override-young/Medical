@@ -22,6 +22,7 @@ import allen.frame.tools.DateUtils;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
 import allen.frame.widget.MaterialRefreshLayout;
+import allen.frame.widget.MaterialRefreshListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -211,7 +212,24 @@ public class CountLyActivity extends AllenBaseActivity {
                 finish();
             }
         });
+        mater.setMaterialRefreshListener(refreshListener);
     }
+
+    private MaterialRefreshListener refreshListener = new MaterialRefreshListener() {
+        @Override
+        public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+            isRefresh = true;
+            page = 0;
+            loadData();
+        }
+
+        @Override
+        public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+            isRefresh = false;
+            loadData();
+        }
+    };
+
 
     private void loadData() {
         DataHelper.init().getLiyongCount(page++,ksID,startDate,endDate,new HttpCallBack<SysltjEntity>() {
