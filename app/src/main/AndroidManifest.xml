@@ -4,6 +4,9 @@
 
     <uses-permission
         android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +31,14 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ScanLoginActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="allen.frame.CaptureActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".mine.ChangePswActivity"
             android:screenOrientation="portrait" />

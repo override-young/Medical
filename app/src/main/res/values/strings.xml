@@ -27,7 +27,7 @@
 
 
     <string name="ok_bt_name">确认</string>
-    <string name="user_xg_psw">修改密码</string>
+    <string name="user_xg_psw">设置密码</string>
     <string name="user_about_us">关于我们</string>
     <string name="user_exit">退出登录</string>
     <string name="choice_ks_hint">科室</string>
@@ -37,6 +37,9 @@
     <string name="count_units">单位</string>
     <string name="count_spec">规格</string>
     <string name="count_quantity">数量</string>
+    <string name="scan_login_ok">确认登录</string>
+    <string name="scan_login_no">取消登录</string>
+    <string name="scan_info">博尔德登录确认</string>
     <!--统计end-->
 
 

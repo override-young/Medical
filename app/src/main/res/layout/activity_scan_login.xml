@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include layout="@layout/alen_toolbar_layout"/>
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/scan_pc_login"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/frame_32_distance"
+            android:padding="@dimen/frame_edge_distance"
+            android:text="@string/scan_info"
+            android:textColor="@color/text_gray_color"
+            android:textSize="@dimen/frame_text_middle_size" />
+    </android.support.v7.widget.LinearLayoutCompat>
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/scan_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/frame_32_distance"
+        android:layout_marginTop="@dimen/frame_32_distance"
+        android:layout_marginEnd="@dimen/frame_32_distance"
+        android:layout_marginBottom="@dimen/frame_eight_distance"
+        android:background="@drawable/btn_selector"
+        android:padding="@dimen/frame_eight_distance"
+        android:text="@string/scan_login_ok"
+        android:textColor="@color/text_white_color"
+        android:textSize="@dimen/frame_text_middle_size"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/scan_no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/frame_32_distance"
+        android:layout_marginTop="@dimen/frame_eight_distance"
+        android:layout_marginEnd="@dimen/frame_32_distance"
+        android:layout_marginBottom="@dimen/frame_32_distance"
+        android:background="@drawable/icon_bg_selecor"
+        android:padding="@dimen/frame_eight_distance"
+        android:text="@string/scan_login_no"
+        android:textColor="@color/text_gray_color"
+        android:textSize="@dimen/frame_text_middle_size" />
+</android.support.v7.widget.LinearLayoutCompat>

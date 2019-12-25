@@ -1,6 +1,8 @@
 package cn.allen.medical;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -18,8 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import allen.frame.AllenBaseActivity;
+import allen.frame.CaptureActivity;
 import allen.frame.adapter.FragmentAdapter;
+import allen.frame.tools.Intents;
 import allen.frame.tools.Logger;
+import allen.frame.tools.MsgUtils;
+import allen.frame.tools.StringUtils;
 import allen.frame.widget.BadgeView;
 import allen.frame.widget.ContrlScrollViewPager;
 import butterknife.BindView;
@@ -37,6 +44,8 @@ import cn.allen.medical.utils.Constants;
 import cn.allen.medical.utils.OnUpdateCountListener;
 import cn.allen.medical.warning.WarningFragment;
 
+import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
+
 public class MainActivity extends AllenBaseActivity {
 
     @BindView(R.id.toolbar)
@@ -52,6 +61,8 @@ public class MainActivity extends AllenBaseActivity {
     private FragmentAdapter adapter;
     private ArrayList<Fragment> list;
 
+    public static final int REQUEST_CAMERA_PERMISSION = 1003;
+
     @Override
     protected boolean isStatusBarColorWhite() {
         return true;
@@ -66,6 +77,53 @@ public class MainActivity extends AllenBaseActivity {
         bar.getMenu().getItem(0).setVisible(false);
         return true;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode==RESULT_OK){
+            if(requestCode==11){
+                String res = data.getStringExtra(Intents.Scan.RESULT);
+                Logger.e("debug","Scan:"+res);
+                if(StringUtils.notEmpty(res)){
+                    if(res.startsWith("http")){
+                        startActivity(new Intent(context,ScanLoginActivity.class).putExtra("url",res));
+                    }else{
+                        MsgUtils.showMDMessage(context,"识别错误,请重试!");
+                    }
+                }else{
+                    MsgUtils.showMDMessage(context,"无法识别,请重试!");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA_PERMISSION: {
+                if(verifyPermissions(grantResults)){
+                    startActivityForResult(new Intent(context,CaptureActivity.class),11);
+                }
+                break;
+            }
+        }
+    }
+    public boolean verifyPermissions(int[] grantResults) {
+        // At least one result must be checked.
+        if(grantResults.length < 1){
+            return false;
+        }
+
+        // Verify that each required permission has been granted, otherwise return false.
+        for (int result : grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
@@ -75,22 +133,13 @@ public class MainActivity extends AllenBaseActivity {
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-
-//        dclBadge = new BadgeView(this);
-//        dclBadge.setTargetView(menuView.getChildAt(0));
-//        dclBadge.setBadgeCount(2);
-//        dclBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
-//        dclBadge.setHideOnNull(true);
-//        yjBadge = new BadgeView(this);
-//        yjBadge.setTargetView(menuView.getChildAt(2));
-//        yjBadge.setBadgeCount(5);
-//        yjBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
-//        yjBadge.setHideOnNull(true);
+        centerPanel.setOffscreenPageLimit(4);
         userAthur();
     }
 
     @Override
     protected void addEvent() {
+        bar.setOnMenuItemClickListener(listener);
         bottomBar.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener
@@ -102,6 +151,23 @@ public class MainActivity extends AllenBaseActivity {
         }
 
     };
+
+    private Toolbar.OnMenuItemClickListener listener = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()){
+                case R.id.item_sm:
+                    if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA) != PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                    }else{
+                        startActivityForResult(new Intent(context,CaptureActivity.class),11);
+                    }
+                    break;
+            }
+            return false;
+        }
+    };
+
     private void setAppModule(int module) {
         switch (module) {
             case MenuEnum.Todo_ItemId:
