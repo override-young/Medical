@@ -113,7 +113,7 @@ public class HttpRequest {
     }
 
     public <T>void scanPost(String url,HttpCallBack<T> callBack){
-        OkHttpClient client = new OkHttpClient.Builder()
+        OkHttpClient client = new OkHttpClient.Builder().callTimeout(60,TimeUnit.SECONDS).connectTimeout(60,TimeUnit.SECONDS).readTimeout(60,TimeUnit.SECONDS)
                 .build();// 创建OkHttpClient对象。
         Request request = new Request.Builder().post(okhttp3.internal.Util.EMPTY_REQUEST).url(url)
                 .addHeader("keep-alive","false")

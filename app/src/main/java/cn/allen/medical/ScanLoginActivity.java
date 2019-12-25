@@ -1,5 +1,6 @@
 package cn.allen.medical;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.view.View;
 
 import allen.frame.AllenBaseActivity;
 import allen.frame.tools.Logger;
+import allen.frame.tools.MsgUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -65,6 +67,7 @@ public class ScanLoginActivity extends AllenBaseActivity {
     }
 
     private void scanLogin(){
+        showProgressDialog("");
         DataHelper.init().scanLogin(url, new HttpCallBack() {
             @Override
             public void onSuccess(Object respone) {
@@ -74,6 +77,7 @@ public class ScanLoginActivity extends AllenBaseActivity {
             @Override
             public void onTodo(MeRespone respone) {
                 Logger.e("debug","scan:"+respone.toString());
+                handler.sendEmptyMessage(0);
             }
 
             @Override
@@ -84,6 +88,10 @@ public class ScanLoginActivity extends AllenBaseActivity {
             @Override
             public void onFailed(MeRespone respone) {
                 Logger.e("debug","scan:"+respone.toString());
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
             }
         });
     }
@@ -99,14 +107,23 @@ public class ScanLoginActivity extends AllenBaseActivity {
                 break;
         }
     }
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
+                    dismissProgressDialog();
+                    MsgUtils.showShortToast(context,"PC登录成功!");
+                    finish();
                     break;
                 case 1:
+                    dismissProgressDialog();
                     startActivityForResult(new Intent(context,LoginActivity.class).putExtra(Constants.Login_Token_Erro,true),11);
+                    break;
+                case -1:
+                    dismissProgressDialog();
+                    MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
         }
