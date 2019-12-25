@@ -16,11 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import allen.frame.AllenBaseActivity;
+import allen.frame.tools.Logger;
+import allen.frame.tools.MsgUtils;
 import allen.frame.widget.MaterialRefreshLayout;
+import allen.frame.widget.MaterialRefreshListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.allen.medical.R;
+import cn.allen.medical.data.DataHelper;
+import cn.allen.medical.data.HttpCallBack;
+import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.ToDoContractEntity;
+import cn.allen.medical.entry.ToDoPriceEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
 
@@ -33,16 +40,39 @@ public class ToDoPriceActivity extends AllenBaseActivity {
     @BindView(R.id.refreshLayout)
     MaterialRefreshLayout refreshLayout;
 
-    private Context mContext=this;
-    private CommonAdapter<ToDoContractEntity> adapter;
-    private List<ToDoContractEntity> list=new ArrayList<>();
+    private Context mContext = this;
+    private CommonAdapter<ToDoPriceEntity.ItemsBean> adapter;
+    private List<ToDoPriceEntity.ItemsBean> list = new ArrayList<>();
+    private List<ToDoPriceEntity.ItemsBean> sublist = new ArrayList<>();
+    private boolean isRefresh = false;
+    private int page = 0, pageSize = 20;
     @SuppressLint("HandlerLeak")
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
-
+                    if (isRefresh) {
+                        list = sublist;
+                        refreshLayout.finishRefresh();
+                    } else {
+                        if (page == 1) {
+                            list = sublist;
+                        } else {
+                            list.addAll(sublist);
+                        }
+                        refreshLayout.finishRefreshLoadMore();
+                    }
+                    adapter.setDatas(list);
+                    actHelper.setCanLoadMore(refreshLayout, pageSize, list);
+                    break;
+                case 1:
+                    dismissProgressDialog();
+                    refreshLayout.finishRefreshing();
+                    break;
+                case -1:
+                    dismissProgressDialog();
+                    MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
         }
@@ -62,30 +92,31 @@ public class ToDoPriceActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(toolbar,"待确认价格");
+        actHelper.setToolbarTitleCenter(toolbar, "待确认价格");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-        for (int i = 0; i < 3; i++) {
-            list.add(new ToDoContractEntity());
-        }
         initAdapter();
+        showProgressDialog("");
+        loadData();
     }
+
 
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter=new CommonAdapter<ToDoContractEntity>(mContext,R.layout.to_do_price_item_layout) {
+        adapter = new CommonAdapter<ToDoPriceEntity.ItemsBean>(mContext, R.layout
+                .to_do_price_item_layout) {
             @Override
-            public void convert(ViewHolder holder, ToDoContractEntity entity, int position) {
-
+            public void convert(ViewHolder holder, ToDoPriceEntity.ItemsBean entity, int position) {
+                holder.setText(R.id.tv_gys, entity.getOrgName());
+                holder.setText(R.id.tv_change_date, entity.getCreateTime());
             }
         };
         recyclerview.setAdapter(adapter);
-        adapter.setDatas(list);
     }
 
     @Override
@@ -97,15 +128,43 @@ public class ToDoPriceActivity extends AllenBaseActivity {
             }
         });
         adapter.setOnItemClickListener(onItemClickListener);
+        refreshLayout.setMaterialRefreshListener(refreshListener);
     }
 
-    private CommonAdapter.OnItemClickListener onItemClickListener=new CommonAdapter.OnItemClickListener() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            isRefresh = true;
+            page = 0;
+            loadData();
+        }
+    }
+
+    private MaterialRefreshListener refreshListener = new MaterialRefreshListener() {
+        @Override
+        public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+            isRefresh = true;
+            page = 0;
+            loadData();
+        }
+
+        @Override
+        public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+            isRefresh = false;
+            loadData();
+        }
+    };
+
+
+    private CommonAdapter.OnItemClickListener onItemClickListener = new CommonAdapter
+            .OnItemClickListener() {
 
 
         @Override
         public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-            Intent intent=new Intent(mContext,PriceDetailsActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent(mContext, PriceDetailsActivity.class);
+            intent.putExtra("ID", list.get(position).getId());
+            startActivityForResult(intent,100);
         }
 
         @Override
@@ -113,4 +172,38 @@ public class ToDoPriceActivity extends AllenBaseActivity {
             return false;
         }
     };
+
+    private void loadData() {
+        DataHelper.init().getTodoPrice(page++, new HttpCallBack<ToDoPriceEntity>() {
+            @Override
+            public void onSuccess(ToDoPriceEntity respone) {
+                sublist = respone.getItems();
+                pageSize = respone.getPageSize();
+                handler.sendEmptyMessage(0);
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Logger.e("debug", respone.toString());
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
 }

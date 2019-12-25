@@ -2,6 +2,7 @@ package cn.allen.medical.todo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,18 +13,24 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import allen.frame.AllenBaseActivity;
+import allen.frame.tools.Logger;
+import allen.frame.tools.MsgUtils;
 import allen.frame.widget.MaterialRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.allen.medical.R;
-import cn.allen.medical.count.SysltjActivity;
+import cn.allen.medical.data.DataHelper;
+import cn.allen.medical.data.HttpCallBack;
+import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.ContractDetailsEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
@@ -40,21 +47,61 @@ public class ContractDetailsActivity extends AllenBaseActivity {
     AppCompatTextView tvCjr;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    @BindView(R.id.refreshLayout)
-    MaterialRefreshLayout refreshLayout;
     @BindView(R.id.btn_submit)
     AppCompatButton btnSubmit;
+    @BindView(R.id.tv_start_date)
+    AppCompatTextView tvStartDate;
+    @BindView(R.id.tv_end_date)
+    AppCompatTextView tvEndDate;
+    @BindView(R.id.tv_state)
+    AppCompatTextView tvState;
 
-    private Context mContext=this;
-    private CommonAdapter<ContractDetailsEntity> adapter;
-    private List<ContractDetailsEntity> list=new ArrayList<>();
+    private Context mContext = this;
+    private CommonAdapter<ContractDetailsEntity.SupplierProductListBean> adapter;
+    private List<ContractDetailsEntity.SupplierProductListBean> list = new ArrayList<>();
+    private List<String> picList=new ArrayList<>();
+    private String id = "";
     @SuppressLint("HandlerLeak")
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
-
+                    ContractDetailsEntity contractDetailsEntity = (ContractDetailsEntity) msg.obj;
+                    tvContractNum.setText(contractDetailsEntity.getContractNo());
+                    tvUnit.setText(contractDetailsEntity.getPartyAName());
+                    tvStartDate.setText(contractDetailsEntity.getContractStartTime());
+                    tvEndDate.setText(contractDetailsEntity.getContractStopTime());
+                    int state=contractDetailsEntity.getStatus();
+                    if (state==5){
+                        tvState.setText("待审核");
+                    }else if (state==10){
+                        tvState.setText("已撤销");
+                    }else if (state==15){
+                        tvState.setText("正常");
+                    }else if (state==20){
+                        tvState.setText("未生效");
+                    }else if (state==30){
+                        tvState.setText("已过期");
+                    }else if (state==40){
+                        tvState.setText("驳回");
+                    }
+                    picList=contractDetailsEntity.getPictures();
+                    list = contractDetailsEntity.getSupplierProductList();
+                    adapter.setDatas(list);
+                    break;
+                case 1:
+                    dismissProgressDialog();
+                    break;
+                case 2:
+                    dismissProgressDialog();
+                    MsgUtils.showLongToast(mContext,"成功！");
+                    setResult(RESULT_OK);
+                    finish();
+                    break;
+                case -1:
+                    dismissProgressDialog();
+                    MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
         }
@@ -72,6 +119,33 @@ public class ContractDetailsActivity extends AllenBaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        toolbar.inflateMenu(R.menu.menu_contract);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (actHelper.isFastClick()){
+            return super.onOptionsItemSelected(item);
+        }
+        switch (item.getItemId()) {
+            case R.id.item_contract:
+                if (picList!=null&&!picList.isEmpty()){
+                    Intent intent=new Intent(mContext,PicsActivity.class);
+                    intent.putStringArrayListExtra("Urls", (ArrayList<String>) picList);
+                    startActivity(intent);
+                }else {
+                    MsgUtils.showLongToast(mContext,"当前合同没有对应图片!");
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void initBar() {
         ButterKnife.bind(this);
         toolbar.setTitle("合同详情");
@@ -81,23 +155,61 @@ public class ContractDetailsActivity extends AllenBaseActivity {
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-        for (int i = 0; i < 3; i++) {
-            list.add(new ContractDetailsEntity());
-        }
+        id = getIntent().getStringExtra("ID");
+        loadData();
         initAdapter();
+    }
+
+    private void loadData() {
+        showProgressDialog("");
+        DataHelper.init().getContractDetails(id, new HttpCallBack<ContractDetailsEntity>() {
+            @Override
+            public void onSuccess(ContractDetailsEntity respone) {
+                Message msg = new Message();
+                msg.what = 0;
+                msg.obj = respone;
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Logger.e("debug", respone.toString());
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
     }
 
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter=new CommonAdapter<ContractDetailsEntity>(mContext,R.layout.contract_details_item_layout) {
+        adapter = new CommonAdapter<ContractDetailsEntity.SupplierProductListBean>(mContext, R
+                .layout.contract_details_item_layout) {
             @Override
-            public void convert(ViewHolder holder, ContractDetailsEntity entity, int position) {
+            public void convert(ViewHolder holder, ContractDetailsEntity.SupplierProductListBean
+                    entity, int position) {
+                holder.setText(R.id.tv_name, entity.getPackageName());
+                holder.setText(R.id.tv_danwei, entity.getUnit());
+                holder.setText(R.id.tv_guige, entity.getSpec());
 
             }
         };
         recyclerview.setAdapter(adapter);
-        adapter.setDatas(list);
     }
 
 
@@ -113,6 +225,9 @@ public class ContractDetailsActivity extends AllenBaseActivity {
 
     @OnClick({R.id.tv_contract_num, R.id.tv_unit, R.id.tv_cjr, R.id.btn_submit})
     public void onViewClicked(View view) {
+        if (actHelper.isFastClick()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.tv_contract_num:
                 break;
@@ -121,7 +236,46 @@ public class ContractDetailsActivity extends AllenBaseActivity {
             case R.id.tv_cjr:
                 break;
             case R.id.btn_submit:
+                MsgUtils.showMDMessage(mContext, "确定通过审核?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        passVer();
+                    }
+                });
+
                 break;
         }
     }
+
+    private void passVer(){
+        showProgressDialog("");
+        DataHelper.init().getContractExamine(id, true, "", new HttpCallBack() {
+            @Override
+            public void onSuccess(Object respone) {
+
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 2;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
 }

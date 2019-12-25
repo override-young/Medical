@@ -7,117 +7,140 @@
     android:orientation="vertical"
     tools:context=".todo.DoDifferenceActivity">
 
-    <include layout="@layout/alen_toolbar_layout"/>
+    <include layout="@layout/alen_toolbar_layout" />
 
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/frame_eight_distance"
-        >
+        android:padding="@dimen/frame_eight_distance">
+
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="账单编号"
                 android:paddingLeft="@dimen/frame_edge_distance"
                 android:paddingTop="@dimen/frame_eight_distance"
+                android:text="账单编号"
+                android:textColor="@color/text_normal_grey_color"
+                android:textSize="@dimen/frame_text_small_size"
 
                 />
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tv_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/light_green"
-                android:textSize="@dimen/frame_text_normal_size"
-                android:text="20191212005"
                 android:paddingLeft="@dimen/frame_edge_distance"
                 android:paddingTop="@dimen/frame_eight_distance"
-                />
+                android:text="20191212005"
+                android:textColor="@color/light_green"
+                android:textSize="@dimen/frame_text_normal_size" />
         </android.support.v7.widget.LinearLayoutCompat>
+
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="账单日期"
                 android:paddingLeft="@dimen/frame_edge_distance"
                 android:paddingTop="@dimen/frame_eight_distance"
+                android:text="账单日期"
+                android:textColor="@color/text_normal_grey_color"
+                android:textSize="@dimen/frame_text_small_size"
 
                 />
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/light_green"
-                android:textSize="@dimen/frame_text_normal_size"
-                android:text="2019-12-10"
                 android:paddingLeft="@dimen/frame_edge_distance"
                 android:paddingTop="@dimen/frame_eight_distance"
-                />
+                android:text="2019-12-10"
+                android:textColor="@color/light_green"
+                android:textSize="@dimen/frame_text_normal_size" />
         </android.support.v7.widget.LinearLayoutCompat>
 
     </android.support.v7.widget.LinearLayoutCompat>
+
+
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="@dimen/frame_eight_distance"
-        >
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/brown"
-            android:textSize="@dimen/frame_text_normal_size"
-            android:text="待审核"
-            android:paddingLeft="@dimen/frame_edge_distance"
-            android:paddingTop="@dimen/frame_eight_distance"
-            />
-        <allen.frame.widget.MaterialRefreshLayout
-            android:id="@+id/refreshLayout"
+        android:padding="@dimen/frame_eight_distance">
+
+        <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <com.yanzhenjie.recyclerview.SwipeRecyclerView
-                android:id="@+id/swipeRecyclerView"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/frame_edge_distance"
+                android:text="差异详情"
+                android:textColor="@color/brown"
+                android:textSize="@dimen/frame_text_normal_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@mipmap/add"
+                android:drawablePadding="@dimen/frame_four_distance"
+                android:gravity="center"
+                android:paddingRight="@dimen/frame_eight_distance"
+                android:text="添加"
+                android:textColor="@color/btn_normal_color"
+                android:textSize="@dimen/frame_text_normal_size" />
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/frame_eight_distance"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="@dimen/frame_four_distance"
+            app:cardElevation="@dimen/frame_four_distance">
+
+            <allen.frame.widget.MaterialRefreshLayout
+                android:id="@+id/refreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            </com.yanzhenjie.recyclerview.SwipeRecyclerView>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone">
 
-            </android.support.v7.widget.RecyclerView>
+                <com.yanzhenjie.recyclerview.SwipeRecyclerView
+                    android:id="@+id/swipeRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></com.yanzhenjie.recyclerview.SwipeRecyclerView>
 
-        </allen.frame.widget.MaterialRefreshLayout>
-
+            </allen.frame.widget.MaterialRefreshLayout>
+        </android.support.v7.widget.CardView>
     </android.support.v7.widget.LinearLayoutCompat>
+
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_selector1"
         android:layout_margin="@dimen/frame_edge_distance"
+        android:background="@drawable/btn_selector1"
         android:text="保存"
-        android:textSize="@dimen/frame_text_normal_size"
         android:textColor="@color/white"
-        />
+        android:textSize="@dimen/frame_text_normal_size" />
 
 
 </android.support.v7.widget.LinearLayoutCompat>

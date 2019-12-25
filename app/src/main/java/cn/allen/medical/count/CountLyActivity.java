@@ -16,13 +16,22 @@ import java.util.List;
 
 import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
+import allen.frame.entry.Type;
+import allen.frame.tools.ChoiceTypeDialog;
+import allen.frame.tools.DateUtils;
+import allen.frame.tools.Logger;
+import allen.frame.tools.MsgUtils;
 import allen.frame.widget.MaterialRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.allen.medical.R;
-import cn.allen.medical.adapter.TjAdapter;
+import cn.allen.medical.data.DataHelper;
+import cn.allen.medical.data.HttpCallBack;
+import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.SysltjEntity;
+import cn.allen.medical.utils.CommonAdapter;
+import cn.allen.medical.utils.ViewHolder;
 
 public class CountLyActivity extends AllenBaseActivity {
     @BindView(R.id.toolbar)
@@ -35,8 +44,91 @@ public class CountLyActivity extends AllenBaseActivity {
     AppCompatTextView lyKs;
     @BindView(R.id.ly_date)
     AppCompatTextView lyDate;
-    private TjAdapter adapter;
-    private List<SysltjEntity> list;
+    private CommonAdapter<SysltjEntity.ItemsBean> adapter;
+    private List<SysltjEntity.ItemsBean> list=new ArrayList<>();
+    private List<SysltjEntity.ItemsBean> sublist=new ArrayList<>();
+    private List<Type> ksList=new ArrayList<>();
+    private boolean isRefresh = false;
+    private boolean isStart=false;
+    private boolean isFirstLoad=false;
+    private int page = 0, pageSize = 20;
+    private String ksID="",startDate="",endDate="";
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    if (isRefresh) {
+                        list = sublist;
+                        mater.finishRefresh();
+                    } else {
+                        if (page == 1) {
+                            list = sublist;
+                        } else {
+                            list.addAll(sublist);
+                        }
+                        mater.finishRefreshLoadMore();
+                    }
+                    adapter.setDatas(list);
+                    actHelper.setCanLoadMore(mater, pageSize, list);
+                    break;
+                case 1:
+                    dismissProgressDialog();
+                    mater.finishRefreshing();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
+                    break;
+                case 2:
+                    if (isFirstLoad) {
+                        isFirstLoad=false;
+                        if (!ksList.isEmpty()) {
+                            ksID = ksList.get(0).getId();
+                            lyKs.setText(ksList.get(0).getName());
+                            loadData();
+                        }else {
+                            ksID="";
+                            lyKs.setText("请选择");
+                            loadData();
+                        }
+                    }else {
+                        int len = ksList == null ? 0 : ksList.size();
+                        if (len > 1) {
+                            ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 3);
+                            dialog.showDialog("请选择科室", lyKs, ksList);
+                        } else {
+                            MsgUtils.showMDMessage(context, "科室数据获取失败,请重试!");
+                        }
+                    }
+                    break;
+                case 3:
+                    ksID=ksList.get((int)msg.obj).getId();
+                    isRefresh=true;
+                    page=0;
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
+                    loadData();
+                    break;
+                case 100:
+                    if (isStart) {
+                        startDate = (String) msg.obj;
+                        isStart=false;
+                        DateUtils.doSetDateDialog(context,handler);
+                    }else {
+                        endDate=(String) msg.obj;
+                        lyDate.setText(startDate+"至"+endDate);
+                        isRefresh=true;
+                        page=0;
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
+                        loadData();
+                    }
+                    break;
+                case -1:
+                    dismissProgressDialog();
+                    MsgUtils.showMDMessage(context, (String) msg.obj);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected boolean isStatusBarColorWhite() {
@@ -59,12 +151,56 @@ public class CountLyActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
-        adapter = new TjAdapter();
-        LinearLayoutManager manager = new LinearLayoutManager(context);
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        rv.setLayoutManager(manager);
+        startDate=DateUtils.getStringByFormat(DateUtils.getFirstdayofThisMonth(),"yyyy-MM-dd");
+        endDate=DateUtils.getCurrentDate("yyyy-MM-dd");
+        lyDate.setText(startDate+"至"+endDate);
+        initAdapter();
+        isFirstLoad=true;
+        loadKs();
+//        loadData();
+    }
+
+    private void loadKs() {
+        DataHelper.init().getKeShi(new HttpCallBack<List<Type>>() {
+            @Override
+            public void onSuccess(List<Type> respone) {
+                ksList=respone;
+                handler.sendEmptyMessage(2);
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Logger.e("debug", respone.toString());
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
+    private void initAdapter() {
+        rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager
+                .VERTICAL, false));
+        adapter=new CommonAdapter<SysltjEntity.ItemsBean>(context,R.layout.count_item_layout) {
+            @Override
+            public void convert(ViewHolder holder, SysltjEntity.ItemsBean entity, int position) {
+                holder.setText(R.id.count_item_name,entity.getPName());
+                holder.setText(R.id.count_item_units,entity.getPUnit());
+                holder.setText(R.id.count_item_spec,entity.getPSpec());
+                holder.setText(R.id.count_item_quantity,entity.getQuantity()+"");
+            }
+        };
         rv.setAdapter(adapter);
-        loadData();
     }
 
     @Override
@@ -78,33 +214,40 @@ public class CountLyActivity extends AllenBaseActivity {
     }
 
     private void loadData() {
-        new Thread(new Runnable() {
+        DataHelper.init().getLiyongCount(page++,ksID,startDate,endDate,new HttpCallBack<SysltjEntity>() {
             @Override
-            public void run() {
-                list = new ArrayList<>();
-                list.add(new SysltjEntity());
-                list.add(new SysltjEntity());
-                list.add(new SysltjEntity());
-                list.add(new SysltjEntity());
-                list.add(new SysltjEntity());
-                list.add(new SysltjEntity());
+            public void onSuccess(SysltjEntity respone) {
+                sublist = respone.getItems();
+                pageSize = respone.getPageSize();
                 handler.sendEmptyMessage(0);
             }
-        }).start();
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Logger.e("debug", respone.toString());
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
     }
 
-    @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
-                    adapter.setData(list);
-                    break;
-            }
-        }
-    };
+
 
     @OnClick({R.id.ly_ks, R.id.ly_date})
     public void onViewClicked(View view) {
@@ -113,8 +256,18 @@ public class CountLyActivity extends AllenBaseActivity {
         }
         switch (view.getId()) {
             case R.id.ly_ks:
+                int len = ksList == null ? 0 : ksList.size();
+                if (len > 1) {
+                    ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 3);
+                    dialog.showDialog("请选择科室", lyKs, ksList);
+                } else {
+                    loadKs();
+                }
+
                 break;
             case R.id.ly_date:
+                isStart=true;
+                DateUtils.doSetDateDialog(context,handler);
                 break;
         }
     }

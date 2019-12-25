@@ -24,6 +24,7 @@ import butterknife.Unbinder;
 import cn.allen.medical.R;
 import cn.allen.medical.adapter.MenuAdapter;
 import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.entry.SysltjEntity;
 import cn.allen.medical.warning.CompanyWarningActivity;
 import cn.allen.medical.warning.ContractWarningActivity;
@@ -74,17 +75,16 @@ public class CountFragment extends Fragment {
             @Override
             public void onItemClick(MeMenu menu) {
                 switch (menu.getCode()){
-                    case "1":
-
+                    case MenuEnum.count_rk:
                         startActivity(new Intent(getContext(),SelectSumChartActivity.class));
                         break;
-                    case "2":
+                    case MenuEnum.count_kcsl:
                         startActivity(new Intent(getContext(),KucunCountActivity.class));
                         break;
-                    case "3":
+                    case MenuEnum.count_ly:
                         startActivity(new Intent(getActivity(),CountLyActivity.class));
                         break;
-                    case "4":
+                    case MenuEnum.count_sy:
                         startActivity(new Intent(getContext(),SysltjActivity.class));
 
                         break;

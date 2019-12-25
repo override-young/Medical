@@ -17,6 +17,15 @@ public class User implements Serializable {
     private String email;
     private String address;
     private String pictureUrl;
+    private String url;//关于我们url
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public User() {
     }

@@ -70,7 +70,11 @@
         <activity android:name=".todo.ToDoContractActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".todo.ToDoBillActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".todo.PicsActivity"
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".todo.ToDoPriceActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".todo.BillDetailsActivity"
