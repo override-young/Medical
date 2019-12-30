@@ -111,4 +111,41 @@ public class HttpRequest {
             }
         });
     }
+
+    public <T>void scanPost(String url,HttpCallBack<T> callBack){
+        OkHttpClient client = new OkHttpClient.Builder().callTimeout(60,TimeUnit.SECONDS).connectTimeout(60,TimeUnit.SECONDS).readTimeout(60,TimeUnit.SECONDS)
+                .build();// 创建OkHttpClient对象。
+        Request request = new Request.Builder().post(okhttp3.internal.Util.EMPTY_REQUEST).url(url)
+                .addHeader("keep-alive","false")
+                .addHeader("Authorization","Bearer "+token)
+                .build();
+        Logger.http("header",request.headers().toString());
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callBack.onFailed(new MeRespone(-1,"网络请求错误!","网络请求错误!"));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String data = response.body().string();
+                    Logger.http("data",">>"+data);
+                    MeRespone respone = new Gson().fromJson(data,MeRespone.class);
+                    if(respone.getCode()==200){
+                        if(respone.getData()!=null){
+                            callBack.onSuccess(new Gson().fromJson(new Gson().toJson(respone.getData()),callBack.getGenericityType()));
+                        }
+                        callBack.onTodo(respone);
+                    }else{
+                        if(respone.getCode()==406||respone.getCode()==408){
+                            callBack.tokenErro(respone);
+                        }else{
+                            callBack.onFailed(respone);
+                        }
+                    }
+                }
+            }
+        });
+    }
 }

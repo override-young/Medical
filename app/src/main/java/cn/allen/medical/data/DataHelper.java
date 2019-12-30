@@ -74,6 +74,15 @@ public class DataHelper {
     }
 
     /**
+     * 扫码登录
+     * @param url
+     * @param callBack
+     */
+    public void scanLogin(String url, HttpCallBack callBack){
+        request.scanPost(url,callBack);
+    }
+
+    /**
      * 退出登录
      * @param callBack
      */

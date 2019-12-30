@@ -1,4 +1,7 @@
 <resources>
     <string name="frameprogress">正在加载,请稍等...</string>
     <string name="app_frame_result_null">暂无数据</string>
+    <string name="msg_default_status">请二维码置于取景框内扫描。  </string>
+    <string name="msg_camera_framework_bug">很遗憾，Android 相机出现问题。你可能需要重启设备。</string>
+    <string name="msg_intent_failed">抱歉，无法打开应用。二维码内容可能无效。</string>
 </resources>
