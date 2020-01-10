@@ -27,7 +27,7 @@
                 android:paddingLeft="@dimen/frame_edge_distance"
                 android:paddingTop="@dimen/frame_eight_distance"
                 android:text="供应商"
-                android:textColor="@color/text_normal_grey_color"
+                android:textColor="@color/text_normal_grey_color2"
                 android:textSize="@dimen/frame_text_small_size"
 
                 />
@@ -55,7 +55,7 @@
                 android:paddingLeft="@dimen/frame_edge_distance"
                 android:paddingTop="@dimen/frame_eight_distance"
                 android:text="变更日期"
-                android:textColor="@color/text_normal_grey_color"
+                android:textColor="@color/text_normal_grey_color2"
                 android:textSize="@dimen/frame_text_small_size"
 
                 />
@@ -86,6 +86,7 @@
             android:paddingLeft="@dimen/frame_edge_distance"
             android:paddingTop="@dimen/frame_eight_distance"
             android:text="待审核"
+            android:textStyle="bold"
             android:textColor="@color/brown"
             android:textSize="@dimen/frame_text_normal_size" />
 

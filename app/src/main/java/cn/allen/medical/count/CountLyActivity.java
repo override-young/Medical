@@ -1,17 +1,30 @@
 package cn.allen.medical.count;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import allen.frame.ActivityHelper;
@@ -21,6 +34,7 @@ import allen.frame.tools.ChoiceTypeDialog;
 import allen.frame.tools.DateUtils;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
+import allen.frame.widget.CustomDatePicker;
 import allen.frame.widget.MaterialRefreshLayout;
 import allen.frame.widget.MaterialRefreshListener;
 import butterknife.BindView;
@@ -32,9 +46,12 @@ import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.SysltjEntity;
 import cn.allen.medical.utils.CommonAdapter;
+import cn.allen.medical.utils.CommonUtils;
+import cn.allen.medical.utils.PopupWindow.CommonPopupWindow;
+import cn.allen.medical.utils.PopupWindow.CommonUtil;
 import cn.allen.medical.utils.ViewHolder;
 
-public class CountLyActivity extends AllenBaseActivity {
+public class CountLyActivity extends AllenBaseActivity implements CommonPopupWindow.ViewInterface {
     @BindView(R.id.toolbar)
     Toolbar bar;
     @BindView(R.id.rv)
@@ -46,14 +63,15 @@ public class CountLyActivity extends AllenBaseActivity {
     @BindView(R.id.ly_date)
     AppCompatTextView lyDate;
     private CommonAdapter<SysltjEntity.ItemsBean> adapter;
-    private List<SysltjEntity.ItemsBean> list=new ArrayList<>();
-    private List<SysltjEntity.ItemsBean> sublist=new ArrayList<>();
-    private List<Type> ksList=new ArrayList<>();
+    private List<SysltjEntity.ItemsBean> list = new ArrayList<>();
+    private List<SysltjEntity.ItemsBean> sublist = new ArrayList<>();
+    private List<Type> ksList = new ArrayList<>();
     private boolean isRefresh = false;
-    private boolean isStart=false;
-    private boolean isFirstLoad=false;
+    private boolean isStart = false;
+    private boolean isFirstLoad = false;
     private int page = 0, pageSize = 20;
-    private String ksID="",startDate="",endDate="";
+    private String ksID = "", startDate = "", endDate = "";
+    private String preStartDate = "", preEndDate = "";
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -78,21 +96,21 @@ public class CountLyActivity extends AllenBaseActivity {
                 case 1:
                     dismissProgressDialog();
                     mater.finishRefreshing();
-                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
                     break;
                 case 2:
                     if (isFirstLoad) {
-                        isFirstLoad=false;
+                        isFirstLoad = false;
                         if (!ksList.isEmpty()) {
                             ksID = ksList.get(0).getId();
                             lyKs.setText(ksList.get(0).getName());
                             loadData();
-                        }else {
-                            ksID="";
+                        } else {
+                            ksID = "";
                             lyKs.setText("请选择");
                             loadData();
                         }
-                    }else {
+                    } else {
                         int len = ksList == null ? 0 : ksList.size();
                         if (len > 1) {
                             ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 3);
@@ -103,25 +121,17 @@ public class CountLyActivity extends AllenBaseActivity {
                     }
                     break;
                 case 3:
-                    ksID=ksList.get((int)msg.obj).getId();
-                    isRefresh=true;
-                    page=0;
-                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
+                    ksID = ksList.get((int) msg.obj).getId();
+                    isRefresh = true;
+                    page = 0;
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
                     loadData();
                     break;
                 case 100:
-                    if (isStart) {
-                        startDate = (String) msg.obj;
-                        isStart=false;
-                        DateUtils.doSetDateDialog(context,handler);
-                    }else {
-                        endDate=(String) msg.obj;
-                        lyDate.setText(startDate+"至"+endDate);
-                        isRefresh=true;
-                        page=0;
-                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
-                        loadData();
-                    }
+                    isRefresh = true;
+                    page = 0;
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
+                    loadData();
                     break;
                 case -1:
                     dismissProgressDialog();
@@ -152,11 +162,13 @@ public class CountLyActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
-        startDate=DateUtils.getStringByFormat(DateUtils.getFirstdayofThisMonth(),"yyyy-MM-dd");
-        endDate=DateUtils.getCurrentDate("yyyy-MM-dd");
-        lyDate.setText(startDate+"至"+endDate);
+        startDate = DateUtils.getStringByFormat(DateUtils.getFirstdayofThisMonth(), "yyyy-MM-dd");
+        endDate = DateUtils.getCurrentDate("yyyy-MM-dd");
+        preStartDate = startDate;
+        preEndDate = endDate;
+        lyDate.setText(startDate + "至" + endDate);
         initAdapter();
-        isFirstLoad=true;
+        isFirstLoad = true;
         loadKs();
 //        loadData();
     }
@@ -165,7 +177,7 @@ public class CountLyActivity extends AllenBaseActivity {
         DataHelper.init().getKeShi(new HttpCallBack<List<Type>>() {
             @Override
             public void onSuccess(List<Type> respone) {
-                ksList=respone;
+                ksList = respone;
                 handler.sendEmptyMessage(2);
             }
 
@@ -192,13 +204,13 @@ public class CountLyActivity extends AllenBaseActivity {
     private void initAdapter() {
         rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager
                 .VERTICAL, false));
-        adapter=new CommonAdapter<SysltjEntity.ItemsBean>(context,R.layout.count_item_layout) {
+        adapter = new CommonAdapter<SysltjEntity.ItemsBean>(context, R.layout.count_item_layout) {
             @Override
             public void convert(ViewHolder holder, SysltjEntity.ItemsBean entity, int position) {
-                holder.setText(R.id.count_item_name,entity.getPName());
-                holder.setText(R.id.count_item_units,entity.getPUnit());
-                holder.setText(R.id.count_item_spec,entity.getPSpec());
-                holder.setText(R.id.count_item_quantity,entity.getQuantity()+"");
+                holder.setText(R.id.count_item_name, entity.getPName());
+                holder.setText(R.id.count_item_units, entity.getPUnit());
+                holder.setText(R.id.count_item_spec, entity.getPSpec());
+                holder.setText(R.id.count_item_quantity, entity.getQuantity() + "");
             }
         };
         rv.setAdapter(adapter);
@@ -232,44 +244,44 @@ public class CountLyActivity extends AllenBaseActivity {
 
 
     private void loadData() {
-        DataHelper.init().getLiyongCount(page++,ksID,startDate,endDate,new HttpCallBack<SysltjEntity>() {
-            @Override
-            public void onSuccess(SysltjEntity respone) {
-                sublist = respone.getItems();
-                pageSize = respone.getPageSize();
-                handler.sendEmptyMessage(0);
-            }
+        DataHelper.init().getLiyongCount(page++, ksID, startDate, endDate, new
+                HttpCallBack<SysltjEntity>() {
+                    @Override
+                    public void onSuccess(SysltjEntity respone) {
+                        sublist = respone.getItems();
+                        pageSize = respone.getPageSize();
+                        handler.sendEmptyMessage(0);
+                    }
 
-            @Override
-            public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
+                    @Override
+                    public void onTodo(MeRespone respone) {
+                        Message msg = new Message();
+                        msg.what = 1;
+                        msg.obj = respone.getMessage();
+                        handler.sendMessage(msg);
 
-            }
+                    }
 
-            @Override
-            public void tokenErro(MeRespone respone) {
+                    @Override
+                    public void tokenErro(MeRespone respone) {
 
-            }
+                    }
 
-            @Override
-            public void onFailed(MeRespone respone) {
-                Logger.e("debug", respone.toString());
-                Message msg = new Message();
-                msg.what = -1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
-            }
-        });
+                    @Override
+                    public void onFailed(MeRespone respone) {
+                        Logger.e("debug", respone.toString());
+                        Message msg = new Message();
+                        msg.what = -1;
+                        msg.obj = respone.getMessage();
+                        handler.sendMessage(msg);
+                    }
+                });
     }
-
 
 
     @OnClick({R.id.ly_ks, R.id.ly_date})
     public void onViewClicked(View view) {
-        if(actHelper.isFastClick()){
+        if (actHelper.isFastClick()) {
             return;
         }
         switch (view.getId()) {
@@ -284,9 +296,114 @@ public class CountLyActivity extends AllenBaseActivity {
 
                 break;
             case R.id.ly_date:
-                isStart=true;
-                DateUtils.doSetDateDialog(context,handler);
+                showPop();
                 break;
         }
     }
+
+    private CommonPopupWindow popupWindow;
+
+    public void showPop() {
+        if (popupWindow != null && popupWindow.isShowing()) return;
+        View upView = LayoutInflater.from(this).inflate(R.layout.date_range_picker_layout, null);
+        //测量View的宽高
+        CommonUtil.measureWidthAndHeight(upView);
+        popupWindow = new CommonPopupWindow.Builder(context)
+                .setView(R.layout.date_range_picker_layout)
+                .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, upView.getMeasuredHeight())
+                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
+                .setAnimationStyle(R.style.AnimUp)
+                .setViewOnclickListener(this)
+                .create();
+
+        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void getChildView(View view, int layoutResId) {
+        switch (layoutResId) {
+            case R.layout.date_range_picker_layout:
+                CustomDatePicker datePickerStart = view.findViewById(R.id.datePickerStart);
+                CustomDatePicker datePickerEnd = view.findViewById(R.id.datePickerEnd);
+                TextView cancelBtn = view.findViewById(R.id.cancelBtn);
+                TextView submitBtn = view.findViewById(R.id.submitBtn);
+                datePickerStart.setDescendantFocusability(DatePicker.FOCUS_BLOCK_DESCENDANTS);
+                datePickerEnd.setDescendantFocusability(DatePicker.FOCUS_BLOCK_DESCENDANTS);
+                datePickerStart.setPickerMargin(3);
+                datePickerStart.setDividerColor(getResources().getColor(R.color.gray));
+                datePickerEnd.setDividerColor(getResources().getColor(R.color.gray));
+                datePickerEnd.setPickerMargin(3);
+
+                if (!CommonUtils.isNull(startDate) && !CommonUtils.isNull(endDate)) {
+                    datePickerStart.setDate(startDate);
+                    datePickerEnd.setDate(endDate);
+                    datePickerStart.setOnDateChangedListener(startDateChangedListener);
+                    datePickerEnd.setOnDateChangedListener(endDateChangedListener);
+//                    datePickerStart.init(Integer.valueOf(startYear), Integer.valueOf
+// (startMonth), Integer.valueOf(startDay),startDateChangedListener);
+//                    datePickerEnd.init(Integer.valueOf(endYear), Integer.valueOf(endMonth),
+// Integer.valueOf(endDay), endDateChangedListener);
+                } else {
+                    Calendar calendar = Calendar.getInstance();
+                    int year = calendar.get(Calendar.YEAR);
+                    int monthOfYear = calendar.get(Calendar.MONTH);
+                    int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                    datePickerStart.init(year, monthOfYear, dayOfMonth, startDateChangedListener);
+                    datePickerEnd.init(year, monthOfYear, dayOfMonth, endDateChangedListener);
+                }
+
+                submitBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startDate = preStartDate;
+                        endDate = preEndDate;
+                        lyDate.setText(startDate + "至" + endDate);
+                        handler.sendEmptyMessage(100);
+                        popupWindow.dismiss();
+                    }
+                });
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (popupWindow != null) {
+                            popupWindow.dismiss();
+                        }
+                    }
+                });
+                break;
+        }
+    }
+
+    private DatePicker.OnDateChangedListener startDateChangedListener = new DatePicker
+            .OnDateChangedListener() {
+
+
+        @Override
+        public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            // 获取一个日历对象，并初始化为当前选中的时间
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, monthOfYear, dayOfMonth);
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd");
+            preStartDate = format.format(calendar.getTime());
+        }
+    };
+
+    private DatePicker.OnDateChangedListener endDateChangedListener = new DatePicker
+            .OnDateChangedListener() {
+
+
+        @Override
+        public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+// 获取一个日历对象，并初始化为当前选中的时间
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, monthOfYear, dayOfMonth);
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd");
+            preEndDate = format.format(calendar.getTime());
+        }
+    };
+
+
 }

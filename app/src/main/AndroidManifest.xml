@@ -50,7 +50,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".count.SysltjActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Picker"/>
         <activity
             android:name=".mine.AboutUsActivity"
             android:screenOrientation="portrait" />
@@ -82,7 +83,9 @@
         <!-- 统计 start -->
         <activity
             android:name=".count.CountLyActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Picker"
+            />
 
         <!-- 统计 end -->
 

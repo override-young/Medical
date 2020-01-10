@@ -95,7 +95,7 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        toolbar.setTitle("企业资质警告");
+        actHelper.setToolbarTitleCenter(toolbar,"企业资质警告");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -127,7 +127,7 @@ public class CompanyWarningActivity extends AllenBaseActivity {
                     public void convert(ViewHolder holder, CompanyWarningEntity.ItemsBean
                             .CertListBean entity, int position) {
                         holder.setText(R.id.tv_permit_name,entity.getCertName());
-                        holder.setText(R.id.tv_due_time, entity.getExpireDate());
+                        holder.setText(R.id.tv_due_time, entity.getExpireDate().replaceAll(" 00:00:00",""));
                         Date currentDate = DateUtils.stringToDate(entity.getCurrentDate(), "yyyy-MM-dd " +
                                 "HH:mm:ss");
                         if (StringUtils.empty(entity.getExpireDate())) {
