@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/frame_eight_distance"
             android:text="营业执照"
+            android:textStyle="bold"
             android:textColor="@color/text_normal_tint_color"
             android:textSize="@dimen/frame_text_small_size" />
 
@@ -56,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/frame_two_distance"
                 android:text="10"
+                android:textStyle="bold"
                 android:textColor="@color/brown"
                 android:textSize="@dimen/frame_text_normal_size" />
 

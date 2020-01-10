@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/shape"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingTop="15dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="选择时间"
+        android:textColor="@color/light_green2"
+        android:layout_centerInParent="true"
+        android:textSize="@dimen/frame_text_normal_size"
+        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/cancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/close"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/frame_eight_distance"
+            />
+    </RelativeLayout>
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <allen.frame.widget.CustomDatePicker
+            android:id="@+id/datePickerStart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            style="@style/Theme.Picker"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
+            android:spinnersShown="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="至"
+            android:padding="@dimen/frame_eight_distance"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/light_green2"
+            android:textSize="16sp" />
+
+        <allen.frame.widget.CustomDatePicker
+            android:id="@+id/datePickerEnd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            style="@style/Theme.Picker"
+            android:datePickerMode="spinner"
+            android:spinnersShown="true"
+            android:calendarViewShown="false"
+            />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+
+
+
+        <TextView
+            android:id="@+id/submitBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/frame_ten_distance"
+            android:layout_marginLeft="@dimen/frame_edge_distance"
+            android:layout_marginRight="@dimen/frame_edge_distance"
+            android:layout_marginBottom="@dimen/frame_edge_distance"
+            android:textSize="@dimen/frame_text_normal_size"
+            android:gravity="center"
+            android:background="@drawable/btn_selector1"
+            android:text="确定"
+            android:textColor="@color/white" />
+
+
+</android.support.v7.widget.LinearLayoutCompat>

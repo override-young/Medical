@@ -33,6 +33,7 @@ import cn.allen.medical.entry.BillDetailsEntity;
 import cn.allen.medical.entry.PriceDetailsEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
+import cn.allen.medical.utils.WarningDialog;
 
 public class PriceDetailsActivity extends AllenBaseActivity {
 
@@ -71,6 +72,9 @@ public class PriceDetailsActivity extends AllenBaseActivity {
                     MsgUtils.showLongToast(mContext,"成功！");
                     setResult(RESULT_OK);
                     finish();
+                    break;
+                case 3:
+                    passVer();
                     break;
                 case -1:
                     dismissProgressDialog();
@@ -152,7 +156,7 @@ public class PriceDetailsActivity extends AllenBaseActivity {
                 holder.setText(R.id.tv_guige,entity.getPSpec());
                 holder.setText(R.id.tv_before,entity.getPrePrice()+"");
                 holder.setText(R.id.tv_danwei,entity.getPUnit());
-                holder.setText(R.id.tv_date,entity.getPriceStartTime());
+                holder.setText(R.id.tv_date,entity.getPriceStartTime().replaceAll(" 00:00:00",""));
             }
         };
         recyclerview.setAdapter(adapter);
@@ -181,12 +185,8 @@ public class PriceDetailsActivity extends AllenBaseActivity {
             case R.id.tv_bgrq:
                 break;
             case R.id.btn_submit:
-                MsgUtils.showMDMessage(mContext, "确定通过审核?", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        passVer();
-                    }
-                });
+                WarningDialog warningDialog=new WarningDialog(mContext,handler,"温馨提示","确定通过审核吗?",3);
+                warningDialog.show();
                 break;
         }
     }

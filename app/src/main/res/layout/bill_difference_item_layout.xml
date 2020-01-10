@@ -7,8 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/frame_edge_distance"
-        android:paddingRight="@dimen/frame_edge_distance"
         >
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="0dp"
@@ -45,8 +43,9 @@
             android:paddingRight="@dimen/frame_eight_distance"
             >
             <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/frame_4_word_width"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:textColor="@color/text_normal_grey_color"
                 android:textSize="@dimen/frame_text_small_size"
                 android:text="单位"
@@ -69,8 +68,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/frame_edge_distance"
-        android:paddingRight="@dimen/frame_edge_distance"
         >
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="0dp"
@@ -107,8 +104,9 @@
             android:paddingRight="@dimen/frame_eight_distance"
             >
             <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/frame_4_word_width"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:textColor="@color/text_normal_grey_color"
                 android:textSize="@dimen/frame_text_small_size"
                 android:text="差异数量"

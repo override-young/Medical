@@ -35,6 +35,7 @@ import cn.allen.medical.entry.BillDifferentEntity;
 import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
+import cn.allen.medical.utils.WarningDialog;
 
 public class BillDetailsActivity extends AllenBaseActivity {
 
@@ -102,6 +103,13 @@ public class BillDetailsActivity extends AllenBaseActivity {
                     MsgUtils.showLongToast(mContext,"成功！");
                     setResult(RESULT_OK);
                     finish();
+                    break;
+                case 4:
+                    if (code.equals(MenuEnum.todo_zd_ks)) {
+                        passVerKs();
+                    } else if (code.equals(MenuEnum.todo_zd_sb)){
+                        passVerSbk();
+                    }
                     break;
                 case -1:
                     dismissProgressDialog();
@@ -240,17 +248,19 @@ public class BillDetailsActivity extends AllenBaseActivity {
         }
         switch (view.getId()) {
             case R.id.btn_pass:
-                MsgUtils.showMDMessage(mContext, "确定通过审核?", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (code.equals(MenuEnum.todo_zd_ks)) {
-                            passVerKs();
-                        } else if (code.equals(MenuEnum.todo_zd_sb)){
-                            passVerSbk();
-                        }
-
-                    }
-                });
+                WarningDialog warningDialog=new WarningDialog(mContext,handler,"温馨提示","确定通过审核吗?",4);
+                warningDialog.show();
+//                MsgUtils.showMDMessage(mContext, "确定通过审核?", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        if (code.equals(MenuEnum.todo_zd_ks)) {
+//                            passVerKs();
+//                        } else if (code.equals(MenuEnum.todo_zd_sb)){
+//                            passVerSbk();
+//                        }
+//
+//                    }
+//                });
                 break;
             case R.id.btn_do_different:
                 Intent intent = new Intent(mContext, DoDifferenceActivity.class);

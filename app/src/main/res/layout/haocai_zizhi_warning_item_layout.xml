@@ -1,178 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/frame_edge_distance"
-        android:paddingRight="@dimen/frame_edge_distance"
-        >
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/frame_eight_distance"
+        android:layout_marginBottom="@dimen/frame_eight_distance"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="@dimen/frame_four_distance"
+        app:cardElevation="@dimen/frame_four_distance">
+
         <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/frame_eight_distance"
-            android:paddingRight="@dimen/frame_eight_distance"
-            >
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="名称"
-                />
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_name"
-                android:layout_width="0dp"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/frame_edge_distance"
+                android:paddingRight="@dimen/frame_edge_distance">
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/frame_eight_distance"
+                    android:paddingRight="@dimen/frame_eight_distance">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="名称"
+                        android:textColor="@color/text_normal_grey_color2"
+                        android:textSize="@dimen/frame_text_small_size" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="@dimen/frame_eight_distance"
+                        android:text="针"
+                        android:textColor="@color/text_normal_tint_color"
+                        android:textSize="@dimen/frame_text_small_size" />
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/frame_eight_distance"
+                    android:paddingRight="@dimen/frame_eight_distance">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="@dimen/frame_4_word_width"
+                        android:layout_height="wrap_content"
+                        android:text="单位"
+                        android:gravity="right"
+                        android:textColor="@color/text_normal_grey_color2"
+                        android:textSize="@dimen/frame_text_small_size" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv_danwei"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="@dimen/frame_eight_distance"
+                        android:text="颗"
+                        android:textColor="@color/text_normal_tint_color"
+                        android:textSize="@dimen/frame_text_small_size" />
+                </android.support.v7.widget.LinearLayoutCompat>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="针"
-                android:padding="@dimen/frame_eight_distance"
-                />
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/frame_edge_distance"
+                android:paddingRight="@dimen/frame_edge_distance">
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/frame_eight_distance"
+                    android:paddingRight="@dimen/frame_eight_distance">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="规格"
+                        android:textColor="@color/text_normal_grey_color2"
+                        android:textSize="@dimen/frame_text_small_size" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv_guige"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="@dimen/frame_eight_distance"
+                        android:text="CM"
+                        android:textColor="@color/text_normal_tint_color"
+                        android:textSize="@dimen/frame_text_small_size" />
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/frame_eight_distance"
+                    android:paddingRight="@dimen/frame_eight_distance">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="@dimen/frame_4_word_width"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="到期时间"
+                        android:textColor="@color/text_normal_grey_color2"
+                        android:textSize="@dimen/frame_text_small_size" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv_dqsj"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="@dimen/frame_eight_distance"
+                        android:text="2019-10-15"
+                        android:textColor="@color/text_normal_tint_color"
+                        android:textSize="@dimen/frame_text_small_size" />
+                </android.support.v7.widget.LinearLayoutCompat>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/frame_one_distance"
+                android:layout_marginLeft="@dimen/frame_edge_distance"
+                android:layout_marginRight="@dimen/frame_edge_distance"
+                android:background="@color/gray_line_color" />
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/frame_edge_distance"
+                android:paddingRight="@dimen/frame_edge_distance">
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/frame_eight_distance"
+                    android:paddingRight="@dimen/frame_eight_distance">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="注册证（备案凭证）效期剩余"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_normal_grey_color"
+                        android:textSize="@dimen/frame_text_small_size" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/frame_eight_distance"
+                        android:text="20"
+                        android:textStyle="bold"
+                        android:textColor="@color/brown"
+                        android:textSize="@dimen/frame_text_normal_size" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="天"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_normal_grey_color"
+                        android:textSize="@dimen/frame_text_small_size" />
+                </android.support.v7.widget.LinearLayoutCompat>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
         </android.support.v7.widget.LinearLayoutCompat>
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/frame_eight_distance"
-            android:paddingRight="@dimen/frame_eight_distance"
-            >
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="单位"
-                />
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_danwei"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="颗"
-                android:padding="@dimen/frame_eight_distance"
-                />
-        </android.support.v7.widget.LinearLayoutCompat>
-
-    </android.support.v7.widget.LinearLayoutCompat>
-
-    <android.support.v7.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/frame_edge_distance"
-        android:paddingRight="@dimen/frame_edge_distance"
-        >
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/frame_eight_distance"
-            android:paddingRight="@dimen/frame_eight_distance"
-            >
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="规格"
-                />
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_guige"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="CM"
-                android:padding="@dimen/frame_eight_distance"
-                />
-        </android.support.v7.widget.LinearLayoutCompat>
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/frame_eight_distance"
-            android:paddingRight="@dimen/frame_eight_distance"
-            >
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="到期时间"
-                />
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_dqsj"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="2019-10-15"
-                android:padding="@dimen/frame_eight_distance"
-                />
-        </android.support.v7.widget.LinearLayoutCompat>
-
-    </android.support.v7.widget.LinearLayoutCompat>
-
-    <android.support.v7.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/frame_edge_distance"
-        android:paddingRight="@dimen/frame_edge_distance"
-        >
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:paddingLeft="@dimen/frame_eight_distance"
-            android:paddingRight="@dimen/frame_eight_distance"
-            >
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="注册证（备案凭证）效期剩余"
-                />
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/brown"
-                android:textSize="@dimen/frame_text_normal_size"
-                android:text="20"
-                android:padding="@dimen/frame_eight_distance"
-                />
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_normal_grey_color"
-                android:textSize="@dimen/frame_text_small_size"
-                android:text="天"
-                />
-        </android.support.v7.widget.LinearLayoutCompat>
-
-    </android.support.v7.widget.LinearLayoutCompat>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/frame_one_distance"
-        android:background="@color/gray_line_color"/>
+    </android.support.v7.widget.CardView>
 </android.support.v7.widget.LinearLayoutCompat>

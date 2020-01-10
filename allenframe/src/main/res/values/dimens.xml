@@ -3,6 +3,7 @@
     <dimen name="frame_text_middle_size">18sp</dimen>
     <dimen name="frame_text_normal_size">16sp</dimen>
     <dimen name="frame_text_small_size">14sp</dimen>
+    <dimen name="frame_text_small_size_13">14sp</dimen>
     <dimen name="frame_text_smaller_size">12sp</dimen>
     <dimen name="frame_text_smallst_size">10sp</dimen>
 
@@ -14,6 +15,12 @@
     <dimen name="frame_ten_distance">10dp</dimen>
     <dimen name="frame_edge_distance">16dp</dimen>
     <dimen name="frame_32_distance">32dp</dimen>
+    <dimen name="frame_38_distance">38dp</dimen>
+
+    <dimen name="frame_4_word_width">60dp</dimen>
+    <dimen name="frame_245">245dp</dimen>
+    <dimen name="frame_150">150dp</dimen>
+
 
     <dimen name="frame_title_height">66dp</dimen>
     <dimen name="frame_title_icon_height">64dp</dimen>

@@ -94,7 +94,7 @@ public class ContractWarningActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        toolbar.setTitle("合同效期预警");
+        actHelper.setToolbarTitleCenter(toolbar,"合同效期预警");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -117,7 +117,7 @@ public class ContractWarningActivity extends AllenBaseActivity {
                     position) {
                 holder.setText(R.id.tv_name, entity.getOrganizationName());
                 holder.setText(R.id.tv_number, entity.getContractNo());
-                holder.setText(R.id.tv_end_time, entity.getExpiredDate());
+                holder.setText(R.id.tv_end_time, entity.getExpiredDate().replaceAll(" 00:00:00",""));
                 Date currentDate = DateUtils.stringToDate(entity.getCurrentDate(), "yyyy-MM-dd " +
                         "HH:mm:ss");
                 if (StringUtils.empty(entity.getExpiredDate())) {

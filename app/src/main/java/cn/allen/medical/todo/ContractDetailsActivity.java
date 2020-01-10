@@ -34,6 +34,7 @@ import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.ContractDetailsEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
+import cn.allen.medical.utils.WarningDialog;
 
 public class ContractDetailsActivity extends AllenBaseActivity {
 
@@ -70,8 +71,8 @@ public class ContractDetailsActivity extends AllenBaseActivity {
                     ContractDetailsEntity contractDetailsEntity = (ContractDetailsEntity) msg.obj;
                     tvContractNum.setText(contractDetailsEntity.getContractNo());
                     tvUnit.setText(contractDetailsEntity.getPartyAName());
-                    tvStartDate.setText(contractDetailsEntity.getContractStartTime());
-                    tvEndDate.setText(contractDetailsEntity.getContractStopTime());
+                    tvStartDate.setText(contractDetailsEntity.getContractStartTime().replaceAll(" 00:00:00",""));
+                    tvEndDate.setText(contractDetailsEntity.getContractStopTime().replaceAll(" 00:00:00",""));
                     int state=contractDetailsEntity.getStatus();
                     if (state==5){
                         tvState.setText("待审核");
@@ -98,6 +99,9 @@ public class ContractDetailsActivity extends AllenBaseActivity {
                     MsgUtils.showLongToast(mContext,"成功！");
                     setResult(RESULT_OK);
                     finish();
+                    break;
+                case 3:
+                    passVer();
                     break;
                 case -1:
                     dismissProgressDialog();
@@ -148,7 +152,7 @@ public class ContractDetailsActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        toolbar.setTitle("合同详情");
+        actHelper.setToolbarTitleCenter(toolbar,"合同详情");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -236,12 +240,8 @@ public class ContractDetailsActivity extends AllenBaseActivity {
             case R.id.tv_cjr:
                 break;
             case R.id.btn_submit:
-                MsgUtils.showMDMessage(mContext, "确定通过审核?", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        passVer();
-                    }
-                });
+                WarningDialog warningDialog=new WarningDialog(mContext,handler,"温馨提示","确定通过审核吗?",3);
+                warningDialog.show();
 
                 break;
         }

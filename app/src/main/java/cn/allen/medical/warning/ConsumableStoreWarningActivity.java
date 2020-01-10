@@ -98,7 +98,7 @@ public class ConsumableStoreWarningActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        toolbar.setTitle("耗材库存效期警告");
+        actHelper.setToolbarTitleCenter(toolbar,"耗材库存效期警告");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -119,9 +119,9 @@ public class ConsumableStoreWarningActivity extends AllenBaseActivity {
                 holder.setText(R.id.tv_name,entity.getProductName());
                 holder.setText(R.id.tv_pch,entity.getBatchNo());
                 holder.setText(R.id.tv_guige,entity.getPSpec());
-                holder.setText(R.id.tv_scrq,entity.getBornDate());
+                holder.setText(R.id.tv_scrq,entity.getBornDate().replaceAll(" 00:00:00",""));
                 holder.setText(R.id.tv_danwei,entity.getPUnit());
-                holder.setText(R.id.tv_gqrq,entity.getExpireDate());
+                holder.setText(R.id.tv_gqrq,entity.getExpireDate().replaceAll(" 00:00:00",""));
                 Date currentDate = DateUtils.stringToDate(entity.getCurrentDate(), "yyyy-MM-dd HH:mm:ss");
                 if (StringUtils.empty(entity.getExpireDate())){
                     holder.setText(R.id.tv_count, "--");
