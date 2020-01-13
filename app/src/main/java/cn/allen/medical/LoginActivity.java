@@ -72,7 +72,7 @@ public class LoginActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        Logger.init().setHttp(true).setDebug(true);
+        Logger.init().setHttp(Constants.IsDebug).setDebug(Constants.IsDebug);
         meter = new TimeMeter();
         meter.setMaxTime(60);
     }
