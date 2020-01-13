@@ -1,8 +1,10 @@
 package cn.allen.medical;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +18,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.ashokvarma.bottomnavigation.TextBadgeItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +34,6 @@ import allen.frame.tools.Intents;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
 import allen.frame.tools.StringUtils;
-import allen.frame.widget.BadgeView;
 import allen.frame.widget.ContrlScrollViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,12 +43,11 @@ import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.MenuEnum;
-import cn.allen.medical.entry.Role;
 import cn.allen.medical.mine.MineFragment;
 import cn.allen.medical.todo.TodoFragment;
-import cn.allen.medical.utils.Constants;
 import cn.allen.medical.utils.OnUpdateCountListener;
 import cn.allen.medical.warning.WarningFragment;
+import q.rorbin.badgeview.QBadgeView;
 
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
@@ -52,10 +57,9 @@ public class MainActivity extends AllenBaseActivity {
     Toolbar bar;
     @BindView(R.id.center_panel)
     ContrlScrollViewPager centerPanel;
-    @BindView(R.id.bottom_bar)
-    BottomNavigationView bottomBar;
-
-    private BadgeView dclBadge,yjBadge;
+    @BindView(R.id.bottom_navigation_bar)
+    BottomNavigationBar bottomNavBar;
+    private TextBadgeItem dclBadge,yjBadge;
     private int index = 0;
 
     private FragmentAdapter adapter;
@@ -72,6 +76,7 @@ public class MainActivity extends AllenBaseActivity {
     protected int getLayoutResID() {
         return R.layout.activity_main;
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_sm, menu);
         bar.getMenu().getItem(0).setVisible(false);
@@ -80,18 +85,18 @@ public class MainActivity extends AllenBaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(resultCode==RESULT_OK){
-            if(requestCode==11){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 11) {
                 String res = data.getStringExtra(Intents.Scan.RESULT);
-                Logger.e("debug","Scan:"+res);
-                if(StringUtils.notEmpty(res)){
-                    if(res.startsWith("http")){
-                        startActivity(new Intent(context,ScanLoginActivity.class).putExtra("url",res));
-                    }else{
-                        MsgUtils.showMDMessage(context,"识别错误,请重试!");
+                Logger.e("debug", "Scan:" + res);
+                if (StringUtils.notEmpty(res)) {
+                    if (res.startsWith("http")) {
+                        startActivity(new Intent(context, ScanLoginActivity.class).putExtra("url", res));
+                    } else {
+                        MsgUtils.showMDMessage(context, "识别错误,请重试!");
                     }
-                }else{
-                    MsgUtils.showMDMessage(context,"无法识别,请重试!");
+                } else {
+                    MsgUtils.showMDMessage(context, "无法识别,请重试!");
                 }
             }
         }
@@ -102,16 +107,17 @@ public class MainActivity extends AllenBaseActivity {
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CAMERA_PERMISSION: {
-                if(verifyPermissions(grantResults)){
-                    startActivityForResult(new Intent(context,CaptureActivity.class),11);
+                if (verifyPermissions(grantResults)) {
+                    startActivityForResult(new Intent(context, CaptureActivity.class), 11);
                 }
                 break;
             }
         }
     }
+
     public boolean verifyPermissions(int[] grantResults) {
         // At least one result must be checked.
-        if(grantResults.length < 1){
+        if (grantResults.length < 1) {
             return false;
         }
 
@@ -140,27 +146,44 @@ public class MainActivity extends AllenBaseActivity {
     @Override
     protected void addEvent() {
         bar.setOnMenuItemClickListener(listener);
-        bottomBar.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-    }
-    private BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-            setAppModule(menuItem.getItemId());
-            return true;
-        }
+        bottomNavBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int position) {
+                setAppModule(position);
+            }
 
-    };
+            @Override
+            public void onTabUnselected(int position) {
+
+            }
+
+            @Override
+            public void onTabReselected(int position) {
+
+            }
+        });
+//        bottomBar.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+    }
+
+//    private BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener
+//            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+//        @Override
+//        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//            setAppModule(menuItem.getItemId());
+//            return true;
+//        }
+//
+//    };
 
     private Toolbar.OnMenuItemClickListener listener = new Toolbar.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
-            switch (menuItem.getItemId()){
+            switch (menuItem.getItemId()) {
                 case R.id.item_sm:
-                    if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA) != PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
-                    }else{
-                        startActivityForResult(new Intent(context,CaptureActivity.class),11);
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                    } else {
+                        startActivityForResult(new Intent(context, CaptureActivity.class), 11);
                     }
                     break;
             }
@@ -168,48 +191,35 @@ public class MainActivity extends AllenBaseActivity {
         }
     };
 
-    private void setAppModule(int module) {
-        switch (module) {
-            case MenuEnum.Todo_ItemId:
-                index = 0;
-                bar.setTitle("待处理");
-                if(bar.getMenu().size()>0){
-                    bar.getMenu().getItem(0).setVisible(false);
-                }
-                break;
-            case MenuEnum.Count_ItemId:
-                index = 1;
-                bar.setTitle("数据统计");
-                if(bar.getMenu().size()>0){
-                    bar.getMenu().getItem(0).setVisible(false);
-                }
-                break;
-            case MenuEnum.Waring_ItemId:
-                index = 2;
-                bar.setTitle("效期预警");
-                if(bar.getMenu().size()>0){
-                    bar.getMenu().getItem(0).setVisible(false);
-                }
-                break;
-            case MenuEnum.Mine_ItemId:
-                index = 3;
-                bar.setTitle("");
-                if(bar.getMenu().size()>0){
-                    bar.getMenu().getItem(0).setVisible(true);
-                }
-                break;
+    private void setAppModule(int index) {
+        MeMenu menu = roles.get(index);
+        bar.setTitle(menu.getText());
+        if(menu.getCode().equals(MenuEnum.mine)){
+            bar.setTitle("");
+            if (bar.getMenu().size() > 0) {
+                bar.getMenu().getItem(0).setVisible(true);
+            }
+        }else{
+            if (bar.getMenu().size() > 0) {
+                bar.getMenu().getItem(0).setVisible(false);
+            }
         }
-        centerPanel.setCurrentItem(index,false);
+        centerPanel.setCurrentItem(index, false);
     }
 
     private List<MeMenu> roles;
-    private void userAthur(){
+
+    private void userAthur() {
         DataHelper.init().userAuth(new HttpCallBack<List<MeMenu>>() {
             @Override
             public void onSuccess(List<MeMenu> respone) {
                 roles = respone;
-                for(MeMenu r:roles){
-                    Logger.e("debug",r.toString());
+                int len = roles==null?0:roles.size();
+                if(len>0){
+                    MeMenu menu = new MeMenu();
+                    menu.setCode(MenuEnum.mine);
+                    menu.setText("我的");
+                    roles.add(menu);
                 }
             }
 
@@ -231,77 +241,69 @@ public class MainActivity extends AllenBaseActivity {
     }
 
     @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
                     list = new ArrayList<>();
-                    int i = 0;
-                    for(MeMenu menu:roles){
+                    bottomNavBar.clearAll();
+                    dclBadge = new TextBadgeItem().setBorderWidth(2).setBackgroundColor(Color.RED).setText("").hide();
+                    yjBadge = new TextBadgeItem().setBorderWidth(2).setBackgroundColor(Color.RED).setText("").hide();
+                    bottomNavBar.setMode(BottomNavigationBar.MODE_FIXED);
+                    bottomNavBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+                    for (MeMenu menu : roles) {
                         String code = menu.getCode();
-                        if(code.equals(MenuEnum.todo)){
-                            Menu m = bottomBar.getMenu();
-                            m.add(0,MenuEnum.Todo_ItemId,0,menu.getText());
-                            MenuItem item = m.findItem(MenuEnum.Todo_ItemId);
-                            item.setIcon(MenuEnum.getResId(code));//设置菜单图片
+                        if (code.equals(MenuEnum.todo) || code.equals(MenuEnum.gys_todo)) {
+                            bottomNavBar.addItem(new BottomNavigationItem(MenuEnum.getResId(code),menu.getText())
+                                    .setInActiveColorResource(R.color.text_gray_color)
+                                    .setActiveColorResource(R.color.btn_normal_color)
+                                    .setBadgeItem(dclBadge));
                             list.add(TodoFragment.init().setList(menu.getChildList()).setUpdateCount(new OnUpdateCountListener() {
                                 @Override
                                 public void count(int count) {
-                                    if(dclBadge!=null){
-                                        dclBadge.setBadgeCount(count);
+                                    dclBadge.setText(String.valueOf(count));
+                                    if(count>0){
+                                        dclBadge.show();
+                                    }else{
+                                        dclBadge.hide();
                                     }
                                 }
                             }));
-                        }else if(code.equals(MenuEnum.count)){
-                            Menu m = bottomBar.getMenu();
-                            m.add(0,MenuEnum.Count_ItemId,1,menu.getText());
-                            MenuItem item = m.findItem(MenuEnum.Count_ItemId);
-                            item.setIcon(MenuEnum.getResId(code));//设置菜单图片
+                        } else if (code.equals(MenuEnum.count) || code.equals(MenuEnum.gys_count)) {
+                            bottomNavBar.addItem(new BottomNavigationItem(MenuEnum.getResId(code),menu.getText())
+                                    .setInActiveColorResource(R.color.text_gray_color)
+                                    .setActiveColorResource(R.color.btn_normal_color));
                             list.add(CountFragment.init().setList(menu.getChildList()));
-                        }else if(code.equals(MenuEnum.waring)){
-                            Menu m = bottomBar.getMenu();
-                            m.add(0,MenuEnum.Waring_ItemId,2,menu.getText());
-                            MenuItem item = m.findItem(MenuEnum.Waring_ItemId);
-                            item.setIcon(MenuEnum.getResId(code));//设置菜单图片
+                        } else if (code.equals(MenuEnum.waring) || code.equals(MenuEnum.gys_waring)) {
+                            bottomNavBar.addItem(new BottomNavigationItem(MenuEnum.getResId(code),menu.getText())
+                                    .setInActiveColorResource(R.color.text_gray_color)
+                                    .setActiveColorResource(R.color.btn_normal_color)
+                                    .setBadgeItem(yjBadge));
                             list.add(WarningFragment.init().setList(menu.getChildList()).setUpdateCount(new OnUpdateCountListener() {
                                 @Override
                                 public void count(int count) {
-                                    if(yjBadge!=null){
-                                        yjBadge.setBadgeCount(count);
+                                    yjBadge.setText(String.valueOf(count));
+                                    if(count>0){
+                                        yjBadge.show();
+                                    }else{
+                                        yjBadge.hide();
                                     }
                                 }
                             }));
+                        } else if(code.equals(MenuEnum.mine)){
+                            bottomNavBar.addItem(new BottomNavigationItem(MenuEnum.getResId(code),menu.getText())
+                                    .setInActiveColorResource(R.color.text_gray_color)
+                                    .setActiveColorResource(R.color.btn_normal_color));
+                            list.add(MineFragment.init());
                         }
                     }
-                    Menu m = bottomBar.getMenu();
-                    m.add(0,MenuEnum.Mine_ItemId,3,"我的");
-                    MenuItem item = m.findItem(MenuEnum.Mine_ItemId);
-                    item.setIcon(R.mipmap.menu_wd);//设置菜单图片
-                    list.add(MineFragment.init());
-                    BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomBar.getChildAt(0);
-                    for(MeMenu menu:roles){
-                        String code = menu.getCode();
-                        if(code.equals(MenuEnum.todo)){
-                            dclBadge = new BadgeView(context);
-                            dclBadge.setTargetView(menuView.getChildAt(i++));
-                            dclBadge.setBadgeCount(0);
-                            dclBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
-                            dclBadge.setHideOnNull(true);
-                        }else if(code.equals(MenuEnum.count)){
-                            i++;
-                        }else if(code.equals(MenuEnum.waring)){
-                            yjBadge = new BadgeView(context);
-                            yjBadge.setTargetView(menuView.getChildAt(i++));
-                            yjBadge.setBadgeCount(0);
-                            yjBadge.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
-                            yjBadge.setHideOnNull(true);
-                        }
-                    }
-                    adapter = new FragmentAdapter(getSupportFragmentManager(),list);
+                    adapter = new FragmentAdapter(getSupportFragmentManager(), list);
                     centerPanel.setAdapter(adapter);
-                    bottomBar.setSelectedItemId(bottomBar.getMenu().getItem(0).getItemId());
-                    bar.setTitle("待处理");
+                    bottomNavBar.setFirstSelectedPosition(0);
+                    bottomNavBar.initialise();
+//                    bottomBar.setSelectedItemId(bottomBar.getMenu().getItem(0).getItemId());
+//                    bar.setTitle("待处理");
                     break;
             }
         }
@@ -311,4 +313,5 @@ public class MainActivity extends AllenBaseActivity {
     public void onBackPressed() {
         actHelper.doClickTwiceExit(centerPanel);
     }
+
 }

@@ -18,6 +18,7 @@ public class User implements Serializable {
     private String address;
     private String pictureUrl;
     private String url;//关于我们url
+    private int systemType;
 
     public String getUrl() {
         return url;
@@ -142,6 +143,14 @@ public class User implements Serializable {
         this.pictureUrl = pictureUrl;
     }
 
+    public int getSystemType() {
+        return systemType;
+    }
+
+    public void setSystemType(int systemType) {
+        this.systemType = systemType;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -159,6 +168,8 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", pictureUrl='" + pictureUrl + '\'' +
+                ", url='" + url + '\'' +
+                ", systemType=" + systemType +
                 '}';
     }
 }

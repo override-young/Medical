@@ -72,7 +72,7 @@ public class LoginActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        Logger.init().setHttp(true).setDebug(true);
+        Logger.init().setHttp(Constants.IsDebug).setDebug(Constants.IsDebug);
         meter = new TimeMeter();
         meter.setMaxTime(60);
     }
@@ -166,6 +166,7 @@ public class LoginActivity extends AllenBaseActivity {
                 SharedPreferences.Editor editor = shared.edit();
                 editor.putString(Constants.User_ID,user.getUserId());
                 editor.putString(Constants.User_Token,user.getToken());
+                editor.putInt(Constants.User_Role,user.getSystemType());
                 if(!isPhoneLogin){
                     boolean isRemember = actHelper.getSharedPreferences().getBoolean(Constants.Remember_Psw,false);
                     if(isRemember){
