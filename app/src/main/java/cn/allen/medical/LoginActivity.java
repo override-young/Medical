@@ -166,6 +166,7 @@ public class LoginActivity extends AllenBaseActivity {
                 SharedPreferences.Editor editor = shared.edit();
                 editor.putString(Constants.User_ID,user.getUserId());
                 editor.putString(Constants.User_Token,user.getToken());
+                editor.putInt(Constants.User_Role,user.getSystemType());
                 if(!isPhoneLogin){
                     boolean isRemember = actHelper.getSharedPreferences().getBoolean(Constants.Remember_Psw,false);
                     if(isRemember){
