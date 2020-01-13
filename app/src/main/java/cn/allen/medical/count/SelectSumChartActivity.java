@@ -3,6 +3,7 @@ package cn.allen.medical.count;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -96,7 +98,10 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         initBarChart();
-        year = "2019";
+        Calendar calendar=Calendar.getInstance();
+        int y=calendar.get(Calendar.YEAR);
+        year = y+"";
+        tvYear.setText(year);
         loadData();
     }
 
@@ -177,6 +182,12 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
         yr.setDrawAxisLine(true);
         yr.setDrawGridLines(true);
         yr.setAxisMinimum(0f);
+        yr.setValueFormatter(new IndexAxisValueFormatter(){
+            @Override
+            public String getFormattedValue(float value) {
+                return (int)value+"个";
+            }
+        });
 
 
         mHorizontalBarChart.setFitBars(true);
@@ -211,6 +222,8 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
             mHorizontalBarChart.notifyDataSetChanged();
         } else {
         set1 = new BarDataSet(yVals1, "");
+        set1.setColor(getResources().getColor(R.color.light_green2));
+//        set1.setColor(Color.parseColor("#96DEDA"));
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         dataSets.add(set1);

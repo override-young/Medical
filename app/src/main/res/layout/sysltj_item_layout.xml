@@ -45,8 +45,9 @@
             android:paddingRight="@dimen/frame_eight_distance"
             >
             <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/frame_4_word_width"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:textColor="@color/text_normal_grey_color"
                 android:textSize="@dimen/frame_text_small_size"
                 android:text="单位"
@@ -107,8 +108,9 @@
             android:paddingRight="@dimen/frame_eight_distance"
             >
             <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/frame_4_word_width"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:textColor="@color/text_normal_grey_color"
                 android:textSize="@dimen/frame_text_small_size"
                 android:text="使用数量"

@@ -95,7 +95,7 @@ public class ConsumableQualityWarningActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        toolbar.setTitle("耗材资质警告");
+        actHelper.setToolbarTitleCenter(toolbar,"耗材资质警告");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -117,7 +117,7 @@ public class ConsumableQualityWarningActivity extends AllenBaseActivity {
                 holder.setText(R.id.tv_name,entity.getProductName());
                 holder.setText(R.id.tv_danwei,entity.getProductUnit());
                 holder.setText(R.id.tv_guige,entity.getProductSpec());
-                holder.setText(R.id.tv_dqsj,entity.getRecordCardDate());
+                holder.setText(R.id.tv_dqsj,entity.getRecordCardDate().replaceAll(" 00:00:00",""));
                 Date currentDate=DateUtils.stringToDate(entity.getCurrentDate(),"yyyy-MM-dd HH:mm:ss");
                 if (StringUtils.empty(entity.getRecordCardDate())) {
                     holder.setText(R.id.tv_count, "--");
