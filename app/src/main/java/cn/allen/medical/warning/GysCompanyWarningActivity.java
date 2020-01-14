@@ -29,13 +29,12 @@ import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.CompanyWarningEntity;
+import cn.allen.medical.entry.GysCompanyWarningEntity;
 import cn.allen.medical.entry.MeMenu;
-import cn.allen.medical.entry.PriceDetailsEntity;
-import cn.allen.medical.entry.ToDoContractEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
 
-public class CompanyWarningActivity extends AllenBaseActivity {
+public class GysCompanyWarningActivity extends AllenBaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -45,10 +44,10 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     MaterialRefreshLayout refreshLayout;
 
     private Context mContext = this;
-    private CommonAdapter<CompanyWarningEntity.ItemsBean> adapter;
-    private List<CompanyWarningEntity.ItemsBean> list = new ArrayList<>();
-    private List<CompanyWarningEntity.ItemsBean> sublist = new ArrayList<>();
-    private boolean isRefresh = false;
+    private CommonAdapter<GysCompanyWarningEntity.CertListBean> adapter;
+    private List<GysCompanyWarningEntity.CertListBean> list = new ArrayList<>();
+    private List<GysCompanyWarningEntity.CertListBean> sublist = new ArrayList<>();
+    private boolean isRefresh = true;
     private int page = 0, pageSize = 20;
     private MeMenu meMenu;
     @SuppressLint("HandlerLeak")
@@ -115,39 +114,24 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter = new CommonAdapter<CompanyWarningEntity.ItemsBean>(mContext, R.layout
-                .company_warning_item_layout) {
+        adapter = new CommonAdapter<GysCompanyWarningEntity.CertListBean>(mContext, R.layout
+                .company_warning_details_item_layout) {
             @Override
-            public void convert(ViewHolder holder, CompanyWarningEntity.ItemsBean entity, int
+            public void convert(ViewHolder holder, GysCompanyWarningEntity.CertListBean entity, int
                     position) {
-                holder.setVisible(R.id.tv_dls_name,false);
-                holder.setText(R.id.tv_company_name, entity.getOrganizationName());
-                RecyclerView rvDetails = holder.getView(R.id.rv_details);
-                rvDetails.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
-                        .VERTICAL, false));
-                CommonAdapter<CompanyWarningEntity.ItemsBean.CertListBean> detailAdapter = new
-                        CommonAdapter<CompanyWarningEntity.ItemsBean.CertListBean>(mContext,R.layout.company_warning_details_item_layout) {
-                    @Override
-                    public void convert(ViewHolder holder, CompanyWarningEntity.ItemsBean
-                            .CertListBean entity, int position) {
-                        holder.setText(R.id.tv_permit_name,entity.getCertName());
-                        holder.setText(R.id.tv_due_time, entity.getExpireDate().replaceAll(" 00:00:00",""));
-                        Date currentDate = DateUtils.stringToDate(entity.getCurrentDate(), "yyyy-MM-dd " +
-                                "HH:mm:ss");
-                        if (StringUtils.empty(entity.getExpireDate())) {
-                            holder.setText(R.id.tv_remaining_time, "--");
-                        } else {
-                            Date ExpiredDate = DateUtils.stringToDate(entity
-                                    .getExpireDate(), "yyyy-MM-dd HH:mm:ss");
-                            long bussinessCount = DateUtils.getDataDistance(currentDate,
-                                    ExpiredDate);
-                            holder.setText(R.id.tv_remaining_time, bussinessCount + "");
-                        }
-                    }
-                };
-                rvDetails.setAdapter(detailAdapter);
-                detailAdapter.setDatas(entity.getCertList());
-
+                holder.setText(R.id.tv_permit_name,entity.getCertName());
+                holder.setText(R.id.tv_due_time, entity.getExpireDate().replaceAll(" 00:00:00",""));
+                Date currentDate = DateUtils.stringToDate(entity.getCurrentDate(), "yyyy-MM-dd " +
+                        "HH:mm:ss");
+                if (StringUtils.empty(entity.getExpireDate())) {
+                    holder.setText(R.id.tv_remaining_time, "--");
+                } else {
+                    Date ExpiredDate = DateUtils.stringToDate(entity
+                            .getExpireDate(), "yyyy-MM-dd HH:mm:ss");
+                    long bussinessCount = DateUtils.getDataDistance(currentDate,
+                            ExpiredDate);
+                    holder.setText(R.id.tv_remaining_time, bussinessCount + "");
+                }
             }
         };
         recyclerview.setAdapter(adapter);
@@ -180,11 +164,10 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     };
 
     private void loadData() {
-        DataHelper.init().getCompanyWarning(page++, new HttpCallBack<CompanyWarningEntity>() {
+        DataHelper.init().getGysCompanyWarning(new HttpCallBack<GysCompanyWarningEntity>() {
             @Override
-            public void onSuccess(CompanyWarningEntity respone) {
-                sublist = respone.getItems();
-                pageSize = respone.getPageSize();
+            public void onSuccess(GysCompanyWarningEntity respone) {
+                sublist = respone.getCertList();
                 handler.sendEmptyMessage(0);
             }
 

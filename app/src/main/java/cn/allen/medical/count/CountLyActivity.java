@@ -7,20 +7,16 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +40,8 @@ import cn.allen.medical.R;
 import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
+import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.entry.SysltjEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.CommonUtils;
@@ -62,6 +60,8 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
     AppCompatTextView lyKs;
     @BindView(R.id.ly_date)
     AppCompatTextView lyDate;
+    @BindView(R.id.tv_hospital)
+    AppCompatTextView tvHospital;
     private CommonAdapter<SysltjEntity.ItemsBean> adapter;
     private List<SysltjEntity.ItemsBean> list = new ArrayList<>();
     private List<SysltjEntity.ItemsBean> sublist = new ArrayList<>();
@@ -72,7 +72,11 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
     private int page = 0, pageSize = 20;
     private String ksID = "", startDate = "", endDate = "";
     private String preStartDate = "", preEndDate = "";
+    private MeMenu meMenu;
 
+    private int isOnlyHospital = 1;
+    private List<Type> hospitalList;
+    private String hospitalId = "";
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -127,11 +131,32 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
                     actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
                     loadData();
                     break;
+                case 4:
+                    if (!hospitalList.isEmpty()) {
+                        tvHospital.setText(hospitalList.get(0).getName());
+                        hospitalId = hospitalList.get(0).getId();
+                        isRefresh = true;
+                        page = 0;
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
+                        loadDataOfSup();
+                    }
+                    break;
+                case 5:
+                    hospitalId = hospitalList.get((int) msg.obj).getId();
+                    isRefresh = true;
+                    page = 0;
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
+                    loadDataOfSup();
+                    break;
                 case 100:
                     isRefresh = true;
                     page = 0;
                     actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
-                    loadData();
+                    if (meMenu.getCode().equals(MenuEnum.count_ly)) {
+                        loadData();
+                    }else {
+                        loadDataOfSup();
+                    }
                     break;
                 case -1:
                     dismissProgressDialog();
@@ -140,6 +165,7 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
             }
         }
     };
+
 
     @Override
     protected boolean isStatusBarColorWhite() {
@@ -154,7 +180,8 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(bar, "领用数量统计");
+        meMenu = (MeMenu) getIntent().getSerializableExtra("Menu");
+        actHelper.setToolbarTitleCenter(bar, meMenu.getText());
         setSupportActionBar(bar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -168,9 +195,50 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
         preEndDate = endDate;
         lyDate.setText(startDate + "至" + endDate);
         initAdapter();
-        isFirstLoad = true;
-        loadKs();
+        if (meMenu.getCode().equals(MenuEnum.count_ly)) {
+            tvHospital.setVisibility(View.GONE);
+            lyKs.setVisibility(View.VISIBLE);
+            isFirstLoad = true;
+            loadKs();
+        } else {
+            tvHospital.setVisibility(View.VISIBLE);
+            lyKs.setVisibility(View.GONE);
+            loadHzdw();
+        }
+
 //        loadData();
+    }
+
+    private void loadHzdw() {
+        showProgressDialog("");
+        DataHelper.init().getHospitalList(isOnlyHospital, new HttpCallBack<List<Type>>() {
+            @Override
+            public void onSuccess(List<Type> respone) {
+                hospitalList = respone;
+                handler.sendEmptyMessage(4);
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
     }
 
     private void loadKs() {
@@ -278,8 +346,43 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
                 });
     }
 
+    private void loadDataOfSup() {
+        DataHelper.init().getGysLiyongCount(page++, hospitalId, startDate, endDate, new
+                HttpCallBack<SysltjEntity>() {
+                    @Override
+                    public void onSuccess(SysltjEntity respone) {
+                        sublist = respone.getItems();
+                        pageSize = respone.getPageSize();
+                        handler.sendEmptyMessage(0);
+                    }
 
-    @OnClick({R.id.ly_ks, R.id.ly_date})
+                    @Override
+                    public void onTodo(MeRespone respone) {
+                        Message msg = new Message();
+                        msg.what = 1;
+                        msg.obj = respone.getMessage();
+                        handler.sendMessage(msg);
+
+                    }
+
+                    @Override
+                    public void tokenErro(MeRespone respone) {
+
+                    }
+
+                    @Override
+                    public void onFailed(MeRespone respone) {
+                        Logger.e("debug", respone.toString());
+                        Message msg = new Message();
+                        msg.what = -1;
+                        msg.obj = respone.getMessage();
+                        handler.sendMessage(msg);
+                    }
+                });
+    }
+
+
+    @OnClick({R.id.ly_ks, R.id.ly_date, R.id.tv_hospital})
     public void onViewClicked(View view) {
         if (actHelper.isFastClick()) {
             return;
@@ -297,6 +400,15 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
                 break;
             case R.id.ly_date:
                 showPop();
+                break;
+            case R.id.tv_hospital:
+                int length = hospitalList == null ? 0 : hospitalList.size();
+                if (length > 1) {
+                    ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 5);
+                    dialog.showDialog("请选择医院", tvHospital, hospitalList);
+                } else {
+                    loadHzdw();
+                }
                 break;
         }
     }

@@ -92,16 +92,32 @@ public class WarningFragment extends Fragment {
             public void onItemClick(MeMenu menu) {
                 switch (menu.getCode()){
                     case MenuEnum.waring_zz:
-                        startActivity(new Intent(getContext(),CompanyWarningActivity.class));
+                        startActivity(new Intent(getContext(),CompanyWarningActivity.class).putExtra("Menu",menu));
                         break;
                     case MenuEnum.waring_xq:
-                        startActivity(new Intent(getContext(),ConsumableStoreWarningActivity.class));
+                        startActivity(new Intent(getContext(),ConsumableStoreWarningActivity.class).putExtra("Menu",menu));
                         break;
                     case MenuEnum.waring_hc:
-                        startActivity(new Intent(getContext(),ConsumableQualityWarningActivity.class));
+                        startActivity(new Intent(getContext(),ConsumableQualityWarningActivity.class).putExtra("Menu",menu));
                         break;
                     case MenuEnum.waring_ht:
-                        startActivity(new Intent(getContext(),ContractWarningActivity.class));
+                        startActivity(new Intent(getContext(),ContractWarningActivity.class).putExtra("Menu",menu));
+                        break;
+
+                    case MenuEnum.gys_waring_zz://供应商企业资质预警
+                        startActivity(new Intent(getContext(),GysCompanyWarningActivity.class).putExtra("Menu",menu));
+                        break;
+                    case MenuEnum.gys_waring_cs://供应商厂商资质预警
+                        startActivity(new Intent(getContext(),GysFirmWarningActivity.class).putExtra("Menu",menu));
+                        break;
+                    case MenuEnum.gys_waring_hc://供应商耗材资质预警
+                        startActivity(new Intent(getContext(),ConsumableQualityWarningActivity.class).putExtra("Menu",menu));
+                        break;
+                    case MenuEnum.gys_waring_ht://供应商合同效期预警
+                        startActivity(new Intent(getContext(),ContractWarningActivity.class).putExtra("Menu",menu));
+                        break;
+                    case MenuEnum.gys_waring_dl://代理授权书预警
+                        startActivity(new Intent(getContext(),GysProxyWarningActivity.class).putExtra("Menu",menu));
                         break;
                 }
             }

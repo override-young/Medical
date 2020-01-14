@@ -89,21 +89,28 @@ public class CountFragment extends Fragment {
             public void onItemClick(MeMenu menu) {
                 switch (menu.getCode()){
                     case MenuEnum.count_rk:
-                        startActivity(new Intent(getContext(),SelectSumChartActivity.class));
+                        startActivity(new Intent(getContext(),SelectSumChartActivity.class).putExtra("Menu",menu));
                         break;
                     case MenuEnum.count_kcsl:
-                        startActivity(new Intent(getContext(),KucunCountActivity.class));
+                        startActivity(new Intent(getContext(),KucunCountActivity.class).putExtra("Menu",menu));
                         break;
                     case MenuEnum.count_ly:
-                        startActivity(new Intent(getActivity(),CountLyActivity.class));
+                        startActivity(new Intent(getActivity(),CountLyActivity.class).putExtra("Menu",menu));
                         break;
                     case MenuEnum.count_sy:
-                        startActivity(new Intent(getContext(),SysltjActivity.class));
-                        break;
-                    case MenuEnum.gys_count_fh://发货数量统计
-
+                        startActivity(new Intent(getContext(),SysltjActivity.class).putExtra("Menu",menu));
                         break;
 
+                    case MenuEnum.gys_count_fh:
+                        startActivity(new Intent(getContext(),SelectSumChartActivity.class).putExtra("Menu",menu));
+                        break;
+                    case MenuEnum.gys_count_kcsl:
+                        startActivity(new Intent(getContext(),KucunCountActivity.class).putExtra("Menu",menu));
+                        break;
+                    case MenuEnum.gys_count_ly:
+                        startActivity(new Intent(getActivity(),CountLyActivity.class).putExtra("Menu",menu));
+                        break;
+                    
                 }
             }
         });

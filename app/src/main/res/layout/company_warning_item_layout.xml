@@ -29,12 +29,21 @@
                 android:textStyle="bold"
                 android:textColor="@color/text_normal_tint_color"
                 android:textSize="@dimen/frame_text_normal_size" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_dls_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/frame_edge_distance"
+                android:text="代理商"
+                android:textStyle="bold"
+                android:textColor="@color/text_normal_tint_color"
+                android:textSize="@dimen/frame_text_small_size" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/frame_eight_distance">
+                >
 
             </android.support.v7.widget.RecyclerView>
 

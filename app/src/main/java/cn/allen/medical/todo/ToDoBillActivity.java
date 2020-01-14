@@ -25,6 +25,7 @@ import cn.allen.medical.R;
 import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
+import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.entry.ToDoBillEntity;
 import cn.allen.medical.entry.ToDoContractEntity;
@@ -48,6 +49,7 @@ public class ToDoBillActivity extends AllenBaseActivity {
     private boolean isRefresh=false;
     private int page = 0,pageSize=20;
     private String code;
+    private MeMenu meMenu;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -93,14 +95,15 @@ public class ToDoBillActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(toolbar, "待确认账单");
+        meMenu= (MeMenu) getIntent().getSerializableExtra("Menu");
+        actHelper.setToolbarTitleCenter(toolbar, meMenu.getText());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-        code = getIntent().getStringExtra("CODE");
+        code = meMenu.getCode();
         showProgressDialog("");
         if (code.equals(MenuEnum.todo_zd_ks)) {
             loadDataByDep();
