@@ -8,17 +8,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -44,10 +39,10 @@ import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.mine.MineFragment;
+import cn.allen.medical.todo.GTodoFragment;
 import cn.allen.medical.todo.TodoFragment;
 import cn.allen.medical.utils.OnUpdateCountListener;
 import cn.allen.medical.warning.WarningFragment;
-import q.rorbin.badgeview.QBadgeView;
 
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
@@ -60,7 +55,6 @@ public class MainActivity extends AllenBaseActivity {
     @BindView(R.id.bottom_navigation_bar)
     BottomNavigationBar bottomNavBar;
     private TextBadgeItem dclBadge,yjBadge;
-    private int index = 0;
 
     private FragmentAdapter adapter;
     private ArrayList<Fragment> list;
@@ -162,18 +156,7 @@ public class MainActivity extends AllenBaseActivity {
 
             }
         });
-//        bottomBar.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
     }
-
-//    private BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener
-//            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-//        @Override
-//        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//            setAppModule(menuItem.getItemId());
-//            return true;
-//        }
-//
-//    };
 
     private Toolbar.OnMenuItemClickListener listener = new Toolbar.OnMenuItemClickListener() {
         @Override
@@ -220,6 +203,12 @@ public class MainActivity extends AllenBaseActivity {
                     menu.setCode(MenuEnum.mine);
                     menu.setText("我的");
                     roles.add(menu);
+                }else{
+                    roles = new ArrayList<>();
+                    MeMenu menu = new MeMenu();
+                    menu.setCode(MenuEnum.mine);
+                    menu.setText("我的");
+                    roles.add(menu);
                 }
             }
 
@@ -254,7 +243,7 @@ public class MainActivity extends AllenBaseActivity {
                     bottomNavBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
                     for (MeMenu menu : roles) {
                         String code = menu.getCode();
-                        if (code.equals(MenuEnum.todo) || code.equals(MenuEnum.gys_todo)) {
+                        if (code.equals(MenuEnum.todo)) {//医疗端待处理
                             bottomNavBar.addItem(new BottomNavigationItem(MenuEnum.getResId(code),menu.getText())
                                     .setInActiveColorResource(R.color.text_gray_color)
                                     .setActiveColorResource(R.color.btn_normal_color)
@@ -262,6 +251,24 @@ public class MainActivity extends AllenBaseActivity {
                             list.add(TodoFragment.init().setList(menu.getChildList()).setUpdateCount(new OnUpdateCountListener() {
                                 @Override
                                 public void count(int count) {
+                                    Logger.e("Todo",""+count);
+                                    dclBadge.setText(String.valueOf(count));
+                                    if(count>0){
+                                        dclBadge.show();
+                                    }else{
+                                        dclBadge.hide();
+                                    }
+                                }
+                            }));
+                        }else if (code.equals(MenuEnum.gys_todo)) {//供应商待处理
+                            bottomNavBar.addItem(new BottomNavigationItem(MenuEnum.getResId(code),menu.getText())
+                                    .setInActiveColorResource(R.color.text_gray_color)
+                                    .setActiveColorResource(R.color.btn_normal_color)
+                                    .setBadgeItem(dclBadge));
+                            list.add(GTodoFragment.init().setUpdateCount(new OnUpdateCountListener() {
+                                @Override
+                                public void count(int count) {
+                                    Logger.e("GTodo",""+count);
                                     dclBadge.setText(String.valueOf(count));
                                     if(count>0){
                                         dclBadge.show();

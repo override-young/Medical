@@ -2,6 +2,7 @@ package cn.allen.medical.warning;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import allen.frame.AllenManager;
 import allen.frame.tools.OnAllenItemClickListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +44,7 @@ public class WarningFragment extends Fragment {
     Unbinder unbinder;
     private MenuAdapter adapter;
     private List<MeMenu> list;
+    private SharedPreferences shared;
 
     public static WarningFragment init() {
         WarningFragment fragment = new WarningFragment();
@@ -75,6 +78,7 @@ public class WarningFragment extends Fragment {
     }
 
     private void initUI(){
+        shared = AllenManager.getInstance().getStoragePreference();
         adapter = new MenuAdapter(true);
         GridLayoutManager manager = new GridLayoutManager(getActivity(),2);
         rv.setLayoutManager(manager);
@@ -106,7 +110,7 @@ public class WarningFragment extends Fragment {
 
     private WaringCount entry;
     private void loadData(){
-        DataHelper.init().waringCount(new HttpCallBack<WaringCount>() {
+        DataHelper.init().waringCount(shared.getInt(Constants.User_Role,0)==7, new HttpCallBack<WaringCount>() {
             @Override
             public void onSuccess(WaringCount respone) {
                 entry = respone;
@@ -142,6 +146,11 @@ public class WarningFragment extends Fragment {
                         map.put(MenuEnum.waring_ht,entry.getContractWarningCount());
                         map.put(MenuEnum.waring_zz,entry.getEnterpriseCertWarningCount());
                         map.put(MenuEnum.waring_xq,entry.getStockWarningCount());
+                        map.put(MenuEnum.gys_waring_zz,entry.getSelfCertCount());
+                        map.put(MenuEnum.gys_waring_cs,entry.getOrgCertCount());
+                        map.put(MenuEnum.gys_waring_hc,entry.getProductCertCount());
+                        map.put(MenuEnum.gys_waring_dl,entry.getAuthCertCount());
+                        map.put(MenuEnum.gys_waring_ht,entry.getContractCount());
                         adapter.setCount(map);
                         int index = 0;
                         for(MeMenu menu:list){

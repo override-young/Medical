@@ -104,18 +104,19 @@ public class DataHelper {
      * 获取待处理数量
      * @param callBack
      */
-    public void todoCount(HttpCallBack<TodoCount> callBack){
+    public void todoCount(boolean isYy, HttpCallBack<TodoCount> callBack){
         Object[] arrays = new Object[] { };
-        request.okhttpget(API.todoCount,arrays,callBack);
+        request.okhttpget(isYy?API.todoCount:API.gystodoCount,arrays,callBack);
     }
 
     /**
      * 获取预警数量
+     * @param isYy 是否医院端
      * @param callBack
      */
-    public void waringCount(HttpCallBack<WaringCount> callBack){
+    public void waringCount(boolean isYy, HttpCallBack<WaringCount> callBack){
         Object[] arrays = new Object[] { };
-        request.okhttpget(API.waringCount,arrays,callBack);
+        request.okhttpget(isYy?API.waringCount:API.gyswaringCount,arrays,callBack);
     }
 
     /**

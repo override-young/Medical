@@ -55,14 +55,22 @@ public class MenuEnum {
         resId.put(gys_count, R.drawable.menu_sjtj);//数据统计
         resId.put(count_rk, R.mipmap.count_rk);//入库数量统计
         resId.put(count_kcsl, R.mipmap.count_kcsl);//库存数量统计
+        resId.put(gys_count_kcsl, R.mipmap.count_kcsl);//库存数量统计
         resId.put(count_ly, R.mipmap.count_ly);//领用数量统计
+        resId.put(gys_count_ly, R.mipmap.count_ly);//领用数量统计
         resId.put(count_sy, R.mipmap.count_sy);//使用数量统计
+        resId.put(gys_count_fh, R.mipmap.count_fh);//发货数量统计
         resId.put(waring, R.drawable.menu_yjxh);//效期预警
         resId.put(gys_waring, R.drawable.menu_yjxh);//效期预警
         resId.put(waring_zz, R.mipmap.waring_zz);//企业资质预警
+        resId.put(gys_waring_zz, R.mipmap.waring_zz);//企业资质预警
         resId.put(waring_xq, R.mipmap.waring_xq);//耗材库存效期预警
         resId.put(waring_hc, R.mipmap.waring_hc);//耗材资质预警
+        resId.put(gys_waring_hc, R.mipmap.waring_hc);//耗材资质预警
         resId.put(waring_ht, R.mipmap.waring_ht);//合同效期预警
+        resId.put(gys_waring_ht, R.mipmap.waring_ht);//合同效期预警
+        resId.put(gys_waring_dl, R.mipmap.waring_dl);//代理授权书预警
+        resId.put(gys_waring_cs, R.mipmap.waring_cs);//厂商资质预警
         resId.put(mine, R.mipmap.menu_wd);//我的
     }
 

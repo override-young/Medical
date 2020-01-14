@@ -10,7 +10,7 @@ public class Constants {
     public final static String User_Name = "User_Name";
     public final static String User_Account = "User_Account";
     public final static String User_Psw = "User_Psw";
-    public final static String User_Role = "User_Role";
+    public final static String User_Role = "User_Role";//8=供应商APP，7=医院APP
     public final static String User_Token = "User_Token";
     public final static String Login_Token_Erro = "Login_Token_Erro";
 

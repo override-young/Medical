@@ -2,59 +2,49 @@ package cn.allen.medical.todo;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import allen.frame.AllenManager;
+import allen.frame.tools.Logger;
 import allen.frame.tools.OnAllenItemClickListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.allen.medical.R;
 import cn.allen.medical.adapter.MenuAdapter;
-import cn.allen.medical.count.CountFragment;
 import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.MenuEnum;
-import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.entry.TodoCount;
 import cn.allen.medical.utils.Constants;
 import cn.allen.medical.utils.OnUpdateCountListener;
-import cn.allen.medical.warning.CompanyWarningActivity;
-import cn.allen.medical.warning.ContractWarningActivity;
 
-public class TodoFragment extends Fragment {
+public class GTodoFragment extends Fragment {
 
     @BindView(R.id.rv)
     RecyclerView rv;
     Unbinder unbinder;
-    private MenuAdapter adapter;
-    private List<MeMenu> list;
 
-    public static TodoFragment init() {
-        TodoFragment fragment = new TodoFragment();
+    public static GTodoFragment init() {
+        GTodoFragment fragment = new GTodoFragment();
         return fragment;
-    }
-
-    public TodoFragment setList(List<MeMenu> list){
-        this.list = list;
-        return this;
     }
 
     @Nullable
@@ -75,45 +65,23 @@ public class TodoFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadData();
+        loadCountData();
     }
 
     private void initUI() {
-        adapter = new MenuAdapter(false);
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        rv.setLayoutManager(manager);
-        rv.setAdapter(adapter);
-        adapter.setData(list);
+
     }
 
     private void addEvent() {
-        adapter.setItemClickListener(new OnAllenItemClickListener<MeMenu>() {
-            @Override
-            public void onItemClick(MeMenu menu) {
-                switch (menu.getCode()){
-                    case MenuEnum.todo_ht://待确认合同
-                        startActivity(new Intent(getContext(),ToDoContractActivity.class));
-                        break;
-                    case MenuEnum.todo_zd_ks://待确认账单（科室）
-                        startActivity(new Intent(getContext(),ToDoBillActivity.class).putExtra("CODE",MenuEnum.todo_zd_ks));
-                        break;
-                    case MenuEnum.todo_zd_sb://待确认账单（设备室）
-                        startActivity(new Intent(getContext(),ToDoBillActivity.class).putExtra("CODE",MenuEnum.todo_zd_sb));
-                        break;
-                    case MenuEnum.todo_jg://待确认价格
-                        startActivity(new Intent(getContext(),ToDoPriceActivity.class));
-                        break;
-                }
-            }
-        });
+
     }
     private TodoCount entry;
-    private void loadData() {
-        DataHelper.init().todoCount(true, new HttpCallBack<TodoCount>() {
+    private void loadCountData() {
+        DataHelper.init().todoCount(false, new HttpCallBack<TodoCount>() {
             @Override
             public void onSuccess(TodoCount respone) {
                 entry = respone;
+                Logger.e("todo",entry.toString());
             }
 
             @Override
@@ -139,23 +107,12 @@ public class TodoFragment extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
-                    int index = 0;
                     if(entry!=null){
-                        Map<String,Integer> map = new HashMap<>();
-                        map.put(MenuEnum.todo_ht,entry.getContractCount());
-                        map.put(MenuEnum.todo_jg,entry.getPriceCount());
-                        map.put(MenuEnum.todo_zd_ks,entry.getDepartmentBillCount());
-                        map.put(MenuEnum.todo_zd_sb,entry.getBillCount());
-                        adapter.setCount(map);
-                        for(MeMenu menu:list){
-                            index = index + map.get(menu.getCode());
-                        }
                         if(listener!=null){
-                            int finalIndex = index;
                             postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    listener.count(finalIndex);
+                                    listener.count(entry.getOrderCount());
                                 }
                             },1000);
                         }
@@ -171,7 +128,7 @@ public class TodoFragment extends Fragment {
         unbinder.unbind();
     }
 
-    public TodoFragment setUpdateCount(OnUpdateCountListener listener){
+    public GTodoFragment setUpdateCount(OnUpdateCountListener listener){
         this.listener = listener;
         return this;
     }
