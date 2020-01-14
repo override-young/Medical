@@ -11,11 +11,18 @@
         android:background="@color/light_gray"
         android:elevation="1dp" />
 
+    <include layout="@layout/alen_progress_layout"/>
+    <allen.frame.widget.MaterialRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/frame_eight_distance">
+            >
 
         </android.support.v7.widget.RecyclerView>
+    </allen.frame.widget.MaterialRefreshLayout>
 </android.support.v7.widget.LinearLayoutCompat>

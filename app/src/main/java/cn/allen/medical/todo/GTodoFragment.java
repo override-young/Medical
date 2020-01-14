@@ -62,7 +62,7 @@ public class GTodoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.count_layout, container, false);
+        View view = inflater.inflate(R.layout.gys_to_do_count_layout, container, false);
         unbinder = ButterKnife.bind(this, view);
         activityHelper=new ActivityHelper(getActivity(),view);
         return view;
