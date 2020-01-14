@@ -73,6 +73,12 @@ public class KucunCountEntity implements Serializable {
         private String pUnit;
         private String pSpec;
         private int quantity;
+        /**
+         * totalStock : 744
+         * 库存数量
+         */
+
+        private int totalStock;
 
         public String getPName() {
             return pName;
@@ -112,6 +118,14 @@ public class KucunCountEntity implements Serializable {
 
         public void setQuantity(int quantity) {
             this.quantity = quantity;
+        }
+
+        public int getTotalStock() {
+            return totalStock;
+        }
+
+        public void setTotalStock(int totalStock) {
+            this.totalStock = totalStock;
         }
     }
 }

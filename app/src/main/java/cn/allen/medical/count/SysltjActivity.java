@@ -41,6 +41,7 @@ import cn.allen.medical.R;
 import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
+import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.SysltjEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.CommonUtils;
@@ -72,6 +73,7 @@ public class SysltjActivity extends AllenBaseActivity implements CommonPopupWind
     private int page = 0, pageSize = 20;
     private String ksID = "", startDate = "", endDate = "";
     private String preStartDate = "", preEndDate = "";
+    private MeMenu meMenu;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -154,7 +156,8 @@ public class SysltjActivity extends AllenBaseActivity implements CommonPopupWind
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(toolbar, "使用数量统计");
+        meMenu= (MeMenu) getIntent().getSerializableExtra("Menu");
+        actHelper.setToolbarTitleCenter(toolbar, meMenu.getText());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

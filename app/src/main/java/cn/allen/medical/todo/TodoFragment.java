@@ -93,16 +93,16 @@ public class TodoFragment extends Fragment {
             public void onItemClick(MeMenu menu) {
                 switch (menu.getCode()){
                     case MenuEnum.todo_ht://待确认合同
-                        startActivity(new Intent(getContext(),ToDoContractActivity.class));
+                        startActivity(new Intent(getContext(),ToDoContractActivity.class).putExtra("Menu",menu));
                         break;
                     case MenuEnum.todo_zd_ks://待确认账单（科室）
-                        startActivity(new Intent(getContext(),ToDoBillActivity.class).putExtra("CODE",MenuEnum.todo_zd_ks));
+                        startActivity(new Intent(getContext(),ToDoBillActivity.class).putExtra("Menu",menu));
                         break;
                     case MenuEnum.todo_zd_sb://待确认账单（设备室）
-                        startActivity(new Intent(getContext(),ToDoBillActivity.class).putExtra("CODE",MenuEnum.todo_zd_sb));
+                        startActivity(new Intent(getContext(),ToDoBillActivity.class).putExtra("Menu",menu));
                         break;
                     case MenuEnum.todo_jg://待确认价格
-                        startActivity(new Intent(getContext(),ToDoPriceActivity.class));
+                        startActivity(new Intent(getContext(),ToDoPriceActivity.class).putExtra("Menu",menu));
                         break;
                 }
             }

@@ -31,6 +31,8 @@ import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.CompanyWarningEntity;
 import cn.allen.medical.entry.ConsumableQualityEntity;
 import cn.allen.medical.entry.ContractWarnintEntity;
+import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
 
@@ -49,6 +51,7 @@ public class ConsumableQualityWarningActivity extends AllenBaseActivity {
     private List<ConsumableQualityEntity.ItemsBean> sublist=new ArrayList<>();
     private boolean isRefresh=false;
     private int page=0,pageSize=20;
+    private MeMenu meMenu;
     @SuppressLint("HandlerLeak")
     private Handler handler=new Handler(){
         @Override
@@ -95,7 +98,8 @@ public class ConsumableQualityWarningActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(toolbar,"耗材资质警告");
+        meMenu= (MeMenu) getIntent().getSerializableExtra("Menu");
+        actHelper.setToolbarTitleCenter(toolbar, meMenu.getText());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -105,7 +109,11 @@ public class ConsumableQualityWarningActivity extends AllenBaseActivity {
 
         initAdapter();
         showProgressDialog("");
-        loadData();
+        if (meMenu.getCode().equals(MenuEnum.waring_hc)) {
+            loadData();
+        }else {
+            loadGysData();
+        }
     }
 
     private void initAdapter() {
@@ -147,18 +155,59 @@ public class ConsumableQualityWarningActivity extends AllenBaseActivity {
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
             page = 0;
-            loadData();
+            if (meMenu.getCode().equals(MenuEnum.waring_hc)) {
+                loadData();
+            }else {
+                loadGysData();
+            }
         }
 
         @Override
         public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = false;
-            loadData();
+            if (meMenu.getCode().equals(MenuEnum.waring_hc)) {
+                loadData();
+            }else {
+                loadGysData();
+            }
         }
     };
 
     private void loadData() {
         DataHelper.init().getConsumableQualityWarning(page++, new HttpCallBack<ConsumableQualityEntity>() {
+            @Override
+            public void onSuccess(ConsumableQualityEntity respone) {
+                sublist = respone.getItems();
+                pageSize=respone.getPageSize();
+                handler.sendEmptyMessage(0);
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Logger.e("debug", respone.toString());
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
+    private void loadGysData() {
+        DataHelper.init().getGysConsumableQualityWarning(page++, new HttpCallBack<ConsumableQualityEntity>() {
             @Override
             public void onSuccess(ConsumableQualityEntity respone) {
                 sublist = respone.getItems();

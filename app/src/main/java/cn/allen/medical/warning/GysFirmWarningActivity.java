@@ -29,13 +29,12 @@ import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.CompanyWarningEntity;
+import cn.allen.medical.entry.FirmWarningEntity;
 import cn.allen.medical.entry.MeMenu;
-import cn.allen.medical.entry.PriceDetailsEntity;
-import cn.allen.medical.entry.ToDoContractEntity;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
 
-public class CompanyWarningActivity extends AllenBaseActivity {
+public class GysFirmWarningActivity extends AllenBaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -45,9 +44,9 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     MaterialRefreshLayout refreshLayout;
 
     private Context mContext = this;
-    private CommonAdapter<CompanyWarningEntity.ItemsBean> adapter;
-    private List<CompanyWarningEntity.ItemsBean> list = new ArrayList<>();
-    private List<CompanyWarningEntity.ItemsBean> sublist = new ArrayList<>();
+    private CommonAdapter<FirmWarningEntity.ItemsBean> adapter;
+    private List<FirmWarningEntity.ItemsBean> list = new ArrayList<>();
+    private List<FirmWarningEntity.ItemsBean> sublist = new ArrayList<>();
     private boolean isRefresh = false;
     private int page = 0, pageSize = 20;
     private MeMenu meMenu;
@@ -115,20 +114,25 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter = new CommonAdapter<CompanyWarningEntity.ItemsBean>(mContext, R.layout
+        adapter = new CommonAdapter<FirmWarningEntity.ItemsBean>(mContext, R.layout
                 .company_warning_item_layout) {
             @Override
-            public void convert(ViewHolder holder, CompanyWarningEntity.ItemsBean entity, int
+            public void convert(ViewHolder holder, FirmWarningEntity.ItemsBean entity, int
                     position) {
-                holder.setVisible(R.id.tv_dls_name,false);
                 holder.setText(R.id.tv_company_name, entity.getOrganizationName());
+                if (StringUtils.notEmpty(entity.getAgentName())){
+                    holder.setVisible(R.id.tv_dls_name,true);
+                    holder.setText(R.id.tv_dls_name,"代理商:"+entity.getAgentName());
+                }else {
+                    holder.setVisible(R.id.tv_dls_name,false);
+                }
                 RecyclerView rvDetails = holder.getView(R.id.rv_details);
                 rvDetails.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                         .VERTICAL, false));
-                CommonAdapter<CompanyWarningEntity.ItemsBean.CertListBean> detailAdapter = new
-                        CommonAdapter<CompanyWarningEntity.ItemsBean.CertListBean>(mContext,R.layout.company_warning_details_item_layout) {
+                CommonAdapter<FirmWarningEntity.ItemsBean.CertListBean> detailAdapter = new
+                        CommonAdapter<FirmWarningEntity.ItemsBean.CertListBean>(mContext,R.layout.company_warning_details_item_layout) {
                     @Override
-                    public void convert(ViewHolder holder, CompanyWarningEntity.ItemsBean
+                    public void convert(ViewHolder holder, FirmWarningEntity.ItemsBean
                             .CertListBean entity, int position) {
                         holder.setText(R.id.tv_permit_name,entity.getCertName());
                         holder.setText(R.id.tv_due_time, entity.getExpireDate().replaceAll(" 00:00:00",""));
@@ -180,9 +184,9 @@ public class CompanyWarningActivity extends AllenBaseActivity {
     };
 
     private void loadData() {
-        DataHelper.init().getCompanyWarning(page++, new HttpCallBack<CompanyWarningEntity>() {
+        DataHelper.init().getFirmWarning(page++, new HttpCallBack<FirmWarningEntity>() {
             @Override
-            public void onSuccess(CompanyWarningEntity respone) {
+            public void onSuccess(FirmWarningEntity respone) {
                 sublist = respone.getItems();
                 pageSize = respone.getPageSize();
                 handler.sendEmptyMessage(0);

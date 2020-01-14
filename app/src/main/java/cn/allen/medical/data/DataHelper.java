@@ -14,6 +14,10 @@ import cn.allen.medical.entry.ConsumableStoreEntity;
 import cn.allen.medical.entry.ContractDetailsEntity;
 import cn.allen.medical.entry.ContractWarnintEntity;
 import cn.allen.medical.entry.DoDifferenceEntity;
+import cn.allen.medical.entry.FirmWarningEntity;
+import cn.allen.medical.entry.GysCompanyWarningEntity;
+import cn.allen.medical.entry.GysProxyEntity;
+import cn.allen.medical.entry.GysToDoDetailsEntity;
 import cn.allen.medical.entry.KucunCountEntity;
 import cn.allen.medical.entry.PriceDetailsEntity;
 import cn.allen.medical.entry.SelectSumChartEntity;
@@ -21,6 +25,7 @@ import cn.allen.medical.entry.SysltjEntity;
 import cn.allen.medical.entry.ToDoBillEntity;
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.ToDoContractEntity;
+import cn.allen.medical.entry.ToDoGysEntity;
 import cn.allen.medical.entry.TodoCount;
 import cn.allen.medical.entry.ToDoPriceEntity;
 import cn.allen.medical.entry.User;
@@ -120,6 +125,15 @@ public class DataHelper {
     }
 
     /**
+     * 供应商待确认列表
+     * @param page
+     * @param callBack
+     */
+    public void getTodoGys(int page, HttpCallBack<ToDoGysEntity> callBack) {
+        Object[] arrays = new Object[]{"PageIndex", page};
+        request.okhttpget(API.todoGys, arrays, callBack);
+    }
+    /**
      * 获取待处理合同列表
      *
      * @param page
@@ -141,6 +155,25 @@ public class DataHelper {
         request.okhttpget(API.contractDetails, arrays, callBack);
     }
 
+    /**
+     * 供应商待处理订单详情
+     * @param id
+     * @param callBack
+     */
+    public void getGysToDoDetails(String id, HttpCallBack<GysToDoDetailsEntity> callBack) {
+        Object[] arrays = new Object[]{"Id", id};
+        request.okhttpget(API.gysToDoDetails, arrays, callBack);
+    }
+
+    /**
+     *  供应商确认采购订单
+     * @param id
+     * @param callBack
+     */
+    public void getGysToDoExamine(String id,HttpCallBack callBack) {
+        Object[] arrays = new Object[]{"Id", id};
+        request.okhttpget(API.gysToDoExamine, arrays, callBack);
+    }
     /**
      * 合同审核
      * @param id
@@ -294,6 +327,18 @@ public class DataHelper {
     }
 
     /**
+     * 发货数量统计
+     * @param RecipientOrgId 收货机构ID
+     * @param year
+     * @param callBack
+     */
+    public void getGysSelectSumChart(String RecipientOrgId,String year, HttpCallBack<List<SelectSumChartEntity>> callBack) {
+        Object[] arrays = new Object[]{"RecipientOrgId",RecipientOrgId,"year", year};
+        request.okhttpget(API.gysSelectSumChart, arrays, callBack);
+    }
+
+
+    /**
      * 库存数量统计
      * @param page
      * @param callBack
@@ -301,6 +346,18 @@ public class DataHelper {
     public void getKucunCount(int page, HttpCallBack<KucunCountEntity> callBack) {
         Object[] arrays = new Object[]{"PageIndex", page};
         request.okhttpget(API.kucunCount, arrays, callBack);
+    }
+
+    /**
+     * 库存数量统计（分页）
+     * 注：GetCooperationOrgList 参数onlyQueryHospital=1
+     * @param RecipientOrgId 医院ID
+     * @param page
+     * @param callBack
+     */
+    public void getGysKucunCount(String RecipientOrgId,int page, HttpCallBack<KucunCountEntity> callBack) {
+        Object[] arrays = new Object[]{"RecipientOrgId",RecipientOrgId,"PageIndex", page};
+        request.okhttpget(API.gysKuncun, arrays, callBack);
     }
 
     /**
@@ -313,6 +370,20 @@ public class DataHelper {
     public void getLiyongCount(int page,String keshiID,String startDate,String endDate , HttpCallBack<SysltjEntity> callBack) {
         Object[] arrays = new Object[]{"PageIndex", page,"DeptId",keshiID,"StartDate",startDate,"EndDate",endDate};
         request.okhttpget(API.liyongCount, arrays, callBack);
+    }
+
+    /**
+     * 领用数量统计（分页）
+     * 注：GetCooperationOrgList 参数onlyQueryHospital=1
+     * @param page
+     * @param HospitalId 医院ID
+     * @param startDate
+     * @param endDate
+     * @param callBack
+     */
+    public void getGysLiyongCount(int page,String HospitalId,String startDate,String endDate , HttpCallBack<SysltjEntity> callBack) {
+        Object[] arrays = new Object[]{"PageIndex", page,"HospitalId",HospitalId,"StartDate",startDate,"EndDate",endDate};
+        request.okhttpget(API.gysLiyong, arrays, callBack);
     }
 
     /**
@@ -349,6 +420,27 @@ public class DataHelper {
     }
 
     /**
+     * 供应商企业资质预警
+     * @param callBack
+     */
+    public void getGysCompanyWarning(HttpCallBack<GysCompanyWarningEntity> callBack) {
+        Object[] arrays = new Object[]{};
+        request.okhttpget(API.gysCompanyWarning, arrays, callBack);
+    }
+
+    /**
+     * 耗材生产厂商资质预警（分页）
+     * 效期剩余天数需运算
+     * @param page
+     * @param callBack
+     */
+    public void getFirmWarning(int page, HttpCallBack<FirmWarningEntity> callBack) {
+        Object[] arrays = new Object[]{"PageIndex", page};
+        request.okhttpget(API.gysFirmWarning, arrays, callBack);
+    }
+
+
+    /**
      * 耗材库存效期预警
      * @param page
      * @param callBack
@@ -369,6 +461,18 @@ public class DataHelper {
     }
 
     /**
+     * 供应商耗材资质预警（分页）
+     * 效期剩余天数需运算
+     * @param page
+     * @param callBack
+     */
+    public void getGysConsumableQualityWarning(int page, HttpCallBack<ConsumableQualityEntity> callBack) {
+        Object[] arrays = new Object[]{"PageIndex", page};
+        request.okhttpget(API.gysHczzWarning, arrays, callBack);
+    }
+
+
+    /**
      * 合同效期预警
      * @param page
      * @param callBack
@@ -377,6 +481,27 @@ public class DataHelper {
         Object[] arrays = new Object[]{"PageIndex", page};
         request.okhttpget(API.contractWarning, arrays, callBack);
     }
+
+    /**
+     * 供应商合同效期预警
+     * @param page
+     * @param callBack
+     */
+    public void getGysContractWarning(int page, HttpCallBack<ContractWarnintEntity> callBack) {
+        Object[] arrays = new Object[]{"PageIndex", page};
+        request.okhttpget(API.gysContractWarning, arrays, callBack);
+    }
+
+    /**
+     * 供应商代理授权书预警
+     * @param page
+     * @param callBack
+     */
+    public void getGysProxyWarning(int page, HttpCallBack<GysProxyEntity> callBack) {
+        Object[] arrays = new Object[]{"PageIndex", page};
+        request.okhttpget(API.gysProxyWarning, arrays, callBack);
+    }
+
     /**
      * 获取用户信息
      *
@@ -422,5 +547,15 @@ public class DataHelper {
                 "loginPassword",MedicalEncry.encrypt(newPsw),
                 "confirmLoginPassword",MedicalEncry.encrypt(conPsw)};
         request.okhttppost(API.updatePswBySms,arrays,callBack);
+    }
+
+    /**
+     *获取机构下拉列表
+     * @param isOnlyHospital 0=查询所有合作机构，1=查询合作医院
+     * @param callBack
+     */
+    public void getHospitalList(int isOnlyHospital, HttpCallBack<List<Type>> callBack) {
+        Object[] arrays = new Object[]{"isOnlyHospital", isOnlyHospital};
+        request.okhttpget(API.hospitalList, arrays, callBack);
     }
 }

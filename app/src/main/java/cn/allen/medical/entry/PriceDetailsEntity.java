@@ -23,12 +23,17 @@ public class PriceDetailsEntity implements Serializable {
     private String pName;
     private String pUnit;
     private String pSpec;
-    private int price;
+    private double price;
     private String priceStartTime;
     private String annexUrl;
     private int status;
-    private int prePrice;
+    private double prePrice;
     private String createTime;
+    /**
+     * shortName :
+     */
+
+    private String shortName;
 
     public String getId() {
         return id;
@@ -70,11 +75,11 @@ public class PriceDetailsEntity implements Serializable {
         this.pSpec = pSpec;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -102,11 +107,11 @@ public class PriceDetailsEntity implements Serializable {
         this.status = status;
     }
 
-    public int getPrePrice() {
+    public double getPrePrice() {
         return prePrice;
     }
 
-    public void setPrePrice(int prePrice) {
+    public void setPrePrice(double prePrice) {
         this.prePrice = prePrice;
     }
 
@@ -116,5 +121,13 @@ public class PriceDetailsEntity implements Serializable {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 }

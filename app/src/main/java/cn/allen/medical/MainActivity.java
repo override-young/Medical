@@ -79,6 +79,7 @@ public class MainActivity extends AllenBaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 11) {
                 String res = data.getStringExtra(Intents.Scan.RESULT);

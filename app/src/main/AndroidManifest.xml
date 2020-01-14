@@ -82,6 +82,15 @@
             android:name=".warning.CompanyWarningActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".warning.GysCompanyWarningActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".warning.GysFirmWarningActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".warning.GysProxyWarningActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".count.SysltjActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Picker"/>
@@ -112,6 +121,8 @@
         <activity android:name=".todo.ToDoPriceActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".todo.BillDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".todo.GysToDoDetailsActivity"
             android:screenOrientation="portrait"/>
         <!-- 统计 start -->
         <activity

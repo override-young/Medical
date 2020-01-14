@@ -26,6 +26,7 @@ import cn.allen.medical.R;
 import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
+import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.ToDoContractEntity;
 import cn.allen.medical.entry.ToDoPriceEntity;
 import cn.allen.medical.utils.CommonAdapter;
@@ -46,6 +47,7 @@ public class ToDoPriceActivity extends AllenBaseActivity {
     private List<ToDoPriceEntity.ItemsBean> sublist = new ArrayList<>();
     private boolean isRefresh = false;
     private int page = 0, pageSize = 20;
+    private MeMenu meMenu;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -92,7 +94,8 @@ public class ToDoPriceActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(toolbar, "待确认价格");
+        meMenu= (MeMenu) getIntent().getSerializableExtra("Menu");
+        actHelper.setToolbarTitleCenter(toolbar, meMenu.getText());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

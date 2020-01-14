@@ -32,6 +32,7 @@ import cn.allen.medical.entry.CompanyWarningEntity;
 import cn.allen.medical.entry.ConsumableStoreEntity;
 import cn.allen.medical.entry.ContractWarnintEntity;
 import cn.allen.medical.entry.KucunCountEntity;
+import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
 
@@ -51,6 +52,7 @@ public class ConsumableStoreWarningActivity extends AllenBaseActivity {
     private List<ConsumableStoreEntity.ItemsBean> sublist=new ArrayList<>();
     private boolean isRefresh=false;
     private int page=0,pageSize=20;
+    private MeMenu meMenu;
     @SuppressLint("HandlerLeak")
     private Handler handler=new Handler(){
         @Override
@@ -98,7 +100,8 @@ public class ConsumableStoreWarningActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(toolbar,"耗材库存效期警告");
+        meMenu= (MeMenu) getIntent().getSerializableExtra("Menu");
+        actHelper.setToolbarTitleCenter(toolbar, meMenu.getText());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
