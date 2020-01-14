@@ -176,13 +176,21 @@ public class KucunCountActivity extends AllenBaseActivity {
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
             page = 0;
-            loadData();
+            if (meMenu.getCode().equals(MenuEnum.count_kcsl)) {
+                loadData();
+            }else {
+                loadDataOfSup();
+            }
         }
 
         @Override
         public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = false;
-            loadData();
+            if (meMenu.getCode().equals(MenuEnum.count_kcsl)) {
+                loadData();
+            }else {
+                loadDataOfSup();
+            }
         }
     };
 

@@ -300,13 +300,21 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
             page = 0;
-            loadData();
+            if (meMenu.getCode().equals(MenuEnum.count_ly)) {
+                loadData();
+            }else {
+                loadDataOfSup();
+            }
         }
 
         @Override
         public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = false;
-            loadData();
+            if (meMenu.getCode().equals(MenuEnum.count_ly)) {
+                loadData();
+            }else {
+                loadDataOfSup();
+            }
         }
     };
 
