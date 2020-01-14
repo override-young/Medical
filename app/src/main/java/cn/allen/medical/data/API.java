@@ -29,6 +29,7 @@ public class API {
     public static String contractDetails = "/api/mobile/HospitalApp/GetContractDetails";
     //合同审核
     public static String contractExamine = "/api/mobile/HospitalApp/ContractExamine";
+
     //价格详情
     public static String priceDetails = "/api/mobile/HospitalApp/GetPriceEntity";
     //价格审核
@@ -68,4 +69,53 @@ public class API {
     //合同效期预警
     public static String contractWarning = "/api/mobile/HospitalApp/GetContractWarnPageList";
 
+    //供应商端
+    /**
+     * 查询当前机构的所有合作机构列表
+     */
+    public static String hospitalList = "/api/mobile/SupplierApp/GetCooperationOrgList";
+    /**
+     * 发货数量统计
+     */
+    public static String gysSelectSumChart = "/api/mobile/SupplierApp/DeliveryStatisticsByMonth";
+    /**
+     * 库存数量统计
+     */
+    public static String gysKuncun = "/api/mobile/SupplierApp/GetHospitalProductStock";
+    /**
+     * 领用数量统计
+     */
+    public static String gysLiyong = "/api/mobile/SupplierApp/GetReceiveStatisticPageList";
+    /**
+     * 供应商企业资质预警
+     */
+    public static String gysCompanyWarning = "/api/mobile/SupplierApp/GetSelfCertWarnList";
+    /**
+     * 供应商厂商资质预警
+     */
+    public static String gysFirmWarning = "/api/mobile/SupplierApp/GetCertWarnPageList";
+    /**
+     *  供应商耗材资质预警
+     */
+    public static String gysHczzWarning = "/api/mobile/SupplierApp/GetProductCertWarnPageList";
+    /**
+     * 供应商合同效期预警
+     */
+    public static String gysContractWarning = "/api/mobile/SupplierApp/GetContractWarnPageList";
+    /**
+     * 代理授权书预警
+     */
+    public static String gysProxyWarning = "/api/mobile/SupplierApp/GetSupplierProductCertWarnPageList";
+    /**
+     * 供应商待确认订单列表
+     */
+    public static String todoGys = "/api/mobile/SupplierApp/GetPurchaseOrdersPageList";
+    /**
+     * 供应商待处理订单详情
+     */
+    public static String gysToDoDetails = "/api/mobile/SupplierApp/GetPurchaseOrdersDetails";
+    /**
+     * 供应商确认采购订单
+     */
+    public static String gysToDoExamine = "/api/mobile/SupplierApp/ConfirmPurchaseOrders";
 }

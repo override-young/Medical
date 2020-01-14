@@ -29,6 +29,24 @@
             android:layout_margin="@dimen/frame_four_distance"
             />
         <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_hospital"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shap_btn_bg_border"
+            android:text="医院"
+            android:paddingLeft="@dimen/frame_four_distance"
+            android:paddingRight="@dimen/frame_four_distance"
+            android:paddingTop="@dimen/frame_eight_distance"
+            android:paddingBottom="@dimen/frame_eight_distance"
+            android:gravity="center"
+            android:textColor="@color/light_green"
+            android:textSize="@dimen/frame_text_smaller_size"
+            android:drawableRight="@drawable/ic_arrow_drop_down_green_24dp"
+            android:layout_margin="@dimen/frame_four_distance"
+            android:visibility="gone"
+            />
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/ly_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -30,6 +30,8 @@ import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.CompanyWarningEntity;
 import cn.allen.medical.entry.ContractWarnintEntity;
+import cn.allen.medical.entry.MeMenu;
+import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.ViewHolder;
 
@@ -48,6 +50,7 @@ public class ContractWarningActivity extends AllenBaseActivity {
     private List<ContractWarnintEntity.ItemsBean> sublist = new ArrayList<>();
     private boolean isRefresh = false;
     private int page = 0,pageSize=20;
+    private MeMenu meMenu;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -94,7 +97,8 @@ public class ContractWarningActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        actHelper.setToolbarTitleCenter(toolbar,"合同效期预警");
+        meMenu= (MeMenu) getIntent().getSerializableExtra("Menu");
+        actHelper.setToolbarTitleCenter(toolbar, meMenu.getText());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -104,7 +108,11 @@ public class ContractWarningActivity extends AllenBaseActivity {
     protected void initUI(@Nullable Bundle savedInstanceState) {
         initAdapter();
         showProgressDialog("");
-        loadData();
+        if (meMenu.getCode().equals(MenuEnum.waring_ht)) {
+            loadData();
+        }else {
+            loadGysData();
+        }
     }
 
     private void initAdapter() {
@@ -151,19 +159,61 @@ public class ContractWarningActivity extends AllenBaseActivity {
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
             page = 0;
-            loadData();
+            if (meMenu.getCode().equals(MenuEnum.waring_ht)) {
+                loadData();
+            }else {
+                loadGysData();
+            }
         }
 
         @Override
         public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = false;
-            loadData();
+            if (meMenu.getCode().equals(MenuEnum.waring_ht)) {
+                loadData();
+            }else {
+                loadGysData();
+            }
         }
     };
 
     private void loadData() {
 
         DataHelper.init().getContractWarning(page++, new HttpCallBack<ContractWarnintEntity>() {
+            @Override
+            public void onSuccess(ContractWarnintEntity respone) {
+                sublist = respone.getItems();
+                pageSize=respone.getPageSize();
+                handler.sendEmptyMessage(0);
+            }
+
+            @Override
+            public void onTodo(MeRespone respone) {
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+
+            }
+
+            @Override
+            public void tokenErro(MeRespone respone) {
+
+            }
+
+            @Override
+            public void onFailed(MeRespone respone) {
+                Logger.e("debug", respone.toString());
+                Message msg = new Message();
+                msg.what = -1;
+                msg.obj = respone.getMessage();
+                handler.sendMessage(msg);
+            }
+        });
+    }
+    private void loadGysData() {
+
+        DataHelper.init().getGysContractWarning(page++, new HttpCallBack<ContractWarnintEntity>() {
             @Override
             public void onSuccess(ContractWarnintEntity respone) {
                 sublist = respone.getItems();
