@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +16,7 @@ import java.util.Iterator;
 import cn.allen.jpush.ExampleUtil;
 import cn.allen.jpush.LocalBroadcastManager;
 import cn.allen.jpush.Logger;
+import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.utils.Jpush2Activity;
 import cn.jpush.android.api.JPushInterface;
 
@@ -49,10 +52,10 @@ public class MyReceiver extends BroadcastReceiver {
 
 			} else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
 				Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
-
+				String json = bundle.getString(JPushInterface.EXTRA_EXTRA);
+				MeMenu menu = new Gson().fromJson(json,MeMenu.class);
 				Jpush2Activity jpush = new Jpush2Activity(context);
-				jpush.push2Activity();
-
+				jpush.push2Activity(menu);
 			} else if(JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
 				boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);
 				Logger.w(TAG, "[MyReceiver]" + intent.getAction() +" connected state change to "+connected);

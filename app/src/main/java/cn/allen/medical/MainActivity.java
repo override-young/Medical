@@ -309,8 +309,7 @@ public class MainActivity extends AllenBaseActivity {
                     centerPanel.setAdapter(adapter);
                     bottomNavBar.setFirstSelectedPosition(0);
                     bottomNavBar.initialise();
-//                    bottomBar.setSelectedItemId(bottomBar.getMenu().getItem(0).getItemId());
-//                    bar.setTitle("待处理");
+                    setAppModule(0);
                     break;
             }
         }

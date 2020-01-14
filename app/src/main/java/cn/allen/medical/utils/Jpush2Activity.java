@@ -1,6 +1,9 @@
 package cn.allen.medical.utils;
 
 import android.content.Context;
+import android.content.Intent;
+
+import cn.allen.medical.entry.MeMenu;
 
 public class Jpush2Activity {
 
@@ -10,8 +13,16 @@ public class Jpush2Activity {
         this.context = context;
     }
 
-    public void push2Activity(){
-
+    public void push2Activity(MeMenu menu){
+        if(menu==null){
+            return;
+        }
+        String code = menu.getCode();
+        switch (code){
+            case "":
+//                context.startActivity(new Intent(context,xx).putExtra("Menu",menu));
+                break;
+        }
     }
 
 }

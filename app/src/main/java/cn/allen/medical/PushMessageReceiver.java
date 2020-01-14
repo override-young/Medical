@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import cn.allen.jpush.TagAliasOperatorHelper;
+import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.utils.Jpush2Activity;
 import cn.jpush.android.api.CmdMessage;
 import cn.jpush.android.api.CustomMessage;
@@ -24,8 +27,10 @@ public class PushMessageReceiver extends JPushMessageReceiver{
     @Override
     public void onNotifyMessageOpened(Context context, NotificationMessage message) {
         Log.e(TAG,"[onNotifyMessageOpened] "+message);
+        String json = message.notificationExtras;
+        MeMenu menu = new Gson().fromJson(json,MeMenu.class);
         Jpush2Activity jpush = new Jpush2Activity(context);
-        jpush.push2Activity();
+        jpush.push2Activity(menu);
     }
 
     @Override
