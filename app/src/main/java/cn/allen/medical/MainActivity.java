@@ -8,17 +8,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -47,7 +42,6 @@ import cn.allen.medical.mine.MineFragment;
 import cn.allen.medical.todo.TodoFragment;
 import cn.allen.medical.utils.OnUpdateCountListener;
 import cn.allen.medical.warning.WarningFragment;
-import q.rorbin.badgeview.QBadgeView;
 
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
