@@ -2,6 +2,7 @@ package cn.allen.medical.count;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import allen.frame.AllenManager;
 import allen.frame.tools.OnAllenItemClickListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +29,7 @@ import cn.allen.medical.adapter.MenuAdapter;
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.entry.SysltjEntity;
+import cn.allen.medical.utils.Constants;
 import cn.allen.medical.warning.CompanyWarningActivity;
 import cn.allen.medical.warning.ContractWarningActivity;
 import cn.allen.medical.warning.WarningFragment;
@@ -36,6 +40,8 @@ public class CountFragment extends Fragment {
     Unbinder unbinder;
     private MenuAdapter adapter;
     private List<MeMenu> list;
+
+    private SharedPreferences shared;
 
     public static CountFragment init() {
         CountFragment fragment = new CountFragment();
@@ -63,9 +69,16 @@ public class CountFragment extends Fragment {
     }
 
     private void initUI(){
-        adapter = new MenuAdapter(true);
-        GridLayoutManager manager = new GridLayoutManager(getActivity(),2);
-        rv.setLayoutManager(manager);
+        shared = AllenManager.getInstance().getStoragePreference();
+        adapter = new MenuAdapter(shared.getInt(Constants.User_Role,0)==7);
+        if(shared.getInt(Constants.User_Role,0)==7){
+            GridLayoutManager manager = new GridLayoutManager(getActivity(),2);
+            rv.setLayoutManager(manager);
+        }else{
+            LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+            manager.setOrientation(LinearLayoutManager.VERTICAL);
+            rv.setLayoutManager(manager);
+        }
         rv.setAdapter(adapter);
         loadData();
     }
@@ -86,9 +99,11 @@ public class CountFragment extends Fragment {
                         break;
                     case MenuEnum.count_sy:
                         startActivity(new Intent(getContext(),SysltjActivity.class));
+                        break;
+                    case MenuEnum.gys_count_fh://发货数量统计
 
                         break;
-                    
+
                 }
             }
         });
@@ -98,11 +113,6 @@ public class CountFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-//                list = new ArrayList<>();
-//                list.add(new MeMenu("1","入库数量统计",0,R.mipmap.count_rk));
-//                list.add(new MeMenu("2","库存数量统计",0,R.mipmap.count_kcsl));
-//                list.add(new MeMenu("3","领用数量统计",0,R.mipmap.count_ly));
-//                list.add(new MeMenu("4","使用数量统计",0,R.mipmap.count_sy));
                 handler.sendEmptyMessage(0);
             }
         }).start();

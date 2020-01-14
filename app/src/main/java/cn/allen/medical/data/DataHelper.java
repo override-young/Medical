@@ -111,11 +111,12 @@ public class DataHelper {
 
     /**
      * 获取预警数量
+     * @param isYy 是否医院端
      * @param callBack
      */
-    public void waringCount(HttpCallBack<WaringCount> callBack){
+    public void waringCount(boolean isYy,HttpCallBack<WaringCount> callBack){
         Object[] arrays = new Object[] { };
-        request.okhttpget(API.waringCount,arrays,callBack);
+        request.okhttpget(isYy?API.waringCount:API.gyswaringCount,arrays,callBack);
     }
 
     /**
