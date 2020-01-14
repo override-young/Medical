@@ -39,6 +39,7 @@ import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.mine.MineFragment;
+import cn.allen.medical.todo.GTodoFragment;
 import cn.allen.medical.todo.TodoFragment;
 import cn.allen.medical.utils.OnUpdateCountListener;
 import cn.allen.medical.warning.WarningFragment;
@@ -250,6 +251,7 @@ public class MainActivity extends AllenBaseActivity {
                             list.add(TodoFragment.init().setList(menu.getChildList()).setUpdateCount(new OnUpdateCountListener() {
                                 @Override
                                 public void count(int count) {
+                                    Logger.e("Todo",""+count);
                                     dclBadge.setText(String.valueOf(count));
                                     if(count>0){
                                         dclBadge.show();
@@ -263,9 +265,10 @@ public class MainActivity extends AllenBaseActivity {
                                     .setInActiveColorResource(R.color.text_gray_color)
                                     .setActiveColorResource(R.color.btn_normal_color)
                                     .setBadgeItem(dclBadge));
-                            list.add(TodoFragment.init().setList(menu.getChildList()).setUpdateCount(new OnUpdateCountListener() {
+                            list.add(GTodoFragment.init().setUpdateCount(new OnUpdateCountListener() {
                                 @Override
                                 public void count(int count) {
+                                    Logger.e("GTodo",""+count);
                                     dclBadge.setText(String.valueOf(count));
                                     if(count>0){
                                         dclBadge.show();

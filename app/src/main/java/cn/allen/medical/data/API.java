@@ -12,6 +12,7 @@ public class API {
     public static String smsAuth = "/api/mobile/Common/SendVerificationCode";
 
     public static String todoCount = "/api/mobile/HospitalApp/GetWaitConfirmCount";
+    public static String gystodoCount = "/api/mobile/SupplierApp/GetWaitConfirmCount";
     public static String waringCount = "/api/mobile/HospitalApp/GetExpireWarningCount";
     public static String gyswaringCount = "/api/mobile/SupplierApp/GetExpireWarningCount";
 

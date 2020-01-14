@@ -8,6 +8,7 @@ public class TodoCount implements Serializable {
     private int billCount;//待处理账单数量 设备科
     private int departmentBillCount;//待处理账单数量 科室
     private int totalCount;//总数量
+    private int orderCount;//待确认采购订单数量
 
     public TodoCount() {
     }
@@ -50,5 +51,25 @@ public class TodoCount implements Serializable {
 
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public int getOrderCount() {
+        return orderCount;
+    }
+
+    public void setOrderCount(int orderCount) {
+        this.orderCount = orderCount;
+    }
+
+    @Override
+    public String toString() {
+        return "TodoCount{" +
+                "contractCount=" + contractCount +
+                ", priceCount=" + priceCount +
+                ", billCount=" + billCount +
+                ", departmentBillCount=" + departmentBillCount +
+                ", totalCount=" + totalCount +
+                ", orderCount=" + orderCount +
+                '}';
     }
 }

@@ -13,8 +13,12 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import allen.frame.AllenBaseActivity;
 import allen.frame.tools.Logger;
@@ -24,11 +28,15 @@ import allen.frame.tools.TimeMeter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.allen.jpush.ExampleUtil;
+import cn.allen.jpush.TagAliasOperatorHelper;
 import cn.allen.medical.data.DataHelper;
 import cn.allen.medical.data.HttpCallBack;
 import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.User;
 import cn.allen.medical.utils.Constants;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 public class LoginActivity extends AllenBaseActivity {
 
@@ -60,6 +68,18 @@ public class LoginActivity extends AllenBaseActivity {
     private boolean isTokenErro = false;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(context);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(context);
+    }
+
+    @Override
     protected boolean isStatusBarColorWhite() {
         return true;
     }
@@ -72,7 +92,6 @@ public class LoginActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
-        Logger.init().setHttp(Constants.IsDebug).setDebug(Constants.IsDebug);
         meter = new TimeMeter();
         meter.setMaxTime(60);
     }
@@ -87,6 +106,12 @@ public class LoginActivity extends AllenBaseActivity {
         if(isRemember){
             loginAccout.setText(actHelper.getSharedPreferences().getString(Constants.User_Account,""));
             loginPsw.setText(actHelper.getSharedPreferences().getString(Constants.User_Psw,""));
+        }
+        if(isTokenErro){
+            loginAccout.setText(actHelper.getSharedPreferences().getString(Constants.User_Account,""));
+            loginAccout.setEnabled(false);
+        } else {
+            loginAccout.setEnabled(true);
         }
     }
 
@@ -279,6 +304,31 @@ public class LoginActivity extends AllenBaseActivity {
         return true;
     }
 
+    private void setTag(String tag){
+        Logger.e("debug","tag:"+tag);
+        // 检查 tag 的有效性
+        Set<String> tagSet = new LinkedHashSet<String>();
+        if (!TextUtils.isEmpty(tag)) {
+            if(!ExampleUtil.isValidTagAndAlias(tag)){
+                return;
+            }
+        }
+        tagSet.add(tag);
+        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+        tagAliasBean.action = TagAliasOperatorHelper.ACTION_SET;
+        TagAliasOperatorHelper.sequence++;
+        tagAliasBean.tags = tagSet;
+        tagAliasBean.isAliasAction = false;
+        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(),TagAliasOperatorHelper.sequence,tagAliasBean);
+    }
+
+    TagAliasCallback tagAlias = new TagAliasCallback() {
+        @Override
+        public void gotResult(int responseCode, String alias, Set<String> tags) {
+            Logger.e("debug","responseCode:"+responseCode+",alias:"+alias+",tags:"+tags);
+        }
+    };
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(){
         @Override
@@ -295,6 +345,7 @@ public class LoginActivity extends AllenBaseActivity {
                         setResult(RESULT_OK,getIntent());
                         finish();
                     }else{
+                        setTag(user.getUserId().replaceAll("-",""));
                         startActivity(new Intent(context,MainActivity.class));
                     }
                     break;
