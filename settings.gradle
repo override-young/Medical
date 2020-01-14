@@ -1,1 +1,1 @@
-include ':app', ':allenframe'
+include ':app', ':allenframe', ':allenjpush'
