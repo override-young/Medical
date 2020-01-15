@@ -351,12 +351,12 @@ public class DataHelper {
     /**
      * 库存数量统计（分页）
      * 注：GetCooperationOrgList 参数onlyQueryHospital=1
-     * @param RecipientOrgId 医院ID
+     * @param HospitalId 医院ID
      * @param page
      * @param callBack
      */
-    public void getGysKucunCount(String RecipientOrgId,int page, HttpCallBack<KucunCountEntity> callBack) {
-        Object[] arrays = new Object[]{"RecipientOrgId",RecipientOrgId,"PageIndex", page};
+    public void getGysKucunCount(String HospitalId,int page, HttpCallBack<KucunCountEntity> callBack) {
+        Object[] arrays = new Object[]{"HospitalId",HospitalId,"PageIndex", page};
         request.okhttpget(API.gysKuncun, arrays, callBack);
     }
 
