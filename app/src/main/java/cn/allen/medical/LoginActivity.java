@@ -182,7 +182,7 @@ public class LoginActivity extends AllenBaseActivity {
     }
     private void login(){
         showProgressDialog("");
-        DataHelper.init().login(isPhoneLogin?2:1, zh, psw, yzm, new HttpCallBack<User>() {
+        DataHelper.init().login(isPhoneLogin?2:1, isPhoneLogin?phone:zh, psw, yzm, new HttpCallBack<User>() {
             @Override
             public void onSuccess(User muser) {
                 Logger.e("debug",muser.toString());

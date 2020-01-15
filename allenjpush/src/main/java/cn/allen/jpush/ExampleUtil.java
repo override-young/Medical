@@ -90,7 +90,8 @@ public class ExampleUtil {
 			@Override
 			public void run() {
 				Looper.prepare();
-				Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
+                Logger.e("showToast",toast);
+//				Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
 				Looper.loop();
 			}
 		}).start();
