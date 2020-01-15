@@ -99,7 +99,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".count.SelectSumChartActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Picker"/>
         <activity
             android:name=".warning.ContractWarningActivity"
             android:screenOrientation="portrait" />

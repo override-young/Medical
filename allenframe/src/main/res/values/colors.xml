@@ -74,4 +74,8 @@
     <color name="btn_normal_color">#50C9C3</color>
     <color name="btn_select_color">#96DEDA</color>
 
+    <color name="brown">#FF9A7C</color>
+    <color name="light_green">#50C9C3</color>
+    <color name="light_green2">#96DEDA</color>
+
 </resources>
