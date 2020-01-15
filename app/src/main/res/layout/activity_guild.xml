@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:layout_margin="@dimen/frame_32_distance"
+            android:src="@mipmap/guild_center"
+            />
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/guild_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/guild_title"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/frame_edge_distance"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/guild_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/frame_eight_distance"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/guild_icon" />
+    </RelativeLayout>
+</android.support.v7.widget.LinearLayoutCompat>
