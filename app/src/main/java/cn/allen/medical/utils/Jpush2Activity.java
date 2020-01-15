@@ -11,6 +11,7 @@ import cn.allen.medical.count.SelectSumChartActivity;
 import cn.allen.medical.count.SysltjActivity;
 import cn.allen.medical.entry.MeMenu;
 import cn.allen.medical.entry.MenuEnum;
+import cn.allen.medical.todo.GysDlcActivity;
 import cn.allen.medical.todo.ToDoBillActivity;
 import cn.allen.medical.todo.ToDoContractActivity;
 import cn.allen.medical.todo.ToDoPriceActivity;
@@ -89,7 +90,9 @@ public class Jpush2Activity {
             case MenuEnum.count_sy:
                 context.startActivity(new Intent(context,SysltjActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP ).putExtra("Menu",menu));
                 break;
-
+            case MenuEnum.gys_todo:
+                context.startActivity(new Intent(context,GysDlcActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP ).putExtra("Menu",menu));
+                break;
             case MenuEnum.gys_count_fh:
                 context.startActivity(new Intent(context,SelectSumChartActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP ).putExtra("Menu",menu));
                 break;
