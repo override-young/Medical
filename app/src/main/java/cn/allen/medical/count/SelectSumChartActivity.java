@@ -1,8 +1,6 @@
 package cn.allen.medical.count;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,8 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.DatePicker;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
+import com.contrarywind.view.WheelView;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -25,8 +26,10 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import allen.frame.AllenBaseActivity;
@@ -47,7 +50,7 @@ import cn.allen.medical.entry.SelectSumChartEntity;
 import cn.allen.medical.utils.YearPickerDialog;
 
 public class SelectSumChartActivity extends AllenBaseActivity implements
-        OnChartValueSelectedListener{
+        OnChartValueSelectedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -242,31 +245,31 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
         }
         switch (view.getId()) {
             case R.id.tv_year:
-                Calendar calendar = Calendar.getInstance();
-                if (yearPickerDialog == null) {
-                    new YearPickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog
-                            .OnDateSetListener() {
-
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int
-                                dayOfMonth) {
-                            calendar.set(Calendar.YEAR, year);
-                            calendar.set(Calendar.MONTH, monthOfYear);
-                            tvYear.setText(year + "");
-                            SelectSumChartActivity.this.year = year + "";
-                            if (meMenu.getCode().equals(MenuEnum.count_rk)) {
-                                loadDataOfHospital();
-                            } else {
-                                loadDataOfSup();
-                            }
-
-                        }
-                    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get
-                            (Calendar
-                                    .DATE)).show();
-                } else {
-                    yearPickerDialog.show();
-                }
+//                Calendar calendar = Calendar.getInstance();
+//                if (yearPickerDialog == null) {
+//                    new YearPickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog
+//                            .OnDateSetListener() {
+//
+//                        @Override
+//                        public void onDateSet(DatePicker view, int year, int monthOfYear, int
+//                                dayOfMonth) {
+//                            calendar.set(Calendar.YEAR, year);
+////                            calendar.set(Calendar.MONTH, monthOfYear);
+//                            tvYear.setText(year + "");
+//                            SelectSumChartActivity.this.year = year + "";
+//                            if (meMenu.getCode().equals(MenuEnum.count_rk)) {
+//                                loadDataOfHospital();
+//                            } else {
+//                                loadDataOfSup();
+//                            }
+//
+//                        }
+//                    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get
+//                            (Calendar.DATE)).show();
+//                } else {
+//                    yearPickerDialog.show();
+//                }
+                dataPicker();
                 break;
             case R.id.tv_hospital:
                 int len = hospitalList == null ? 0 : hospitalList.size();
@@ -279,6 +282,52 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
 
                 break;
         }
+    }
+
+    private void dataPicker() {
+
+        TimePickerView pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {//选中事件回调
+                year=getTime(date);
+                tvYear.setText(year);
+                if (meMenu.getCode().equals(MenuEnum.count_rk)) {
+                    loadDataOfHospital();
+                } else {
+                    loadDataOfSup();
+                }
+            }
+        })
+                .setType(new boolean[]{true, false, false, false, false, false})// 默认全部显示
+                .setCancelText("取消")//取消按钮文字
+                .setSubmitText("确定")//确认按钮文字
+//                .setTitleSize(20)//标题文字大小
+                .setTitleText("选择年份")//标题文字
+                .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
+                .isCyclic(false)//是否循环滚动
+                .setContentTextSize(18)
+                .setItemVisibleCount(5)
+                .setLineSpacingMultiplier(2)
+                .setDividerType(WheelView.DividerType.WRAP)
+                .setTitleColor(getResources().getColor(R.color.light_green2))//标题文字颜色
+                .setSubmitColor(getResources().getColor(R.color.light_green2))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.gray))//取消按钮文字颜色
+                .setTextColorCenter(getResources().getColor(R.color.light_green2))
+//                .setTitleBgColor(0xFF666666)//标题背景颜色 Night mode
+//                .setBgColor(0xFF333333)//滚轮背景颜色 Night mode
+//                .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
+////                .setRangDate(startDate,endDate)//起始终止年月日设定
+//                //.setLabel("年","月","日","时","分","秒")//默认设置为年月日时分秒
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isDialog(true)//是否显示为对话框样式
+                .build();
+        pvTime.show();
+    }
+
+    private String getTime(Date date) {//可根据需要自行截取数据显示
+        //"YYYY-MM-DD HH:MM:SS"        "yyyy-MM-dd"
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
+        return format.format(date);
     }
 
     @Override
@@ -329,39 +378,39 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
         DataHelper.init().getGysSelectSumChart(hospitalId, year, new
                 HttpCallBack<List<SelectSumChartEntity>>() {
 
-            @Override
-            public void onSuccess(List<SelectSumChartEntity> respone) {
-                if (respone.size() == 0) {
-                    for (int i = 0; i < 12; i++) {
-                        respone.add(new SelectSumChartEntity(i + 1, 0));
+                    @Override
+                    public void onSuccess(List<SelectSumChartEntity> respone) {
+                        if (respone.size() == 0) {
+                            for (int i = 0; i < 12; i++) {
+                                respone.add(new SelectSumChartEntity(i + 1, 0));
+                            }
+                        }
+                        list = respone;
+                        handler.sendEmptyMessage(0);
                     }
-                }
-                list = respone;
-                handler.sendEmptyMessage(0);
-            }
 
-            @Override
-            public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
-            }
+                    @Override
+                    public void onTodo(MeRespone respone) {
+                        Message msg = new Message();
+                        msg.what = 1;
+                        msg.obj = respone.getMessage();
+                        handler.sendMessage(msg);
+                    }
 
-            @Override
-            public void tokenErro(MeRespone respone) {
+                    @Override
+                    public void tokenErro(MeRespone respone) {
 
-            }
+                    }
 
-            @Override
-            public void onFailed(MeRespone respone) {
-                Logger.e("debug", respone.toString());
-                Message msg = new Message();
-                msg.what = -1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
-            }
-        });
+                    @Override
+                    public void onFailed(MeRespone respone) {
+                        Logger.e("debug", respone.toString());
+                        Message msg = new Message();
+                        msg.what = -1;
+                        msg.obj = respone.getMessage();
+                        handler.sendMessage(msg);
+                    }
+                });
     }
 
     private void loadDataOfHospital() {
@@ -402,7 +451,6 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
             }
         });
     }
-
 
 
 }
