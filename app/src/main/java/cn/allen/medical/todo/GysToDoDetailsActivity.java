@@ -202,7 +202,7 @@ public class GysToDoDetailsActivity extends AllenBaseActivity {
         switch (view.getId()) {
             case R.id.btn_submit:
                 WarningDialog warningDialog = new WarningDialog(mContext, handler, "温馨提示",
-                        "确定通过审核吗?", 3);
+                        "确认该订单吗?", 3);
                 warningDialog.show();
 
                 break;
