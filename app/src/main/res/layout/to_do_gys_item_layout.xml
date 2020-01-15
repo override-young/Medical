@@ -12,7 +12,7 @@
         android:layout_marginBottom="@dimen/frame_eight_distance"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="@dimen/frame_four_distance"
-        app:cardElevation="@dimen/frame_four_distance">
+        app:cardElevation="@dimen/frame_two_distance">
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
