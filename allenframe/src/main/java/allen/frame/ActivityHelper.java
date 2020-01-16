@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -33,12 +34,13 @@ public class ActivityHelper {
 	private TextView result;
 	private View resultLay;
 	private View parent;
+	private AppCompatImageView img;
 	private Context context;
 	private SharedPreferences shared;
 	
-	public static int PROGRESS_STATE_START = 0;
-	public static int PROGRESS_STATE_SUCCES = 1;
-	public static int PROGRESS_STATE_FAIL = -1;
+	public static final int PROGRESS_STATE_START = 0;
+	public static final int PROGRESS_STATE_SUCCES = 1;
+	public static final int PROGRESS_STATE_FAIL = -1;
 
 	private long preTime = 0l;
 
@@ -115,26 +117,41 @@ public class ActivityHelper {
 	 * @param msg
 	 */
 	public void setLoadUi(int code,String msg){
+		setLoadUi(code,msg,0);
+	}
+
+	/**
+	 * 界面加载处理
+	 * @param code 0初始化 1加载完成 -1加载失败
+	 * @param msg
+	 * @param resId 失败显示图片
+	 */
+	public void setLoadUi(int code,String msg,int resId){
 		if(parent!=null){
 			progress = parent.findViewById(R.id.app_frame_progress_layout);
 			result = parent.findViewById(R.id.app_frame_result_tv);
 			resultLay = parent.findViewById(R.id.app_frame_result_layout);
+			img = parent.findViewById(R.id.app_frame_result_img);
 		}else{
 			progress = findLinearLayoutById(R.id.app_frame_progress_layout);
 			result = findTextViewById(R.id.app_frame_result_tv);
 			resultLay = findViewById(R.id.app_frame_result_layout);
+			img = findImgViewById(R.id.app_frame_result_img);
 		}
 		switch (code) {
-		case 0:
+		case PROGRESS_STATE_START:
 			progress.setVisibility(View.VISIBLE);
 			resultLay.setVisibility(View.GONE);
 			break;
-		case 1:
+		case PROGRESS_STATE_SUCCES:
 			progress.setVisibility(View.GONE);
 			break;
-		case -1:
+		case PROGRESS_STATE_FAIL:
 			progress.setVisibility(View.VISIBLE);
 			resultLay.setVisibility(View.VISIBLE);
+			if(resId!=0){
+				img.setImageResource(resId);
+			}
 			result.setText(StringUtils.empty(msg)?context.getText(R.string.app_frame_result_null):msg);
 			result.setOnClickListener(l);
 			break;
@@ -143,9 +160,12 @@ public class ActivityHelper {
 			break;
 		}
 	}
-	
+
 	private TextView findTextViewById(int resid) {
 		return (TextView) ((Activity) context).findViewById(resid);
+	}
+	private AppCompatImageView findImgViewById(int resid) {
+		return (AppCompatImageView) ((Activity) context).findViewById(resid);
 	}
 	private LinearLayout findLinearLayoutById(int resid) {
 		return (LinearLayout) ((Activity) context).findViewById(resid);

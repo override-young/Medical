@@ -109,6 +109,9 @@
             android:name=".warning.ContractWarningActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".todo.GysDlcActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".todo.ContractDetailsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".todo.DoDifferenceActivity"
