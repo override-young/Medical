@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -31,10 +32,12 @@ import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
 import allen.frame.widget.MaterialRefreshLayout;
+import allen.frame.widget.MaterialRefreshListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,6 +48,7 @@ import cn.allen.medical.data.MeRespone;
 import cn.allen.medical.entry.BillDifferentEntity;
 import cn.allen.medical.entry.DifferencesEntity;
 import cn.allen.medical.entry.DoDifferenceEntity;
+import cn.allen.medical.entry.MenuEnum;
 import cn.allen.medical.utils.CommonAdapter;
 import cn.allen.medical.utils.PopupWindow.CommonPopupWindow;
 import cn.allen.medical.utils.PopupWindow.CommonUtil;
@@ -74,12 +78,15 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
     private CommonAdapter<DoDifferenceEntity.ItemsBean> adapter;
     private List<DoDifferenceEntity.ItemsBean> list = new ArrayList<>();
     private List<DoDifferenceEntity.ItemsBean> doDiffList = new ArrayList<>();
+    private List<DoDifferenceEntity.ItemsBean> doDiffSubList = new ArrayList<>();
     private CommonAdapter<DoDifferenceEntity.ItemsBean> differentAdapter;
     private List<DifferencesEntity> addList = new ArrayList<>();
     private CommonPopupWindow popupWindow;
 
     private SwipeMenuCreator swipeMenuCreator;
     private String id, key = "";
+    private int page=0,pageSize=20;
+    private boolean isRefresh=false;
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -87,33 +94,56 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
+                    dismissProgressDialog();
                     BillDifferentEntity differentEntity = (BillDifferentEntity) msg.obj;
-                    tvNumber.setText(differentEntity.getCode());
-                    tvDate.setText(differentEntity.getStartTime().replaceAll(" 00:00:00", "") +
-                            "\n" + differentEntity.getEndTime().replaceAll(" 00:00:00", ""));
-
+                    if (differentEntity==null){
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, getResources()
+                                .getString(R.string.no_data), R.mipmap.no_data);
+                    }else {
+                        tvNumber.setText(differentEntity.getCode());
+                        tvDate.setText(differentEntity.getStartTime().replaceAll(" 00:00:00", "") +
+                                "\n" + differentEntity.getEndTime().replaceAll(" 00:00:00", ""));
+                    }
                     break;
                 case 1:
-                    dismissProgressDialog();
+
                     break;
                 case 2:
-                    Logger.e("differentList.size:", doDiffList.size() + "");
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
                     dismissProgressDialog();
+                    if (isRefresh) {
+                        doDiffList = doDiffSubList;
+                    } else {
+                        if (page == 1) {
+                            doDiffList = doDiffSubList;
+                        } else {
+                            doDiffList.addAll(doDiffSubList);
+                        }
+                    }
                     if (popupWindow != null && popupWindow.isShowing()) {
+                        if (isRefresh) {
+                            mater.finishRefresh();
+                        } else {
+                            mater.finishRefreshLoadMore();
+                        }
                         differentAdapter.setDatas(doDiffList);
                     } else {
                         showPop();
                         differentAdapter.setDatas(doDiffList);
                     }
+                    actHelper.setCanLoadMore(mater, pageSize, doDiffList);
                     break;
                 case 3:
                     dismissProgressDialog();
-                    MsgUtils.showLongToast(mContext,"处理差异提交成功!");
+//                    MsgUtils.showLongToast(mContext,"处理差异提交成功!");
                     setResult(RESULT_OK);
                     finish();
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, getResources()
+                            .getString(R.string.no_internet), R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -141,6 +171,7 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         id = getIntent().getStringExtra("ID");
+        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
         setSwipeMenu();
         swipeRecyclerView.setSwipeMenuCreator(swipeMenuCreator);
         initAdapter();
@@ -284,7 +315,6 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
     };
 
     private void loadData() {
-        showProgressDialog("");
         DataHelper.init().getBillDifferentDetails(id, new HttpCallBack<BillDifferentEntity>() {
             @Override
             public void onSuccess(BillDifferentEntity respone) {
@@ -296,10 +326,6 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
             }
 
             @Override
@@ -320,19 +346,16 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
     }
 
     private void loadDifference() {
-        DataHelper.init().getDifferentList(key, new HttpCallBack<DoDifferenceEntity>() {
+        DataHelper.init().getDifferentList(page++,key, new HttpCallBack<DoDifferenceEntity>() {
             @Override
             public void onSuccess(DoDifferenceEntity respone) {
-                doDiffList = respone.getItems();
+                doDiffSubList = respone.getItems();
+                pageSize=respone.getPageSize();
                 handler.sendEmptyMessage(2);
             }
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
             }
 
             @Override
@@ -364,6 +387,9 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
             case R.id.tv_date:
                 break;
             case R.id.btn_submit:
+                if (adapter.getDatas()==null){
+                    adapter.setDatas(new ArrayList<>());
+                }
                 for (DoDifferenceEntity.ItemsBean entity : adapter.getDatas()) {
                     if (entity.getCount() != 0) {
                         DifferencesEntity differencesEntity = new DifferencesEntity();
@@ -432,12 +458,13 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
                 .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
                 .setAnimationStyle(R.style.AnimUp)
                 .setViewOnclickListener(this)
+                .setOutsideTouchable(false)
                 .create();
 
         popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
     }
 
-
+   private MaterialRefreshLayout mater;
     @Override
     public void getChildView(View view, int layoutResId) {
         switch (layoutResId) {
@@ -445,10 +472,12 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
                 AppCompatTextView tvClose = view.findViewById(R.id.tv_close);
                 AppCompatEditText etSearchName = view.findViewById(R.id.et_search_name);
                 RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+                mater=view.findViewById(R.id.mater);
                 recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                         .VERTICAL, false));
 
                 recyclerView.setAdapter(differentAdapter);
+                mater.setMaterialRefreshListener(refreshListener);
                 etSearchName.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -458,6 +487,8 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         key = etSearchName.getText().toString();
+                        page=0;
+                        isRefresh=false;
                         loadDifference();
                     }
 
@@ -467,11 +498,12 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
                     }
                 });
 
-
                 tvClose.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (popupWindow != null) {
+                            page=0;
+                            isRefresh=false;
                             popupWindow.dismiss();
                         }
                     }
@@ -479,4 +511,20 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
                 break;
         }
     }
+
+    private MaterialRefreshListener refreshListener = new MaterialRefreshListener() {
+        @Override
+        public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+            isRefresh = true;
+            page = 0;
+            loadDifference();
+        }
+
+        @Override
+        public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+            isRefresh = false;
+            loadDifference();
+        }
+    };
+
 }

@@ -72,6 +72,15 @@ public class ToDoBillEntity implements Serializable {
         private String code;
         private String startTime;
         private String endTime;
+        /**
+         * deptName : 神科
+         * status : 3
+         * diffRecords : null
+         */
+
+        private String deptName;
+        private int status;
+        private Object diffRecords;
 
         public String getId() {
             return id;
@@ -103,6 +112,30 @@ public class ToDoBillEntity implements Serializable {
 
         public void setEndTime(String endTime) {
             this.endTime = endTime;
+        }
+
+        public String getDeptName() {
+            return deptName;
+        }
+
+        public void setDeptName(String deptName) {
+            this.deptName = deptName;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public Object getDiffRecords() {
+            return diffRecords;
+        }
+
+        public void setDiffRecords(Object diffRecords) {
+            this.diffRecords = diffRecords;
         }
     }
 

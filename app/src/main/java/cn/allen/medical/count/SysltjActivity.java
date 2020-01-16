@@ -68,7 +68,6 @@ public class SysltjActivity extends AllenBaseActivity implements CommonPopupWind
     private List<SysltjEntity.ItemsBean> sublist = new ArrayList<>();
     private List<Type> ksList = new ArrayList<>();
     private boolean isRefresh = false;
-    private boolean isStart = false;
     private boolean isFirstLoad = false;
     private int page = 0, pageSize = 20;
     private String ksID = "", startDate = "", endDate = "";
@@ -80,6 +79,9 @@ public class SysltjActivity extends AllenBaseActivity implements CommonPopupWind
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    dismissProgressDialog();
+                    refreshLayout.finishRefreshing();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
                     if (isRefresh) {
                         list = sublist;
                         refreshLayout.finishRefresh();
@@ -91,13 +93,13 @@ public class SysltjActivity extends AllenBaseActivity implements CommonPopupWind
                         }
                         refreshLayout.finishRefreshLoadMore();
                     }
+                    if (list.isEmpty()){
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
+                    }
                     adapter.setDatas(list);
                     actHelper.setCanLoadMore(refreshLayout, pageSize, list);
                     break;
                 case 1:
-                    dismissProgressDialog();
-                    refreshLayout.finishRefreshing();
-                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
                     break;
                 case 2:
                     if (isFirstLoad) {
@@ -113,7 +115,7 @@ public class SysltjActivity extends AllenBaseActivity implements CommonPopupWind
                         }
                     } else {
                         int len = ksList == null ? 0 : ksList.size();
-                        if (len > 1) {
+                        if (len > 0) {
                             ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 3);
                             dialog.showDialog("请选择科室", tvKeshi, ksList);
                         } else {
@@ -136,6 +138,7 @@ public class SysltjActivity extends AllenBaseActivity implements CommonPopupWind
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_internet),R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -257,10 +260,6 @@ public class SysltjActivity extends AllenBaseActivity implements CommonPopupWind
 
                     @Override
                     public void onTodo(MeRespone respone) {
-                        Message msg = new Message();
-                        msg.what = 1;
-                        msg.obj = respone.getMessage();
-                        handler.sendMessage(msg);
 
                     }
 
@@ -289,7 +288,7 @@ public class SysltjActivity extends AllenBaseActivity implements CommonPopupWind
         switch (view.getId()) {
             case R.id.tv_keshi:
                 int len = ksList == null ? 0 : ksList.size();
-                if (len > 1) {
+                if (len > 0) {
                     ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 3);
                     dialog.showDialog("请选择科室", tvKeshi, ksList);
                 } else {

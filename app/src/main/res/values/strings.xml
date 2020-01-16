@@ -42,5 +42,8 @@
     <string name="scan_info">博尔德登录确认</string>
     <!--统计end-->
 
+    <string name="no_data">暂无数据</string>
+    <string name="no_internet">暂无网络</string>
+
 
 </resources>

@@ -51,7 +51,15 @@
                         android:textColor="@color/text_normal_tint_color"
                         android:textSize="@dimen/frame_text_small_size" />
                 </android.support.v7.widget.LinearLayoutCompat>
-
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_ks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/frame_four_distance"
+                    android:text=""
+                    android:textColor="@color/text_normal_grey_color2"
+                    android:textSize="@dimen/frame_text_small_size" />
             </android.support.v7.widget.LinearLayoutCompat>
 
             <android.support.v7.widget.LinearLayoutCompat

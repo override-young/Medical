@@ -15,6 +15,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
@@ -54,6 +55,9 @@ public class ToDoPriceActivity extends AllenBaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
+                    refreshLayout.finishRefreshing();
                     if (isRefresh) {
                         list = sublist;
                         refreshLayout.finishRefresh();
@@ -65,15 +69,18 @@ public class ToDoPriceActivity extends AllenBaseActivity {
                         }
                         refreshLayout.finishRefreshLoadMore();
                     }
+                    if (list.isEmpty()){
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
+                    }
                     adapter.setDatas(list);
                     actHelper.setCanLoadMore(refreshLayout, pageSize, list);
                     break;
                 case 1:
-                    dismissProgressDialog();
-                    refreshLayout.finishRefreshing();
+
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_internet),R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -103,7 +110,7 @@ public class ToDoPriceActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         initAdapter();
-        showProgressDialog("");
+        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
         loadData();
     }
 
@@ -139,6 +146,7 @@ public class ToDoPriceActivity extends AllenBaseActivity {
         if (resultCode == RESULT_OK) {
             isRefresh = true;
             page = 0;
+            actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
             loadData();
         }
     }
@@ -187,10 +195,6 @@ public class ToDoPriceActivity extends AllenBaseActivity {
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
 
             }
 

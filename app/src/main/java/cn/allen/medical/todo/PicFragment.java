@@ -58,7 +58,7 @@ public class PicFragment extends Fragment {
         imageView.setScaleType(ScaleType.CENTER_INSIDE);
         imageView.enable();
         imageView.enableRotate();
-        Glide.with(this).load(url).fitCenter().dontAnimate().error(R.drawable.mis_default_error).into(imageView);
+        Glide.with(this).load(url).fitCenter().dontAnimate().error(R.mipmap.no_internet).into(imageView);
 
         imageView.setOnClickListener(l);
 

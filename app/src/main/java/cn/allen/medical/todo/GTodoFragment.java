@@ -163,10 +163,6 @@ public class GTodoFragment extends Fragment {
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 2;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
 
             }
 
@@ -232,6 +228,8 @@ public class GTodoFragment extends Fragment {
                     }
                     break;
                 case 1:
+                    activityHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
+                    refreshLayout.finishRefreshing();
                     if (isRefresh) {
                         list = sublist;
                         refreshLayout.finishRefresh();
@@ -243,15 +241,18 @@ public class GTodoFragment extends Fragment {
                         }
                         refreshLayout.finishRefreshLoadMore();
                     }
+                    if (list.isEmpty()) {
+                        activityHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, getResources().getString(R.string.no_data), R.mipmap.no_data);
+
+                    }
                     adapter.setDatas(list);
                     setCanLoadMore(refreshLayout, pageSize, list);
                     break;
                 case 2:
-                    activityHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
-                    refreshLayout.finishRefreshing();
+
                     break;
                 case -1:
-                    activityHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,"");
+                    activityHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_internet),R.mipmap.no_internet);
                     MsgUtils.showMDMessage(getContext(), (String) msg.obj);
                     break;
             }

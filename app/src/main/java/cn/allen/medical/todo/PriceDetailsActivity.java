@@ -18,6 +18,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
@@ -48,28 +49,35 @@ public class PriceDetailsActivity extends AllenBaseActivity {
     @BindView(R.id.btn_submit)
     AppCompatButton btnSubmit;
 
-    private Context mContext=this;
+    private Context mContext = this;
     private CommonAdapter<PriceDetailsEntity> adapter;
-    private List<PriceDetailsEntity> list=new ArrayList<>();
+    private List<PriceDetailsEntity> list = new ArrayList<>();
     private String id;
     @SuppressLint("HandlerLeak")
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
-                    PriceDetailsEntity entity= (PriceDetailsEntity) msg.obj;
-                    tvGys.setText(entity.getOrgName());
-                    tvBgrq.setText(entity.getCreateTime());
-                    list.add(entity);
-                    adapter.setDatas(list);
+                    dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
+                    PriceDetailsEntity entity = (PriceDetailsEntity) msg.obj;
+                    if (entity == null) {
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, getResources()
+                                .getString(R.string.no_data), R.mipmap.no_data);
+                    } else {
+                        tvGys.setText(entity.getOrgName());
+                        tvBgrq.setText(entity.getCreateTime());
+                        list.add(entity);
+                        adapter.setDatas(list);
+                    }
                     break;
                 case 1:
-                    dismissProgressDialog();
+
                     break;
                 case 2:
                     dismissProgressDialog();
-                    MsgUtils.showLongToast(mContext,"成功！");
+//                    MsgUtils.showLongToast(mContext, "成功！");
                     setResult(RESULT_OK);
                     finish();
                     break;
@@ -78,6 +86,8 @@ public class PriceDetailsActivity extends AllenBaseActivity {
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, getResources()
+                            .getString(R.string.no_internet), R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -106,12 +116,12 @@ public class PriceDetailsActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         id = getIntent().getStringExtra("ID");
+        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
         initAdapter();
         loadData();
     }
 
     private void loadData() {
-        showProgressDialog("");
         DataHelper.init().getPriceDetails(id, new HttpCallBack<PriceDetailsEntity>() {
             @Override
             public void onSuccess(PriceDetailsEntity respone) {
@@ -123,10 +133,6 @@ public class PriceDetailsActivity extends AllenBaseActivity {
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
             }
 
             @Override
@@ -148,15 +154,17 @@ public class PriceDetailsActivity extends AllenBaseActivity {
     private void initAdapter() {
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager
                 .VERTICAL, false));
-        adapter=new CommonAdapter<PriceDetailsEntity>(mContext,R.layout.price_details_item_layout) {
+        adapter = new CommonAdapter<PriceDetailsEntity>(mContext, R.layout
+                .price_details_item_layout) {
             @Override
             public void convert(ViewHolder holder, PriceDetailsEntity entity, int position) {
-                holder.setText(R.id.tv_name,entity.getPName());
-                holder.setText(R.id.tv_after,entity.getPrice()+"");
-                holder.setText(R.id.tv_guige,entity.getPSpec());
-                holder.setText(R.id.tv_before,entity.getPrePrice()+"");
-                holder.setText(R.id.tv_danwei,entity.getPUnit());
-                holder.setText(R.id.tv_date,entity.getPriceStartTime().replaceAll(" 00:00:00",""));
+                holder.setText(R.id.tv_name, entity.getPName());
+                holder.setText(R.id.tv_after, entity.getPrice() + "");
+                holder.setText(R.id.tv_guige, entity.getPSpec());
+                holder.setText(R.id.tv_before, entity.getPrePrice() + "");
+                holder.setText(R.id.tv_danwei, entity.getPUnit());
+                holder.setText(R.id.tv_date, entity.getPriceStartTime().replaceAll(" 00:00:00",
+                        ""));
             }
         };
         recyclerview.setAdapter(adapter);
@@ -176,7 +184,7 @@ public class PriceDetailsActivity extends AllenBaseActivity {
 
     @OnClick({R.id.tv_gys, R.id.tv_bgrq, R.id.btn_submit})
     public void onViewClicked(View view) {
-        if (actHelper.isFastClick()){
+        if (actHelper.isFastClick()) {
             return;
         }
         switch (view.getId()) {
@@ -185,15 +193,16 @@ public class PriceDetailsActivity extends AllenBaseActivity {
             case R.id.tv_bgrq:
                 break;
             case R.id.btn_submit:
-                WarningDialog warningDialog=new WarningDialog(mContext,handler,"温馨提示","确定通过审核吗?",3);
+                WarningDialog warningDialog = new WarningDialog(mContext, handler, "温馨提示",
+                        "确定通过审核吗?", 3);
                 warningDialog.show();
                 break;
         }
     }
 
-    private void passVer(){
+    private void passVer() {
         showProgressDialog("");
-        DataHelper.init().getPriceExamine(id,true, "", new HttpCallBack() {
+        DataHelper.init().getPriceExamine(id, true, "", new HttpCallBack() {
             @Override
             public void onSuccess(Object respone) {
 

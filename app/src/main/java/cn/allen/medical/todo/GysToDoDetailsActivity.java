@@ -19,6 +19,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
@@ -62,33 +63,26 @@ public class GysToDoDetailsActivity extends AllenBaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
+                    dismissProgressDialog();
                     GysToDoDetailsEntity gysToDoDetailsEntity = (GysToDoDetailsEntity) msg.obj;
-                    tvUnit.setText(gysToDoDetailsEntity.getOrgName());
-                    tvOrderNum.setText(gysToDoDetailsEntity.getOrderNo());
-                    tvShr.setText(gysToDoDetailsEntity.getRecipientName());
-//                    int state = gysToDoDetailsEntity.getStatus();
-//                    if (state == 5) {
-//                        tvState.setText("待审核");
-//                    } else if (state == 10) {
-//                        tvState.setText("已撤销");
-//                    } else if (state == 15) {
-//                        tvState.setText("正常");
-//                    } else if (state == 20) {
-//                        tvState.setText("未生效");
-//                    } else if (state == 30) {
-//                        tvState.setText("已过期");
-//                    } else if (state == 40) {
-//                        tvState.setText("驳回");
-//                    }
-                    list = gysToDoDetailsEntity.getDetailsList();
-                    adapter.setDatas(list);
+                    if (gysToDoDetailsEntity==null){
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, getResources()
+                                .getString(R.string.no_data), R.mipmap.no_data);
+                    }else {
+                        tvUnit.setText(gysToDoDetailsEntity.getOrgName());
+                        tvOrderNum.setText(gysToDoDetailsEntity.getOrderNo());
+                        tvShr.setText(gysToDoDetailsEntity.getRecipientName());
+                        list = gysToDoDetailsEntity.getDetailsList();
+                        adapter.setDatas(list);
+                    }
                     break;
                 case 1:
-                    dismissProgressDialog();
+
                     break;
                 case 2:
                     dismissProgressDialog();
-                    MsgUtils.showLongToast(mContext, "成功！");
+//                    MsgUtils.showLongToast(mContext, "成功！");
                     setResult(RESULT_OK);
                     finish();
                     break;
@@ -97,6 +91,8 @@ public class GysToDoDetailsActivity extends AllenBaseActivity {
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, getResources()
+                            .getString(R.string.no_internet), R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -126,12 +122,12 @@ public class GysToDoDetailsActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         id = getIntent().getStringExtra("ID");
+        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
         loadData();
         initAdapter();
     }
 
     private void loadData() {
-        showProgressDialog("");
         DataHelper.init().getGysToDoDetails(id, new HttpCallBack<GysToDoDetailsEntity>() {
             @Override
             public void onSuccess(GysToDoDetailsEntity respone) {
@@ -143,10 +139,6 @@ public class GysToDoDetailsActivity extends AllenBaseActivity {
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
             }
 
             @Override

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
 import allen.frame.tools.DateUtils;
 import allen.frame.tools.Logger;
@@ -56,6 +57,9 @@ public class GysFirmWarningActivity extends AllenBaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
+                    refreshLayout.finishRefreshing();
                     if (isRefresh) {
                         list = sublist;
                         refreshLayout.finishRefresh();
@@ -67,15 +71,18 @@ public class GysFirmWarningActivity extends AllenBaseActivity {
                         }
                         refreshLayout.finishRefreshLoadMore();
                     }
+                    if (list.isEmpty()){
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
+                    }
                     adapter.setDatas(list);
                     actHelper.setCanLoadMore(refreshLayout, pageSize, list);
                     break;
                 case 1:
-                    dismissProgressDialog();
-                    refreshLayout.finishRefreshing();
+
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_internet),R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -106,7 +113,7 @@ public class GysFirmWarningActivity extends AllenBaseActivity {
     protected void initUI(@Nullable Bundle savedInstanceState) {
 
         initAdapter();
-        showProgressDialog("");
+        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
         loadData();
     }
 
@@ -194,10 +201,6 @@ public class GysFirmWarningActivity extends AllenBaseActivity {
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
 
             }
 

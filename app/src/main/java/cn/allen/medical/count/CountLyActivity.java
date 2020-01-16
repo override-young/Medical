@@ -67,7 +67,6 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
     private List<SysltjEntity.ItemsBean> sublist = new ArrayList<>();
     private List<Type> ksList = new ArrayList<>();
     private boolean isRefresh = false;
-    private boolean isStart = false;
     private boolean isFirstLoad = false;
     private int page = 0, pageSize = 20;
     private String ksID = "", startDate = "", endDate = "";
@@ -83,6 +82,9 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    dismissProgressDialog();
+                    mater.finishRefreshing();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
                     if (isRefresh) {
                         list = sublist;
                         mater.finishRefresh();
@@ -94,32 +96,38 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
                         }
                         mater.finishRefreshLoadMore();
                     }
+                    if (list.isEmpty()){
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
+                    }
                     adapter.setDatas(list);
                     actHelper.setCanLoadMore(mater, pageSize, list);
                     break;
                 case 1:
+
+                    break;
+                case 2:
                     dismissProgressDialog();
                     mater.finishRefreshing();
                     actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
-                    break;
-                case 2:
                     if (isFirstLoad) {
                         isFirstLoad = false;
                         if (!ksList.isEmpty()) {
                             ksID = ksList.get(0).getId();
                             lyKs.setText(ksList.get(0).getName());
+                            actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
                             loadData();
                         } else {
                             ksID = "";
-                            lyKs.setText("请选择");
-                            loadData();
+                            lyKs.setText("");
+                            actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
                         }
                     } else {
                         int len = ksList == null ? 0 : ksList.size();
-                        if (len > 1) {
+                        if (len > 0) {
                             ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 3);
                             dialog.showDialog("请选择科室", lyKs, ksList);
                         } else {
+                            actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_internet),R.mipmap.no_internet);
                             MsgUtils.showMDMessage(context, "科室数据获取失败,请重试!");
                         }
                     }
@@ -132,6 +140,9 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
                     loadData();
                     break;
                 case 4:
+                    dismissProgressDialog();
+                    mater.finishRefreshing();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
                     if (!hospitalList.isEmpty()) {
                         tvHospital.setText(hospitalList.get(0).getName());
                         hospitalId = hospitalList.get(0).getId();
@@ -139,6 +150,8 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
                         page = 0;
                         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
                         loadDataOfSup();
+                    }else {
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
                     }
                     break;
                 case 5:
@@ -160,6 +173,7 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_internet),R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -210,7 +224,6 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
     }
 
     private void loadHzdw() {
-        showProgressDialog("");
         DataHelper.init().getHospitalList(isOnlyHospital, new HttpCallBack<List<Type>>() {
             @Override
             public void onSuccess(List<Type> respone) {
@@ -220,10 +233,6 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
             }
 
             @Override
@@ -331,10 +340,6 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
 
                     @Override
                     public void onTodo(MeRespone respone) {
-                        Message msg = new Message();
-                        msg.what = 1;
-                        msg.obj = respone.getMessage();
-                        handler.sendMessage(msg);
 
                     }
 
@@ -366,10 +371,6 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
 
                     @Override
                     public void onTodo(MeRespone respone) {
-                        Message msg = new Message();
-                        msg.what = 1;
-                        msg.obj = respone.getMessage();
-                        handler.sendMessage(msg);
 
                     }
 
@@ -398,7 +399,7 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
         switch (view.getId()) {
             case R.id.ly_ks:
                 int len = ksList == null ? 0 : ksList.size();
-                if (len > 1) {
+                if (len > 0) {
                     ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 3);
                     dialog.showDialog("请选择科室", lyKs, ksList);
                 } else {

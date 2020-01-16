@@ -2,7 +2,6 @@ package cn.allen.medical.todo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +18,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
@@ -56,6 +57,8 @@ public class BillDetailsActivity extends AllenBaseActivity {
     RecyclerView cyRecyclerview;
     @BindView(R.id.btn_do_different)
     AppCompatButton btnDoDifferent;
+    @BindView(R.id.layout_diff)
+    CardView layoutDiff;
 
     private Context mContext = this;
     private CommonAdapter<BillDetailsEntity.ItemsBean> adapter;
@@ -65,13 +68,15 @@ public class BillDetailsActivity extends AllenBaseActivity {
     private List<BillDifferentEntity.DiffRecordsBean> difflist = new ArrayList<>();
     private boolean isRefresh = false;
     private int page = 0, pageSize = 20;
-    private String id,code;
+    private String id, code;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
+                    dismissProgressDialog();
                     if (isRefresh) {
                         list = sublist;
                         refreshLayout.finishRefresh();
@@ -83,13 +88,18 @@ public class BillDetailsActivity extends AllenBaseActivity {
                         }
                         refreshLayout.finishRefreshLoadMore();
                     }
+                    if (list.isEmpty()) {
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, getResources()
+                                .getString(R.string.no_data), R.mipmap.no_data);
+                    }
                     adapter.setDatas(list);
                     actHelper.setCanLoadMore(refreshLayout, pageSize, list);
                     break;
                 case 1:
-                    dismissProgressDialog();
                     break;
                 case 2:
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
+                    dismissProgressDialog();
                     BillDifferentEntity differentEntity = (BillDifferentEntity) msg.obj;
                     tvNumber.setText(differentEntity.getCode());
                     tvDate.setText(differentEntity.getStartTime().replaceAll(" 00:00:00", "") +
@@ -97,22 +107,29 @@ public class BillDetailsActivity extends AllenBaseActivity {
 
                     difflist = differentEntity.getDiffRecords();
                     differentAdapter.setDatas(difflist);
+                    if (difflist.isEmpty()) {
+                        layoutDiff.setVisibility(View.GONE);
+                    }else {
+                        layoutDiff.setVisibility(View.VISIBLE);
+                    }
                     break;
                 case 3:
                     dismissProgressDialog();
-                    MsgUtils.showLongToast(mContext,"成功！");
+//                    MsgUtils.showLongToast(mContext,"成功！");
                     setResult(RESULT_OK);
                     finish();
                     break;
                 case 4:
                     if (code.equals(MenuEnum.todo_zd_ks)) {
                         passVerKs();
-                    } else if (code.equals(MenuEnum.todo_zd_sb)){
+                    } else if (code.equals(MenuEnum.todo_zd_sb)) {
                         passVerSbk();
                     }
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, getResources()
+                            .getString(R.string.no_internet), R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -135,12 +152,13 @@ public class BillDetailsActivity extends AllenBaseActivity {
         ButterKnife.bind(this);
         id = getIntent().getStringExtra("ID");
         code = getIntent().getStringExtra("CODE");
+        String deptName = getIntent().getStringExtra("DeptName");
         if (code.equals(MenuEnum.todo_zd_ks)) {
             btnDoDifferent.setVisibility(View.VISIBLE);
-            actHelper.setToolbarTitleCenter(toolbar, "账单详情(科室)");
-        } else if (code.equals(MenuEnum.todo_zd_sb)){
+            actHelper.setToolbarTitleCenter(toolbar, deptName);
+        } else if (code.equals(MenuEnum.todo_zd_sb)) {
             btnDoDifferent.setVisibility(View.GONE);
-            actHelper.setToolbarTitleCenter(toolbar, "账单详情(设备科)");
+            actHelper.setToolbarTitleCenter(toolbar, deptName);
         }
 
         setSupportActionBar(toolbar);
@@ -150,7 +168,7 @@ public class BillDetailsActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         initAdapter();
-        showProgressDialog("");
+        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
         loadData();
         loadDifference();
     }
@@ -204,7 +222,7 @@ public class BillDetailsActivity extends AllenBaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode==RESULT_OK){
+        if (resultCode == RESULT_OK) {
 //            loadDifference();
             setResult(RESULT_OK);
             finish();
@@ -243,14 +261,16 @@ public class BillDetailsActivity extends AllenBaseActivity {
 
     @OnClick({R.id.btn_pass, R.id.btn_do_different})
     public void onViewClicked(View view) {
-        if (actHelper.isFastClick()){
+        if (actHelper.isFastClick()) {
             return;
         }
         switch (view.getId()) {
             case R.id.btn_pass:
-                WarningDialog warningDialog=new WarningDialog(mContext,handler,"温馨提示","确定通过审核吗?",4);
+                WarningDialog warningDialog = new WarningDialog(mContext, handler, "温馨提示",
+                        "确定通过审核吗?", 4);
                 warningDialog.show();
-//                MsgUtils.showMDMessage(mContext, "确定通过审核?", new DialogInterface.OnClickListener() {
+//                MsgUtils.showMDMessage(mContext, "确定通过审核?", new DialogInterface.OnClickListener
+// () {
 //                    @Override
 //                    public void onClick(DialogInterface dialog, int which) {
 //                        if (code.equals(MenuEnum.todo_zd_ks)) {
@@ -264,13 +284,13 @@ public class BillDetailsActivity extends AllenBaseActivity {
                 break;
             case R.id.btn_do_different:
                 Intent intent = new Intent(mContext, DoDifferenceActivity.class);
-                intent.putExtra("ID",id);
-                startActivityForResult(intent,100);
+                intent.putExtra("ID", id);
+                startActivityForResult(intent, 100);
                 break;
         }
     }
 
-    private void passVerKs(){
+    private void passVerKs() {
         showProgressDialog("");
         DataHelper.init().getBillExamineKs(id, "", new HttpCallBack() {
             @Override
@@ -301,7 +321,7 @@ public class BillDetailsActivity extends AllenBaseActivity {
         });
     }
 
-    private void passVerSbk(){
+    private void passVerSbk() {
         showProgressDialog("");
         DataHelper.init().getBillExamineSbk(id, "", new HttpCallBack() {
             @Override
@@ -333,7 +353,6 @@ public class BillDetailsActivity extends AllenBaseActivity {
     }
 
 
-
     private void loadDifference() {
         showProgressDialog("");
         DataHelper.init().getBillDifferentDetails(id, new HttpCallBack<BillDifferentEntity>() {
@@ -347,10 +366,6 @@ public class BillDetailsActivity extends AllenBaseActivity {
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
             }
 
             @Override
@@ -381,10 +396,6 @@ public class BillDetailsActivity extends AllenBaseActivity {
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
             }
 
             @Override

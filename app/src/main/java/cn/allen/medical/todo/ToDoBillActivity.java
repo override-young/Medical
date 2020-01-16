@@ -15,7 +15,9 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
+import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
 import allen.frame.widget.MaterialRefreshLayout;
 import allen.frame.widget.MaterialRefreshListener;
@@ -56,6 +58,9 @@ public class ToDoBillActivity extends AllenBaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
+                    refreshLayout.finishRefreshing();
                     if (isRefresh) {
                         list = sublist;
                         refreshLayout.finishRefresh();
@@ -69,13 +74,16 @@ public class ToDoBillActivity extends AllenBaseActivity {
                     }
                     adapter.setDatas(list);
                     actHelper.setCanLoadMore(refreshLayout,pageSize,list);
+                    if (list.isEmpty()){
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
+                    }
                     break;
                 case 1:
-                    dismissProgressDialog();
-                    refreshLayout.finishRefreshing();
+
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_internet),R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -104,7 +112,7 @@ public class ToDoBillActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         code = meMenu.getCode();
-        showProgressDialog("");
+        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
         if (code.equals(MenuEnum.todo_zd_ks)) {
             loadDataByDep();
         } else if (code.equals(MenuEnum.todo_zd_sb)){
@@ -130,6 +138,7 @@ public class ToDoBillActivity extends AllenBaseActivity {
             @Override
             public void convert(ViewHolder holder, ToDoBillEntity.ItemsBean entity, int position) {
                 holder.setText(R.id.tv_bill_num, entity.getCode());
+                holder.setText(R.id.tv_ks,entity.getDeptName());
                 holder.setText(R.id.tv_bill_date, entity.getStartTime().replaceAll(" 00:00:00",
                         "") + "至" + entity.getEndTime().replaceAll(" 00:00:00", ""));
             }
@@ -142,6 +151,7 @@ public class ToDoBillActivity extends AllenBaseActivity {
         if (resultCode==RESULT_OK){
             page=0;
             isRefresh=true;
+            actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
             if (code.equals(MenuEnum.todo_zd_ks)) {
                 loadDataByDep();
             } else if (code.equals(MenuEnum.todo_zd_sb)){
@@ -193,6 +203,7 @@ public class ToDoBillActivity extends AllenBaseActivity {
         public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
             Intent intent = new Intent(mContext, BillDetailsActivity.class);
             intent.putExtra("ID",list.get(position).getId());
+            intent.putExtra("DeptName",list.get(position).getDeptName());
             intent.putExtra("CODE",code);
             startActivityForResult(intent,100);
         }
@@ -213,10 +224,6 @@ public class ToDoBillActivity extends AllenBaseActivity {
 
         @Override
         public void onTodo(MeRespone respone) {
-            Message msg = new Message();
-            msg.what = 1;
-            msg.obj = respone.getMessage();
-            handler.sendMessage(msg);
         }
 
         @Override

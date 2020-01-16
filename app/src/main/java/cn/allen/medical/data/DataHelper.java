@@ -288,8 +288,8 @@ public class DataHelper {
      * @param searchName
      * @param callBack
      */
-    public void getDifferentList(String searchName, HttpCallBack<DoDifferenceEntity> callBack) {
-        Object[] arrays = new Object[]{"KeyWords", searchName};
+    public void getDifferentList(int Page,String searchName, HttpCallBack<DoDifferenceEntity> callBack) {
+        Object[] arrays = new Object[]{"PageIndex",Page,"KeyWords", searchName};
         request.okhttpget(API.differentDetails, arrays, callBack);
     }
 

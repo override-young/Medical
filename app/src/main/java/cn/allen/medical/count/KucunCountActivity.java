@@ -66,6 +66,9 @@ public class KucunCountActivity extends AllenBaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    dismissProgressDialog();
+                    refreshLayout.finishRefreshing();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
                     if (isRefresh) {
                         list = sublist;
                         refreshLayout.finishRefresh();
@@ -77,18 +80,26 @@ public class KucunCountActivity extends AllenBaseActivity {
                         }
                         refreshLayout.finishRefreshLoadMore();
                     }
+                    if (list.isEmpty()){
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
+                    }
                     adapter.setDatas(list);
                     actHelper.setCanLoadMore(refreshLayout, pageSize, list);
                     break;
                 case 1:
-                    dismissProgressDialog();
-                    refreshLayout.finishRefreshing();
                     break;
                 case 2:
+                    dismissProgressDialog();
+                    refreshLayout.finishRefreshing();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
                     if (!hospitalList.isEmpty()) {
                         tvHospital.setText(hospitalList.get(0).getName());
                         hospitalId = hospitalList.get(0).getId();
+                        showProgressDialog("");
                         loadDataOfSup();
+                    }else {
+                        tvHospital.setText("");
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
                     }
 
                     break;
@@ -96,10 +107,12 @@ public class KucunCountActivity extends AllenBaseActivity {
                     hospitalId = hospitalList.get((int) msg.obj).getId();
                     isRefresh = true;
                     page = 0;
+                    showProgressDialog("");
                     loadDataOfSup();
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_internet),R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -130,6 +143,7 @@ public class KucunCountActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         initAdapter();
+        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
         if (meMenu.getCode().equals(MenuEnum.count_kcsl)) {
             tvHospital.setVisibility(View.GONE);
             loadData();
@@ -195,7 +209,6 @@ public class KucunCountActivity extends AllenBaseActivity {
     };
 
     private void loadData() {
-        showProgressDialog("");
         DataHelper.init().getKucunCount(page++, new HttpCallBack<KucunCountEntity>() {
             @Override
             public void onSuccess(KucunCountEntity respone) {
@@ -206,10 +219,6 @@ public class KucunCountActivity extends AllenBaseActivity {
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
 
             }
 
@@ -236,12 +245,12 @@ public class KucunCountActivity extends AllenBaseActivity {
             ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 3);
             dialog.showDialog("请选择医院", tvHospital, hospitalList);
         } else {
+            showProgressDialog("");
             loadHzdw();
         }
     }
 
     private void loadHzdw() {
-        showProgressDialog("");
         DataHelper.init().getHospitalList(isOnlyHospital, new HttpCallBack<List<Type>>() {
             @Override
             public void onSuccess(List<Type> respone) {
@@ -251,10 +260,6 @@ public class KucunCountActivity extends AllenBaseActivity {
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
             }
 
             @Override
@@ -273,8 +278,7 @@ public class KucunCountActivity extends AllenBaseActivity {
     }
 
     private void loadDataOfSup() {
-        showProgressDialog("");
-        DataHelper.init().getGysKucunCount(hospitalId, page, new HttpCallBack<KucunCountEntity>() {
+        DataHelper.init().getGysKucunCount(hospitalId, page++, new HttpCallBack<KucunCountEntity>() {
 
             @Override
             public void onSuccess(KucunCountEntity respone) {
@@ -285,10 +289,6 @@ public class KucunCountActivity extends AllenBaseActivity {
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
             }
 
             @Override

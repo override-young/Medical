@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
 import allen.frame.entry.Type;
 import allen.frame.tools.ChoiceTypeDialog;
@@ -78,22 +79,31 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
                     setData();
                     break;
                 case 1:
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
                     dismissProgressDialog();
                     break;
                 case 2:
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
+                    dismissProgressDialog();
                     if (!hospitalList.isEmpty()) {
                         tvHospital.setText(hospitalList.get(0).getName());
                         hospitalId = hospitalList.get(0).getId();
+                        showProgressDialog("");
                         loadDataOfSup();
+                    }else {
+                        tvHospital.setText("");
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
                     }
 
                     break;
                 case 3:
                     hospitalId = hospitalList.get((int) msg.obj).getId();
+                    showProgressDialog("");
                     loadDataOfSup();
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_internet),R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -122,6 +132,7 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
+        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
         initBarChart();
         Calendar calendar = Calendar.getInstance();
         int y = calendar.get(Calendar.YEAR);
@@ -277,6 +288,7 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
                     ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 3);
                     dialog.showDialog("请选择医院", tvHospital, hospitalList);
                 } else {
+                    showProgressDialog("");
                     loadHzdw();
                 }
 
@@ -291,6 +303,7 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
             public void onTimeSelect(Date date, View v) {//选中事件回调
                 year=getTime(date);
                 tvYear.setText(year);
+                showProgressDialog("");
                 if (meMenu.getCode().equals(MenuEnum.count_rk)) {
                     loadDataOfHospital();
                 } else {
@@ -342,7 +355,6 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
 
 
     private void loadHzdw() {
-        showProgressDialog("");
         DataHelper.init().getHospitalList(isOnlyHospital, new HttpCallBack<List<Type>>() {
             @Override
             public void onSuccess(List<Type> respone) {
@@ -352,10 +364,6 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
             }
 
             @Override
@@ -374,7 +382,6 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
     }
 
     private void loadDataOfSup() {
-        showProgressDialog("");
         DataHelper.init().getGysSelectSumChart(hospitalId, year, new
                 HttpCallBack<List<SelectSumChartEntity>>() {
 
@@ -414,7 +421,6 @@ public class SelectSumChartActivity extends AllenBaseActivity implements
     }
 
     private void loadDataOfHospital() {
-        showProgressDialog("");
         DataHelper.init().getSelectSumChart(year, new HttpCallBack<List<SelectSumChartEntity>>() {
             @Override
             public void onSuccess(List<SelectSumChartEntity> respone) {

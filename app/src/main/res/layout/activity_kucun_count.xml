@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shap_btn_bg_border"
-                android:text="西南医院"
+                android:text="医院"
                 android:padding="@dimen/frame_eight_distance"
                 android:gravity="center"
                 android:layout_gravity="right"
@@ -40,6 +40,7 @@
             android:orientation="horizontal">
         </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.LinearLayoutCompat>
+    <include layout="@layout/alen_progress_layout"/>
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

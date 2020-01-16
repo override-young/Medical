@@ -20,6 +20,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
@@ -68,35 +69,44 @@ public class ContractDetailsActivity extends AllenBaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
+                    dismissProgressDialog();
                     ContractDetailsEntity contractDetailsEntity = (ContractDetailsEntity) msg.obj;
-                    tvContractNum.setText(contractDetailsEntity.getContractNo());
-                    tvUnit.setText(contractDetailsEntity.getPartyAName());
-                    tvStartDate.setText(contractDetailsEntity.getContractStartTime().replaceAll(" 00:00:00",""));
-                    tvEndDate.setText(contractDetailsEntity.getContractStopTime().replaceAll(" 00:00:00",""));
-                    int state=contractDetailsEntity.getStatus();
-                    if (state==5){
-                        tvState.setText("待审核");
-                    }else if (state==10){
-                        tvState.setText("已撤销");
-                    }else if (state==15){
-                        tvState.setText("正常");
-                    }else if (state==20){
-                        tvState.setText("未生效");
-                    }else if (state==30){
-                        tvState.setText("已过期");
-                    }else if (state==40){
-                        tvState.setText("驳回");
+                    if (contractDetailsEntity!=null) {
+                        tvContractNum.setText(contractDetailsEntity.getContractNo());
+                        tvUnit.setText(contractDetailsEntity.getPartyAName());
+                        tvStartDate.setText(contractDetailsEntity.getContractStartTime().replaceAll(" 00:00:00", ""));
+
+                        tvEndDate.setText(contractDetailsEntity.getContractStopTime().replaceAll
+                                (" 00:00:00", ""));
+                        int state = contractDetailsEntity.getStatus();
+                        if (state == 5) {
+                            tvState.setText("待审核");
+                        } else if (state == 10) {
+                            tvState.setText("已撤销");
+                        } else if (state == 15) {
+                            tvState.setText("正常");
+                        } else if (state == 20) {
+                            tvState.setText("未生效");
+                        } else if (state == 30) {
+                            tvState.setText("已过期");
+                        } else if (state == 40) {
+                            tvState.setText("驳回");
+                        }
+                        picList = contractDetailsEntity.getPictures();
+                        list = contractDetailsEntity.getSupplierProductList();
+                        adapter.setDatas(list);
+                    }else {
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, getResources()
+                                .getString(R.string.no_data), R.mipmap.no_data);
                     }
-                    picList=contractDetailsEntity.getPictures();
-                    list = contractDetailsEntity.getSupplierProductList();
-                    adapter.setDatas(list);
                     break;
                 case 1:
-                    dismissProgressDialog();
+
                     break;
                 case 2:
                     dismissProgressDialog();
-                    MsgUtils.showLongToast(mContext,"成功！");
+//                    MsgUtils.showLongToast(mContext,"成功！");
                     setResult(RESULT_OK);
                     finish();
                     break;
@@ -105,6 +115,8 @@ public class ContractDetailsActivity extends AllenBaseActivity {
                     break;
                 case -1:
                     dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, getResources()
+                            .getString(R.string.no_internet), R.mipmap.no_internet);
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
@@ -140,7 +152,7 @@ public class ContractDetailsActivity extends AllenBaseActivity {
                     intent.putStringArrayListExtra("Urls", (ArrayList<String>) picList);
                     startActivity(intent);
                 }else {
-                    MsgUtils.showLongToast(mContext,"当前合同没有对应图片!");
+                    MsgUtils.showMDMessage(mContext,"当前合同没有对应图片!");
                 }
                 break;
             default:
@@ -160,12 +172,12 @@ public class ContractDetailsActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         id = getIntent().getStringExtra("ID");
+        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
         loadData();
         initAdapter();
     }
 
     private void loadData() {
-        showProgressDialog("");
         DataHelper.init().getContractDetails(id, new HttpCallBack<ContractDetailsEntity>() {
             @Override
             public void onSuccess(ContractDetailsEntity respone) {
@@ -177,10 +189,6 @@ public class ContractDetailsActivity extends AllenBaseActivity {
 
             @Override
             public void onTodo(MeRespone respone) {
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = respone.getMessage();
-                handler.sendMessage(msg);
             }
 
             @Override
