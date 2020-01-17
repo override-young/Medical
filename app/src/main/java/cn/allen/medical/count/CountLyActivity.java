@@ -100,7 +100,7 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
                         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
                     }
                     adapter.setDatas(list);
-                    actHelper.setCanLoadMore(mater, pageSize, list);
+                    actHelper.setCanLoadMore(mater, pageSize, sublist);
                     break;
                 case 1:
 

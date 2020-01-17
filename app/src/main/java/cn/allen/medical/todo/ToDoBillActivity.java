@@ -73,7 +73,7 @@ public class ToDoBillActivity extends AllenBaseActivity {
                         refreshLayout.finishRefreshLoadMore();
                     }
                     adapter.setDatas(list);
-                    actHelper.setCanLoadMore(refreshLayout,pageSize,list);
+                    actHelper.setCanLoadMore(refreshLayout,pageSize,sublist);
                     if (list.isEmpty()){
                         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
                     }

@@ -84,7 +84,7 @@ public class KucunCountActivity extends AllenBaseActivity {
                         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,getResources().getString(R.string.no_data),R.mipmap.no_data);
                     }
                     adapter.setDatas(list);
-                    actHelper.setCanLoadMore(refreshLayout, pageSize, list);
+                    actHelper.setCanLoadMore(refreshLayout, pageSize, sublist);
                     break;
                 case 1:
                     break;

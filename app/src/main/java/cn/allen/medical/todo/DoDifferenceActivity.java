@@ -132,7 +132,7 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
                         showPop();
                         differentAdapter.setDatas(doDiffList);
                     }
-                    actHelper.setCanLoadMore(mater, pageSize, doDiffList);
+                    actHelper.setCanLoadMore(mater, pageSize, doDiffSubList);
                     break;
                 case 3:
                     dismissProgressDialog();
@@ -458,10 +458,16 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
                 .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
                 .setAnimationStyle(R.style.AnimUp)
                 .setViewOnclickListener(this)
-                .setOutsideTouchable(false)
                 .create();
 
         popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                page=0;
+                isRefresh=false;
+            }
+        });
     }
 
    private MaterialRefreshLayout mater;
@@ -502,8 +508,6 @@ public class DoDifferenceActivity extends AllenBaseActivity implements CommonPop
                     @Override
                     public void onClick(View v) {
                         if (popupWindow != null) {
-                            page=0;
-                            isRefresh=false;
                             popupWindow.dismiss();
                         }
                     }
