@@ -241,7 +241,7 @@ public class KucunCountActivity extends AllenBaseActivity {
     @OnClick(R.id.tv_hospital)
     public void onViewClicked() {
         int len = hospitalList == null ? 0 : hospitalList.size();
-        if (len > 1) {
+        if (len > 0) {
             ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 3);
             dialog.showDialog("请选择医院", tvHospital, hospitalList);
         } else {

@@ -412,7 +412,7 @@ public class CountLyActivity extends AllenBaseActivity implements CommonPopupWin
                 break;
             case R.id.tv_hospital:
                 int length = hospitalList == null ? 0 : hospitalList.size();
-                if (length > 1) {
+                if (length > 0) {
                     ChoiceTypeDialog dialog = new ChoiceTypeDialog(context, handler, 5);
                     dialog.showDialog("请选择医院", tvHospital, hospitalList);
                 } else {
